@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>🐱 Akito Lau · 小世界</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
@@ -17,7 +20,6 @@
 
   html { scroll-behavior: smooth; }
 
-  /* Animated Gradient Background */
   body {
     font-family: 'Noto Sans SC', sans-serif;
     color: var(--text); line-height: 1.8; overflow-x: hidden;
@@ -34,9 +36,6 @@
     100% { background-position: 0% 50%; }
   }
 
-  /* Parallax scroll hint */
-  .parallax-layer { position: relative; z-index: 1; }
-
   nav {
     position: fixed; top: 0; width: 100%;
     background: rgba(255,248,240,0.88); backdrop-filter: blur(16px);
@@ -51,25 +50,16 @@
   .nav-links a { text-decoration:none; color:var(--text-light); font-size:0.78rem; font-weight:500; padding:5px 10px; border-radius:20px; transition:all 0.3s; }
   .nav-links a:hover { background:var(--pink-light); color:var(--pink); }
 
-  .hero {
-    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:100px 20px 60px;
-    background:rgba(255,248,240,0.3); backdrop-filter:blur(4px);
-    position:relative; overflow:hidden;
-  }
+  .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:100px 20px 60px; background:rgba(255,248,240,0.3); backdrop-filter:blur(4px); position:relative; overflow:hidden; }
   .hero h1 { font-family:'Zen Maru Gothic',sans-serif; font-size:2.8rem; font-weight:900; color:var(--brown); margin-bottom:6px; }
   .hero h1 .highlight { color:var(--pink); }
   .hero .subtitle { font-size:1rem; color:var(--text-light); margin-bottom:20px; letter-spacing:2px; }
 
   section { max-width:900px; margin:0 auto; padding:70px 24px; }
-  .section-title {
-    font-family:'Zen Maru Gothic',sans-serif; font-size:1.5rem; font-weight:900; color:var(--brown);
-    margin-bottom:8px; display:flex; align-items:center; gap:10px;
-  }
+  .section-title { font-family:'Zen Maru Gothic',sans-serif; font-size:1.5rem; font-weight:900; color:var(--brown); margin-bottom:8px; display:flex; align-items:center; gap:10px; }
   .section-title::after { content:''; flex:1; height:2px; background:linear-gradient(90deg,var(--pink-light),transparent); }
   .section-sub { font-size:0.82rem; color:var(--text-light); margin-bottom:28px; }
 
-  /* ===== PET CAT ===== */
   .cat-pet-section { text-align:center; padding:50px 20px; background:rgba(255,255,255,0.4); backdrop-filter:blur(8px); border-radius:30px; margin:0 -24px 20px; position:relative; overflow:hidden; }
   .cat-pet-section .section-inner { max-width:800px; margin:0 auto; }
   .cat-stage { position:relative; width:220px; height:220px; margin:10px auto 10px; background:rgba(255,255,255,0.5); border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden; }
@@ -88,8 +78,6 @@
   .pet-btn.pat:hover { background:#81D4FA; color:white; border-color:#81D4FA; }
   .pet-btn.stroke:hover { background:#A5D6A7; color:white; border-color:#A5D6A7; }
   .pet-reaction { min-height:28px; font-size:0.88rem; color:var(--text-light); margin-top:10px; }
-
-  /* Affection */
   .affection-wrap { max-width:280px; margin:10px auto 0; text-align:center; }
   .affection-label { font-size:0.72rem; color:var(--text-light); margin-bottom:3px; }
   .affection-bar-bg { width:100%; height:14px; background:#F0E0E0; border-radius:20px; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,0.06); position:relative; }
@@ -98,7 +86,6 @@
   @keyframes barShimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
   .affection-pct { font-size:0.7rem; color:var(--pink); font-weight:700; margin-top:2px; }
 
-  /* Celebration */
   .celebration { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:4000; justify-content:center; align-items:center; flex-direction:column; pointer-events:none; }
   .celebration.show { display:flex; }
   .celebration .celebrate-text { font-family:'Zen Maru Gothic',sans-serif; font-size:3.5rem; font-weight:900; background:linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77,#4D96FF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:celebrateBounce 0.6s ease infinite alternate; pointer-events:none; }
@@ -112,51 +99,24 @@
   .float-splatter { position:absolute; font-size:1.5rem; animation:splatterAnim 1s ease-out forwards; pointer-events:none; }
   @keyframes splatterAnim { 0%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1.5) rotate(180deg)} 100%{opacity:0;transform:translateY(-60px) scale(2) rotate(360deg)} }
 
-  /* ===== WORKS / ALBUMS ===== */
   .works-section { background:rgba(255,255,255,0.35); backdrop-filter:blur(8px); border-radius:30px; padding:50px 24px; margin:0 -24px; }
   .works-section .section-inner { max-width:900px; margin:0 auto; }
-
-  .album-card {
-    background:rgba(255,255,255,0.7); backdrop-filter:blur(4px);
-    border-radius:24px; padding:24px; margin-bottom:20px;
-    box-shadow:0 4px 20px var(--shadow);
-    border:1px solid rgba(255,255,255,0.5);
-    transition:transform 0.3s, box-shadow 0.3s;
-  }
+  .album-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:24px; margin-bottom:20px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); transition:transform 0.3s,box-shadow 0.3s; }
   .album-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(139,110,99,0.12); }
-
   .album-header { display:flex; gap:20px; margin-bottom:16px; flex-wrap:wrap; }
-  .album-cover {
-    width:140px; height:140px; border-radius:16px; object-fit:cover;
-    background:linear-gradient(135deg,var(--pink-light),#F3E5F5);
-    border:3px solid white; box-shadow:0 4px 12px var(--shadow);
-    flex-shrink:0;
-  }
+  .album-cover { width:140px; height:140px; border-radius:16px; object-fit:cover; background:linear-gradient(135deg,var(--pink-light),#F3E5F5); border:3px solid white; box-shadow:0 4px 12px var(--shadow); flex-shrink:0; }
   .album-info { flex:1; min-width:200px; }
   .album-info h3 { font-size:1.15rem; font-weight:700; color:var(--brown); }
   .album-info .album-tag { display:inline-block; padding:2px 10px; border-radius:10px; font-size:0.7rem; background:var(--pink-light); color:var(--pink); font-weight:600; margin:4px 0 6px; }
   .album-info p { font-size:0.85rem; color:var(--text-light); line-height:1.7; }
-
   .album-gallery { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
-  .album-gallery .gal-thumb {
-    width:80px; height:80px; border-radius:10px; overflow:hidden; cursor:pointer;
-    border:2px solid var(--pink-light); transition:all 0.3s;
-    object-fit:cover; background:#f0f0f0;
-  }
+  .album-gallery .gal-thumb { width:80px; height:80px; border-radius:10px; overflow:hidden; cursor:pointer; border:2px solid var(--pink-light); transition:all 0.3s; object-fit:cover; background:#f0f0f0; }
   .album-gallery .gal-thumb:hover { border-color:var(--pink); transform:scale(1.08); }
-
   .album-downloads { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-  .album-downloads a {
-    display:inline-flex; align-items:center; gap:4px;
-    padding:5px 14px; border-radius:20px; font-size:0.75rem; font-weight:600;
-    background:var(--cream); border:1px solid var(--pink-light);
-    color:var(--brown); text-decoration:none; transition:all 0.3s;
-  }
+  .album-downloads a { display:inline-flex; align-items:center; gap:4px; padding:5px 14px; border-radius:20px; font-size:0.75rem; font-weight:600; background:var(--cream); border:1px solid var(--pink-light); color:var(--brown); text-decoration:none; transition:all 0.3s; }
   .album-downloads a:hover { background:var(--pink); color:white; border-color:var(--pink); }
-
   .album-empty { text-align:center; padding:40px; color:var(--text-light); background:rgba(255,255,255,0.5); border-radius:18px; border:2px dashed var(--pink-light); }
 
-  /* ===== ABOUT ===== */
   .about-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:30px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); }
   .about-grid { display:grid; grid-template-columns:80px 1fr; gap:16px; margin-bottom:16px; }
   .about-avatar { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--pink-light),#F3E5F5); display:flex; align-items:center; justify-content:center; font-size:2.5rem; border:3px solid white; box-shadow:0 4px 12px var(--shadow); }
@@ -170,7 +130,6 @@
   .timeline-content { font-size:0.82rem; color:var(--text); line-height:1.5; }
   .timeline-content .label { font-weight:700; }
 
-  /* ===== MUSIC ===== */
   .music-section { background:rgba(255,255,255,0.35); backdrop-filter:blur(8px); border-radius:30px; padding:50px 24px; margin:0 -24px; }
   .music-section .section-inner { max-width:800px; margin:0 auto; }
   .music-intro { background:rgba(255,255,255,0.7); border-radius:20px; padding:18px 22px; margin-bottom:18px; border-left:4px solid #CE93D8; }
@@ -183,7 +142,6 @@
   .music-link-card a { display:inline-flex; align-items:center; gap:8px; padding:10px 26px; background:var(--pink); color:white; text-decoration:none; border-radius:30px; font-weight:700; font-size:0.88rem; transition:box-shadow 0.3s; }
   .music-link-card a:hover { box-shadow:0 4px 16px rgba(247,168,184,0.5); }
 
-  /* ===== BLOG ===== */
   .blog-list { display:flex; flex-direction:column; gap:14px; }
   .blog-post { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:18px; padding:18px 22px; box-shadow:0 4px 16px var(--shadow); border-left:4px solid var(--pink); transition:transform 0.3s; }
   .blog-post:hover { transform:translateX(4px); }
@@ -195,7 +153,6 @@
   .post-gallery .gal-thumb:hover { border-color:var(--pink); transform:scale(1.05); }
   .blog-empty { text-align:center; padding:35px; color:var(--text-light); background:rgba(255,255,255,0.5); border-radius:18px; border:2px dashed var(--pink-light); }
 
-  /* ===== GUESTBOOK ===== */
   .guestbook-form-area { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:28px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); margin-bottom:14px; }
   .msg-form { display:flex; flex-direction:column; gap:10px; }
   .msg-form input, .msg-form textarea { padding:10px 14px; border:2px solid var(--pink-light); border-radius:14px; font-family:inherit; font-size:0.82rem; color:var(--text); background:var(--cream); outline:none; transition:border-color 0.3s; resize:vertical; }
@@ -212,7 +169,6 @@
   .gb-msg-item .gb-text { font-size:0.8rem; color:var(--text-light); margin-top:2px; }
   .gb-empty { text-align:center; padding:18px; color:var(--text-light); font-size:0.78rem; }
 
-  /* ===== FLOATING MSGS ===== */
   #float-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999; overflow:hidden; }
   .float-msg { position:absolute; max-width:200px; padding:8px 12px; border-radius:14px; font-size:0.75rem; line-height:1.4; pointer-events:auto; cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16,auto; background:white; border:2px solid var(--pink-light); box-shadow:0 4px 16px var(--shadow); animation:floatAnim linear infinite; transition:transform 0.3s,box-shadow 0.3s; transform-origin:center; }
   .float-msg:hover { animation-play-state:paused!important; transform:scale(1.08); box-shadow:0 8px 30px rgba(247,168,184,0.3); z-index:1000; border-color:var(--pink); }
@@ -223,7 +179,6 @@
   .float-msg:hover .f-del { display:flex; }
   @keyframes floatAnim { 0%{transform:translateY(0) rotate(0deg)} 25%{transform:translateY(-12px) rotate(1deg)} 50%{transform:translateY(-6px) rotate(-1deg)} 75%{transform:translateY(-16px) rotate(0.5deg)} 100%{transform:translateY(0) rotate(0deg)} }
 
-  /* ===== LIGHTBOX ===== */
   .lightbox { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.82); z-index:5000; justify-content:center; align-items:center; backdrop-filter:blur(8px); cursor:pointer; }
   .lightbox.show { display:flex; }
   .lightbox img { max-width:90vw; max-height:90vh; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.5); object-fit:contain; cursor:default; }
@@ -234,7 +189,6 @@
   .lightbox .lb-prev { left:15px; }
   .lightbox .lb-next { right:15px; }
 
-  /* ===== ADMIN ===== */
   .admin-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.45); z-index:2000; backdrop-filter:blur(8px); }
   .admin-overlay.show { display:flex; align-items:center; justify-content:center; }
   .admin-panel { background:white; border-radius:24px; padding:28px; max-width:620px; width:90%; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
@@ -250,6 +204,7 @@
   .admin-panel .admin-btn.danger { background:linear-gradient(135deg,#EF9A9A,#E57373); }
   .admin-panel .admin-btn.small { padding:3px 10px; font-size:0.7rem; margin:0 0 0 6px; }
   .admin-panel .admin-btn.tiny { padding:2px 6px; font-size:0.62rem; margin:0; }
+  .admin-panel .admin-btn.green { background:linear-gradient(135deg,#81C784,#66BB6A); }
   .admin-panel .admin-status { margin-top:10px; padding:8px; border-radius:10px; font-size:0.78rem; display:none; }
   .admin-panel .admin-status.success { display:block; background:#E8F5E9; color:#388E3C; }
   .admin-panel .admin-status.error { display:block; background:#FFEBEE; color:#E53935; }
@@ -264,18 +219,15 @@
   .admin-panel .admin-post-item { display:flex; align-items:center; justify-content:space-between; padding:7px 10px; background:var(--cream); border-radius:10px; margin-bottom:5px; font-size:0.78rem; }
   .admin-panel .admin-post-item .ap-title { font-weight:600; color:var(--brown); flex:1; }
   .admin-panel .admin-post-item .ap-date { color:var(--text-light); font-size:0.68rem; margin-right:6px; }
-
   .img-preview { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
   .img-preview .ip-item { position:relative; width:70px; height:70px; border-radius:8px; overflow:hidden; border:2px solid var(--pink-light); }
   .img-preview .ip-item img { width:100%; height:100%; object-fit:cover; }
   .img-preview .ip-item .ip-del { position:absolute; top:-3px; right:-3px; width:16px; height:16px; border-radius:50%; background:#E53935; color:white; font-size:0.55rem; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid white; }
-
   .tab-bar { display:flex; gap:4px; margin-bottom:14px; flex-wrap:wrap; }
   .tab-btn { padding:5px 14px; border-radius:20px; border:1px solid var(--pink-light); background:transparent; color:var(--text-light); font-size:0.78rem; cursor:pointer; transition:all 0.3s; }
   .tab-btn.active { background:var(--pink); color:white; border-color:var(--pink); }
   .tab-content { display:none; }
   .tab-content.active { display:block; }
-
   .setup-banner { background:#FFF3E0; border:1px solid #FFE082; border-radius:12px; padding:14px; margin-bottom:14px; font-size:0.8rem; }
   .setup-banner strong { color:#E65100; }
   .setup-banner a { color:#1976D2; }
@@ -355,14 +307,12 @@
   <div class="celebrate-sub">奶牛猫感动得跳起了舞～</div>
 </div>
 
-<!-- Works / Albums -->
+<!-- Works -->
 <div class="works-section" id="works">
   <div class="section-inner">
     <div class="section-title">🎵 我的音乐作品</div>
     <div class="section-sub">专辑 & 歌词本 & 背后的故事</div>
-    <div class="album-list" id="albumList">
-      <div class="album-empty">📀 作品加载中...</div>
-    </div>
+    <div class="album-list" id="albumList"><div class="album-empty">📀 作品加载中...</div></div>
   </div>
 </div>
 
@@ -376,7 +326,7 @@
       <div class="about-info">
         <h3>Akito Lau</h3>
         <p class="tagline">✨ 数据 × 音乐 × 户外 · 永远保持好奇</p>
-        <p>现于完美（中国）数据与AI部门工作，中国人民大学金融硕士毕业。除了写代码和做分析，我还喜欢写歌、弹琴、爬山徒步。</p>
+        <p>现于完美（中国）数据与AI部门工作，中国人民大学金融硕士毕业。</p>
       </div>
     </div>
     <div class="timeline">
@@ -384,9 +334,8 @@
       <div class="timeline-item"><div class="timeline-year">2025 - 2026</div><div class="timeline-content"><span class="label">华为技术有限公司</span> · 吉林区域零售与渠道助理</div></div>
       <div class="timeline-item"><div class="timeline-year">2023 - 2025</div><div class="timeline-content"><span class="label">中国人民大学</span> · 金融硕士（苏州研究院）</div></div>
       <div class="timeline-item"><div class="timeline-year">2019 - 2023</div><div class="timeline-content"><span class="label">中国人民大学</span> · 管理学学士（商学院）</div></div>
-      <div class="timeline-item"><div class="timeline-year">2022（春）</div><div class="timeline-content"><span class="label">芬兰阿尔托大学</span> · 交换生（国际商务）</div></div>
-      <div class="timeline-item"><div class="timeline-year">🎵</div><div class="timeline-content">独立音乐人 · 用旋律记录情绪</div></div>
-      <div class="timeline-item"><div class="timeline-year">🏔️</div><div class="timeline-content">户外徒步 · 爬山 · 大自然治愈一切</div></div>
+      <div class="timeline-item"><div class="timeline-year">2022（春）</div><div class="timeline-content"><span class="label">芬兰阿尔托大学</span> · 交换生</div></div>
+      <div class="timeline-item"><div class="timeline-year">🎵</div><div class="timeline-content">独立音乐人</div></div>
     </div>
   </div>
 </section>
@@ -396,7 +345,7 @@
   <div class="section-inner">
     <div class="section-title">🎧 听我的音乐</div>
     <div class="section-sub">网易云音乐 · Independent Musician</div>
-    <div class="music-intro"><p>除了和数据打交道，我也是一个独立音乐人 🎹 喜欢在安静的时候写写歌。如果你也喜欢，欢迎来网易云听一听～</p></div>
+    <div class="music-intro"><p>除了和数据打交道，我也是一个独立音乐人 🎹</p></div>
     <div class="music-link-card">
       <div class="big-icon">🎧</div>
       <h3>Akito Lau 在网易云音乐</h3>
@@ -410,10 +359,9 @@
 <section id="blog">
   <div class="section-title">📖 日常日志</div>
   <div class="section-sub">Akito 的随手记</div>
-  <div class="blog-list" id="blogList"><div class="blog-empty">📝 还没有日志，敬请期待～</div></div>
+  <div class="blog-list" id="blogList"><div class="blog-empty">📝 加载中...</div></div>
 </section>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
   <button class="lb-nav lb-prev" onclick="prevImage(event)">‹</button>
@@ -434,7 +382,7 @@
   </div>
   <div class="guestbook-msgs">
     <div class="gb-title">💬 全部留言</div>
-    <div class="gb-msg-list" id="gbMsgList"><div class="gb-empty">还没有留言，来做第一个朋友吧 ✨</div></div>
+    <div class="gb-msg-list" id="gbMsgList"><div class="gb-empty">加载中...</div></div>
   </div>
 </section>
 
@@ -446,42 +394,31 @@
     <button class="close-btn" onclick="closeAdmin()">✕</button>
     <h2>🔐 管理面板</h2>
     <div class="setup-banner" id="setupBanner">
-      <strong>🔑 首次使用：</strong>需要 GitHub Token<br><br>
-      1. <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Token 设置</a><br>
-      2. Generate → Fine-grained token → 名字 <code>akitolau-site</code><br>
-      3. Repository: <strong>Only select</strong> → <code>akitolau/akitolau.github.io</code><br>
-      4. Permissions: Contents → <strong>Read and write</strong><br>
-      5. 生成后粘贴到下面 👇
+      <strong>🔑 首次使用：</strong>需要配置两个 Token<br><br>
+      <strong>① 管理员 Token（已有就不用再填）</strong><br>
+      用于发布日志/专辑/删除留言<br><br>
+      <strong>② 访客留言 Token（新的👇）</strong><br>
+      这个 Token 能让访客的留言保存到服务器，你就能看到了！<br>
+      权限极小，只能写 messages.json 一个文件<br>
+      生成后粘贴到下面的「访客留言 Token」框里
     </div>
-    <label>🔑 GitHub Token</label>
-    <input type="password" id="ghToken" placeholder="粘贴 GitHub Token">
-    <button class="admin-btn secondary" onclick="saveToken()">💾 保存 Token</button>
+
+    <label>🔑 管理员 Token</label>
+    <input type="password" id="ghToken" placeholder="管理员 GitHub Token">
+    <button class="admin-btn secondary" onclick="saveToken()">💾 保存</button>
+
+    <label style="margin-top:8px;">🔑 访客留言 Token <span style="font-weight:400;color:#bbb;font-size:0.7rem;">（让所有人都能留言）</span></label>
+    <input type="password" id="publicToken" placeholder="粘贴访客留言专用 Token">
+    <button class="admin-btn green" onclick="savePublicToken()">💾 保存访客 Token</button>
+
     <div class="tab-bar" style="margin-top:14px;">
-      <button class="tab-btn active" onclick="switchTab('works',this)">🎵 作品</button>
-      <button class="tab-btn" onclick="switchTab('write',this)">✍️ 日志</button>
+      <button class="tab-btn active" onclick="switchTab('write',this)">✍️ 写日志</button>
       <button class="tab-btn" onclick="switchTab('manage',this)">📋 管理日志</button>
+      <button class="tab-btn" onclick="switchTab('works',this)">🎵 作品</button>
       <button class="tab-btn" onclick="switchTab('msgs',this)">💬 留言</button>
     </div>
-    <!-- Tab: Works -->
-    <div class="tab-content active" id="tab-works">
-      <label>📀 专辑名称</label>
-      <input type="text" id="albumTitle" placeholder="如：Seasons of Music">
-      <label>🏷️ 标签（如：已发布 / 电子类别）</label>
-      <input type="text" id="albumTag" placeholder="例如：已发布 · 钢琴独奏">
-      <label>📖 背后的故事</label>
-      <textarea id="albumStory" placeholder="这张专辑的故事..." style="min-height:60px;"></textarea>
-      <label>🖼️ 封面图 / 相关图片（可多选）</label>
-      <input type="file" id="albumImages" accept="image/*" multiple onchange="previewAlbumImages(event)">
-      <div class="img-preview" id="albumImgPreview"></div>
-      <label>📎 上传可下载文件（PDF / DOCX 等）</label>
-      <input type="file" id="albumFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAlbumFiles(event)">
-      <div style="font-size:0.7rem;color:var(--text-light);margin:4px 0;" id="albumFileNames">暂未选择文件</div>
-      <button class="admin-btn" onclick="publishAlbum()">📤 发布专辑</button>
-      <label style="margin-top:16px;">📋 已发布专辑</label>
-      <div class="admin-post-list" id="adminAlbumList"><div style="color:var(--text-light);font-size:0.78rem;">暂无专辑</div></div>
-    </div>
-    <!-- Tab: Write -->
-    <div class="tab-content" id="tab-write">
+
+    <div class="tab-content active" id="tab-write">
       <label>📝 标题</label><input type="text" id="postTitle" placeholder="日志标题">
       <label>📷 图片（可多选）</label>
       <input type="file" id="postImages" accept="image/*" multiple onchange="previewPostImages(event)">
@@ -489,68 +426,114 @@
       <label>📄 正文</label><textarea id="postContent" placeholder="写点什么吧..." style="min-height:100px;"></textarea>
       <button class="admin-btn" onclick="publishPost()">📤 发布日志</button>
     </div>
-    <!-- Tab: Manage -->
+
     <div class="tab-content" id="tab-manage">
       <label>已发布日志（<span id="postCount">0</span> 篇）</label>
       <div class="admin-post-list" id="adminPostList"><div style="color:var(--text-light);font-size:0.78rem;">暂无日志</div></div>
     </div>
-    <!-- Tab: Messages -->
+
+    <div class="tab-content" id="tab-works">
+      <label>📀 专辑名称</label>
+      <input type="text" id="albumTitle" placeholder="如：Seasons of Music">
+      <label>🏷️ 标签</label>
+      <input type="text" id="albumTag" placeholder="例如：已发布 · 钢琴独奏">
+      <label>📖 背后的故事</label>
+      <textarea id="albumStory" placeholder="这张专辑的故事..." style="min-height:60px;"></textarea>
+      <label>🖼️ 图片（可多选）</label>
+      <input type="file" id="albumImages" accept="image/*" multiple onchange="previewAlbumImages(event)">
+      <div class="img-preview" id="albumImgPreview"></div>
+      <label>📎 可下载文件（PDF / DOCX 等）</label>
+      <input type="file" id="albumFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAlbumFiles(event)">
+      <div style="font-size:0.7rem;color:var(--text-light);margin:4px 0;" id="albumFileNames">暂未选择文件</div>
+      <button class="admin-btn" onclick="publishAlbum()">📤 发布专辑</button>
+      <label style="margin-top:16px;">📋 已发布专辑</label>
+      <div class="admin-post-list" id="adminAlbumList"><div style="color:var(--text-light);font-size:0.78rem;">暂无专辑</div></div>
+    </div>
+
     <div class="tab-content" id="tab-msgs">
       <label>留言管理（<span id="msgCount">0</span> 条）</label>
       <div class="admin-msgs" id="adminMsgs"><div style="color:var(--text-light);font-size:0.78rem;">暂无留言</div></div>
     </div>
+
     <div class="admin-status" id="adminStatus"></div>
   </div>
 </div>
 
 <footer>
   <div class="footer-cat">🐱</div>
-  <p>&copy; 2026 Akito Lau &middot; Made with &#128156;</p>
-  <p style="font-size:0.72rem;margin-top:4px;">Powered by GitHub Pages &middot; <a href="https://music.163.com/#/artist?id=123805900" target="_blank">&#127926; 网易云音乐</a></p>
+  <p>&copy; 2026 Akito Lau</p>
 </footer>
 
 <div class="toast" id="toast"></div>
 
 <script>
+// ===== CONFIG =====
 const REPO_OWNER='akitolau', REPO_NAME='akitolau.github.io', BRANCH='main';
 const DATA_PATH='data/messages.json', POSTS_PATH='data/posts.json', WORKS_PATH='data/works.json';
+
+// Public guestbook token — embedded so visitors can write messages too.
+// The admin sets this via the admin panel. It gets saved to localStorage.
+function getPublicToken() { return localStorage.getItem('gh_public_token') || ''; }
 
 function b64Encode(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
 function b64Decode(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 
+// Cache-busting timestamp
+function _ts(){return '?_ts='+Date.now();}
+
 async function ghFetch(url,opts={}){
-  const t=localStorage.getItem('gh_token');
+  const tokens = [localStorage.getItem('gh_token'), getPublicToken()].filter(Boolean);
+  const t = tokens[0] || '';
   const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
-  const r=await fetch(url,{...opts,headers:h});
+  const r=await fetch(url+_ts(),{...opts,headers:h});
   if(!r.ok){const e=await r.text();throw new Error('GitHub error '+r.status);}
   return r.json();
 }
-async function getFile(path){
-  try{const d=await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`);return{content:JSON.parse(b64Decode(d.content)),sha:d.sha};}
-  catch(e){return null;}
+async function ghFetchPublic(url,opts={}){
+  // For reading — no auth needed (public repo)
+  // But we add cache busting
+  const r=await fetch(url+_ts(),{...opts,headers:{'Accept':'application/vnd.github.v3+json',...opts.headers}});
+  if(!r.ok)throw new Error('Fetch error '+r.status);
+  return r.json();
 }
-async function putFile(path,content,sha){
-  const t=localStorage.getItem('gh_token');if(!t)throw new Error('No token');
+async function getFile(path, usePublic){
+  try{
+    const fn=usePublic?ghFetchPublic:ghFetch;
+    const d=await fn(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`);
+    return{content:JSON.parse(b64Decode(d.content)),sha:d.sha};
+  }catch(e){return null;}
+}
+async function putFile(path,content,sha,token){
+  const t=token||localStorage.getItem('gh_token');
+  if(!t)throw new Error('No token for write');
   const body={message:'Update '+path,content:b64Encode(JSON.stringify(content,null,2)),branch:BRANCH,...(sha?{sha}:{})};
-  const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){const e=await r.text();throw new Error('Update failed: '+r.status);}return r.json();
+  const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{
+    method:'PUT',
+    headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){const e=await r.text();throw new Error('Write failed: '+r.status);}
+  return r.json();
 }
-async function uploadFile(filename,base64Data){
-  const t=localStorage.getItem('gh_token');if(!t)throw new Error('No token');
+async function uploadFile(filename,base64Data,token){
+  const t=token||localStorage.getItem('gh_token');if(!t)throw new Error('No token');
   const data=base64Data.includes('base64,')?base64Data.split('base64,')[1]:base64Data;
-  let sha=null;try{const ex=await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}?ref=${BRANCH}`);sha=ex.sha;}catch(e){}
+  let sha=null;
+  try{const ex=await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`);sha=ex.sha;}catch(e){}
   const folder=filename.match(/\.(pdf|docx)$/i)?'downloads':'images';
   const path=folder+'/'+filename;
-  const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+filename,content:data,branch:BRANCH,...(sha?{sha}:{})})});
-  if(!r.ok)throw new Error('Upload failed: '+r.status);
+  const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{
+    method:'PUT',
+    headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'Upload '+filename,content:data,branch:BRANCH,...(sha?{sha}:{})})
+  });
+  if(!r.ok)throw new Error('Upload failed');
   return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${path}`;
 }
 function readFileAsBase64(file){
-  return new Promise((resolve,reject)=>{
-    const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);
-  });
+  return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);});
 }
 
 // ===== CAT PET =====
@@ -560,21 +543,13 @@ const celebrationOverlay=document.getElementById('celebrationOverlay');
 let catTimer=null,affection=50,isCelebrating=false;
 function updateAffection(){const p=Math.round(affection);affectionFill.style.width=p+'%';affectionPct.textContent=p+'%';localStorage.setItem('cat_affection',p);}
 function spawnEffects(e,c,cls){const ct=document.getElementById('effectContainer');for(let i=0;i<c;i++){const el=document.createElement('div');el.className=cls;el.textContent=e;el.style.left=(20+Math.random()*60)+'%';el.style.top=(30+Math.random()*40)+'%';el.style.animationDelay=(Math.random()*0.3)+'s';ct.appendChild(el);setTimeout(()=>el.remove(),2000);}}
-function triggerCelebration(){
-  isCelebrating=true;petEmoji.textContent='💃';petEmoji.classList.add('dance');
-  petReaction.textContent='💃 奶牛猫开心地跳起舞来！！';
-  celebrationOverlay.classList.add('show');
-  spawnEffects('🎉',10,'float-heart');spawnEffects('🌟',8,'float-splatter');spawnEffects('💖',8,'float-heart');
-  setTimeout(()=>{celebrationOverlay.classList.remove('show');petEmoji.classList.remove('dance');affection=50;updateAffection();isCelebrating=false;const f=['🐱','🐈','🐈⬛','😺'];petEmoji.textContent=f[Math.floor(Math.random()*f.length)];petReaction.textContent='🐱 奶牛猫亲密度已重置～再来一次吧！';},3000);
-}
-function petAction(a){
-  if(isCelebrating)return;if(catTimer)clearTimeout(catTimer);
+function triggerCelebration(){isCelebrating=true;petEmoji.textContent='💃';petEmoji.classList.add('dance');petReaction.textContent='💃 奶牛猫开心地跳起舞来！！';celebrationOverlay.classList.add('show');spawnEffects('🎉',10,'float-heart');spawnEffects('🌟',8,'float-splatter');spawnEffects('💖',8,'float-heart');setTimeout(()=>{celebrationOverlay.classList.remove('show');petEmoji.classList.remove('dance');affection=50;updateAffection();isCelebrating=false;const f=['🐱','🐈','🐈⬛','😺'];petEmoji.textContent=f[Math.floor(Math.random()*f.length)];petReaction.textContent='🐱 奶牛猫亲密度已重置～再来一次吧！';},3000);}
+function petAction(a){if(isCelebrating)return;if(catTimer)clearTimeout(catTimer);
   if(a==='feed'){petEmoji.textContent='😻';petReaction.textContent='😻 奶牛猫开心地冒爱心！♡♡♡';spawnEffects('❤️',8,'float-heart');spawnEffects('✨',5,'float-splatter');affection=Math.min(100,affection+10);}
   else if(a==='pat'){petEmoji.textContent='🙀';petEmoji.classList.remove('dodge');void petEmoji.offsetWidth;petEmoji.classList.add('dodge');petReaction.textContent='🙀 喵！！奶牛猫被吓到跳起来躲开了...';spawnEffects('💥',3,'float-splatter');spawnEffects('❕',3,'float-splatter');}
   else if(a==='stroke'){petEmoji.textContent='🥰';petEmoji.classList.remove('snuggle');void petEmoji.offsetWidth;petEmoji.classList.add('snuggle');petReaction.textContent='🥰 奶牛猫舒服地蹭了蹭你的手～咕噜咕噜～';spawnEffects('💕',5,'float-heart');spawnEffects('🌸',4,'float-splatter');affection=Math.min(100,affection+20);}
   updateAffection();if(affection>=100){triggerCelebration();return;}
-  catTimer=setTimeout(()=>{const f=['🐱','🐈','🐈⬛','😺'];petEmoji.textContent=f[Math.floor(Math.random()*f.length)];petEmoji.classList.remove('dodge','snuggle');petReaction.textContent='🐱 奶牛猫好奇地看着你...';},3000);
-}
+  catTimer=setTimeout(()=>{const f=['🐱','🐈','🐈⬛','😺'];petEmoji.textContent=f[Math.floor(Math.random()*f.length)];petEmoji.classList.remove('dodge','snuggle');petReaction.textContent='🐱 奶牛猫好奇地看着你...';},3000);}
 const savedA=parseInt(localStorage.getItem('cat_affection'));if(!isNaN(savedA)&&savedA>=0&&savedA<=100){affection=savedA;updateAffection();}
 
 // ===== LIGHTBOX =====
@@ -586,7 +561,10 @@ function prevImage(e){e.stopPropagation();lbIndex=(lbIndex-1+lbImages.length)%lb
 document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').classList.contains('show'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight'){e.preventDefault();nextImage(e);}if(e.key==='ArrowLeft'){e.preventDefault();prevImage(e);}});
 
 // ===== MESSAGES =====
-async function loadMessages(){try{const d=await getFile(DATA_PATH);return d?d.content:[];}catch(e){return[];}}
+async function loadMessages(){
+  try{const d=await getFile(DATA_PATH, true);return d?d.content:[];}
+  catch(e){return [];}
+}
 const colors=['#FCE4EC','#E8F5E9','#FFF3E0','#F3E5F5','#E3F2FD','#FFF8E1'],animals=['🐱','🐶','🐰','🦊','🐼','🐨','🦁','🐸','🦄','🐧'];
 function spawnFloatingMessage(name,text,timeStr){
   const c=document.getElementById('float-container'),el=document.createElement('div');el.className='float-msg';
@@ -604,17 +582,46 @@ async function displayMessageList(){
   const c=document.getElementById('gbMsgList');
   try{const msgs=await loadMessages();if(msgs.length===0){c.innerHTML='<div class="gb-empty">还没有留言，来做第一个朋友吧 ✨</div>';return;}
   c.innerHTML=msgs.slice().reverse().map(m=>`<div class="gb-msg-item"><span class="gb-name">${escHtml(m.name)}</span><span class="gb-time">${escHtml(m.time)}</span><div class="gb-text">${escHtml(m.text)}</div></div>`).join('');}
-  catch(e){c.innerHTML='<div class="gb-empty">还没有留言 ✨</div>';}
+  catch(e){c.innerHTML='<div class="gb-empty">留言加载失败</div>';}
 }
+
 async function postMessage(){
   const n=document.getElementById('msgName').value.trim(),t=document.getElementById('msgText').value.trim();
   if(!n||!t){showToast('🐱 名字和留言都要填哦～');return;}
   const ts=new Date().toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-  try{const ex=await getFile(DATA_PATH);const ms=ex?ex.content:[];ms.push({name:n,text:t,time:ts});await putFile(DATA_PATH,ms,ex?ex.sha:null);showToast('🎈 留言已保存！');}
-  catch(e){showToast('💾 保存失败');}
+  
+  // Try with public token first, then fallback to admin token
+  const publicToken = getPublicToken();
+  const writeToken = publicToken || localStorage.getItem('gh_token');
+  
+  if(!writeToken){
+    // No token at all — save locally only
+    const l=JSON.parse(localStorage.getItem('local_msgs')||'[]');
+    l.push({name:n,text:t,time:ts});
+    localStorage.setItem('local_msgs',JSON.stringify(l));
+    showToast('💾 留言已保存到本地（管理员配置Token后可永久保存）');
+    spawnFloatingMessage(n,t,ts);
+    document.getElementById('msgName').value='';document.getElementById('msgText').value='';
+    return;
+  }
+  
+  try{
+    const ex=await getFile(DATA_PATH);
+    const ms=ex?ex.content:[];
+    ms.push({name:n,text:t,time:ts});
+    await putFile(DATA_PATH, ms, ex?ex.sha:null, writeToken);
+    showToast('🎈 留言已保存！');
+  } catch(e){
+    const l=JSON.parse(localStorage.getItem('local_msgs')||'[]');
+    l.push({name:n,text:t,time:ts});
+    localStorage.setItem('local_msgs',JSON.stringify(l));
+    showToast('💾 已保存（本地模式）');
+  }
+  spawnFloatingMessage(n,t,ts);
   document.getElementById('msgName').value='';document.getElementById('msgText').value='';
   displayFloatingMessages();displayMessageList();
 }
+
 async function deleteMessage(index){
   if(!confirm('确定删除此留言？'))return;
   try{const ex=await getFile(DATA_PATH);const ms=ex?ex.content:[];if(index<0||index>=ms.length)return;ms.splice(index,1);await putFile(DATA_PATH,ms,ex?ex.sha:null);showToast('🗑️ 已删除');displayFloatingMessages();displayMessageList();if(document.getElementById('adminOverlay').classList.contains('show'))loadAdminMessages();}
@@ -622,10 +629,10 @@ async function deleteMessage(index){
 }
 
 // ===== BLOG =====
-async function loadPosts(){try{const d=await getFile(POSTS_PATH);return d?d.content:[];}catch(e){return[];}}
+async function loadPosts(){try{const d=await getFile(POSTS_PATH, true);return d?d.content:[];}catch(e){return[];}}
 async function displayPosts(){
   const list=document.getElementById('blogList');const posts=await loadPosts();
-  if(posts.length===0){list.innerHTML='<div class="blog-empty">📝 还没有日志，敬请期待～</div>';return;}
+  if(!posts||posts.length===0){list.innerHTML='<div class="blog-empty">📝 还没有日志，敬请期待～</div>';return;}
   list.innerHTML=posts.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(p=>{
     const g=p.images&&p.images.length?`<div class="post-gallery">${p.images.map((img,i)=>`<img class="gal-thumb" src="${escHtml(img)}" onclick="event.stopPropagation();openLightbox(${JSON.stringify(p.images).replace(/"/g,'&quot;')},${i})" alt="photo">`).join('')}</div>`:'';
     return `<div class="blog-post"><div class="post-date">📅 ${escHtml(p.date)}</div><div class="post-title">${escHtml(p.title)}</div>${g}<div class="post-content">${escHtml(p.content).replace(/\n/g,'<br>')}</div></div>`;
@@ -648,11 +655,11 @@ async function publishPost(){
   }catch(e){status.className='admin-status error';status.textContent='❌ 发布失败：'+e.message;}
 }
 
-// ===== WORKS / ALBUMS =====
-async function loadWorks(){try{const d=await getFile(WORKS_PATH);return d?d.content:[];}catch(e){return[];}}
+// ===== WORKS =====
+async function loadWorks(){try{const d=await getFile(WORKS_PATH, true);return d?d.content:[];}catch(e){return[];}}
 async function displayWorks(){
   const list=document.getElementById('albumList');const works=await loadWorks();
-  if(!works||works.length===0){list.innerHTML='<div class="album-empty">📀 作品加载中...（请在管理面板添加）</div>';return;}
+  if(!works||works.length===0){list.innerHTML='<div class="album-empty">📀 还没有作品，敬请期待～</div>';return;}
   list.innerHTML=works.map(w=>{
     const g=w.images&&w.images.length?`<div class="album-gallery">${w.images.map((img,i)=>`<img class="gal-thumb" src="${escHtml(img)}" onclick="event.stopPropagation();openLightbox(${JSON.stringify(w.images).replace(/"/g,'&quot;')},${i})">`).join('')}</div>`:'';
     const dl=w.downloads&&w.downloads.length?`<div class="album-downloads">${w.downloads.map(d=>`<a href="${escHtml(d.url)}" target="_blank" download>📥 ${escHtml(d.name)}</a>`).join('')}</div>`:'';
@@ -661,15 +668,8 @@ async function displayWorks(){
   }).join('');
 }
 let pendingAlbumImages=[],pendingAlbumFiles=[];
-
-function previewAlbumImages(e){
-  pendingAlbumImages=[];const ct=document.getElementById('albumImgPreview');ct.innerHTML='';
-  for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pendingAlbumImages.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip-item';d.innerHTML=`<img src="${ev.target.result}">`;ct.appendChild(d);};r.readAsDataURL(f);}
-}
-function previewAlbumFiles(e){
-  pendingAlbumFiles=[];const names=[];for(const f of e.target.files)names.push(f.name);pendingAlbumFiles=Array.from(e.target.files);
-  document.getElementById('albumFileNames').textContent=names.length?'📎 '+names.join(', '):'暂未选择文件';
-}
+function previewAlbumImages(e){pendingAlbumImages=[];const ct=document.getElementById('albumImgPreview');ct.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pendingAlbumImages.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip-item';d.innerHTML=`<img src="${ev.target.result}">`;ct.appendChild(d);};r.readAsDataURL(f);}}
+function previewAlbumFiles(e){pendingAlbumFiles=[];const names=[];for(const f of e.target.files)names.push(f.name);pendingAlbumFiles=Array.from(e.target.files);document.getElementById('albumFileNames').textContent=names.length?'📎 '+names.join(', '):'暂未选择文件';}
 async function publishAlbum(){
   const title=document.getElementById('albumTitle').value.trim(),tag=document.getElementById('albumTag').value.trim(),story=document.getElementById('albumStory').value.trim();
   if(!title){showToast('专辑名称不能为空～');return;}
@@ -677,8 +677,7 @@ async function publishAlbum(){
   try{
     const coverUrls=[];for(const p of pendingAlbumImages){try{const u=await uploadFile(p.name,p.base64);coverUrls.push(u);}catch(e){showToast('⚠️ 图片上传失败');}}
     const fileUrls=[];for(const f of pendingAlbumFiles){try{const b=await readFileAsBase64(f);const fn=Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await uploadFile(fn,b);fileUrls.push({name:f.name,url:u});}catch(e){showToast('⚠️ 文件上传失败');}}
-    const ex=await getFile(WORKS_PATH);const ws=ex?ex.content:[];
-    const album={title,tag,story,cover:coverUrls.length?coverUrls[0]:null,images:coverUrls,downloads:fileUrls};
+    const ex=await getFile(WORKS_PATH);const ws=ex?ex.content:[];const album={title,tag,story,cover:coverUrls.length?coverUrls[0]:null,images:coverUrls,downloads:fileUrls};
     ws.push(album);await putFile(WORKS_PATH,ws,ex?ex.sha:null);
     status.className='admin-status success';status.textContent='✅ 专辑发布成功！';
     document.getElementById('albumTitle').value='';document.getElementById('albumTag').value='';document.getElementById('albumStory').value='';document.getElementById('albumImages').value='';document.getElementById('albumFiles').value='';document.getElementById('albumImgPreview').innerHTML='';document.getElementById('albumFileNames').textContent='暂未选择文件';pendingAlbumImages=[];pendingAlbumFiles=[];
@@ -694,13 +693,21 @@ async function deleteAlbum(index){
 // ===== ADMIN =====
 function openAdmin(){
   document.getElementById('adminOverlay').classList.add('show');
-  const t=localStorage.getItem('gh_token');if(t){document.getElementById('ghToken').value=t;document.getElementById('setupBanner').style.display='none';refreshAdmin();}
+  const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;
+  const pt=getPublicToken();if(pt)document.getElementById('publicToken').value=pt;
+  if(t||pt)document.getElementById('setupBanner').style.display='none';
+  refreshAdmin();
 }
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('show');}
 function saveToken(){
   const t=document.getElementById('ghToken').value.trim();
   if(!t){showToast('请粘贴 GitHub Token');return;}localStorage.setItem('gh_token',t);
-  document.getElementById('setupBanner').style.display='none';showToast('✅ Token 已保存！');refreshAdmin();
+  document.getElementById('setupBanner').style.display='none';showToast('✅ 管理员 Token 已保存！');refreshAdmin();
+}
+function savePublicToken(){
+  const t=document.getElementById('publicToken').value.trim();
+  if(!t){showToast('请粘贴访客留言 Token');return;}localStorage.setItem('gh_public_token',t);
+  document.getElementById('setupBanner').style.display='none';showToast('✅ 访客留言 Token 已保存！现在所有人都能留言了！');refreshAdmin();
 }
 async function refreshAdmin(){await Promise.all([loadAdminMessages(),loadAdminPosts(),loadAdminAlbums()]);}
 async function loadAdminMessages(){
