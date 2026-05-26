@@ -169,30 +169,48 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 /* Admin */
 .admin-o{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:2000;backdrop-filter:blur(8px);}
 .admin-o.show{display:flex;align-items:center;justify-content:center;}
-.admin-p{background:white;border-radius:20px;padding:24px;max-width:600px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15);}
-.admin-p h3{font-size:1rem;margin-bottom:12px;}
-.admin-p .ac{float:right;font-size:1.1rem;cursor:pointer;color:var(--text3);background:none;border:none;}
-.admin-p label{font-size:.75rem;font-weight:600;display:block;margin-top:10px;margin-bottom:2px;}
-.admin-p input,.admin-p textarea{width:100%;padding:8px 12px;border:1px solid var(--card-border);border-radius:10px;font-family:inherit;font-size:.8rem;background:#FAFAFA;outline:none;}
-.admin-p input:focus,.admin-p textarea:focus{border-color:var(--blue);}
+.admin-p{background:white;border-radius:20px;padding:28px;max-width:600px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+.admin-p h3{font-size:1.05rem;margin-bottom:14px;font-weight:700;letter-spacing:-0.02em;}
+.admin-p .ac{float:right;font-size:1.1rem;cursor:pointer;color:var(--text3);background:none;border:none;padding:2px 6px;border-radius:6px;transition:background .2s;}
+.admin-p .ac:hover{background:rgba(0,0,0,0.04);}
+.admin-p label{font-size:.72rem;font-weight:600;display:block;margin-top:12px;margin-bottom:3px;color:var(--text2);letter-spacing:-0.01em;}
+.admin-p input,.admin-p textarea{width:100%;padding:10px 14px;border:1px solid var(--card-border);border-radius:12px;font-family:'Inter','Noto Sans SC',sans-serif;font-size:.8rem;background:#FAFAFA;outline:none;transition:all .2s;color:var(--text);}
+.admin-p input:focus,.admin-p textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,0.08);background:white;}
 .admin-p textarea{min-height:60px;resize:vertical;}
-.admin-p .ab{padding:8px 20px;border-radius:20px;border:none;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:8px;font-family:inherit;color:white;}
-.admin-p .ab:hover{opacity:.85;transform:translateY(-1px);}
+.admin-p .ab{padding:9px 22px;border-radius:30px;border:none;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);margin-top:10px;font-family:'Inter','Noto Sans SC',sans-serif;color:white;display:inline-flex;align-items:center;gap:4px;}
+.admin-p .ab:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
 .admin-p .ab.blue{background:linear-gradient(135deg,var(--blue),#5AC8FA);}
 .admin-p .ab.green{background:linear-gradient(135deg,var(--green),#30D158);}
 .admin-p .ab.red{background:#FF3B30;}
-.admin-p .ab.sm{padding:3px 10px;font-size:.68rem;}
-.admin-p .ast{font-size:.75rem;padding:8px;border-radius:8px;display:none;margin-top:8px;}
+.admin-p .ab.sm{padding:4px 12px;font-size:.68rem;}
+.admin-p .ab:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
+.admin-p .ast{font-size:.75rem;padding:8px 14px;border-radius:10px;display:none;margin-top:10px;font-weight:500;}
 .admin-p .ast.ok{display:block;background:#E8F5E9;color:#2E7D32;}
 .admin-p .ast.er{display:block;background:#FFEBEE;color:#C62828;}
-.admin-p .atabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;}
-.admin-p .atab{padding:4px 12px;border-radius:16px;border:1px solid var(--card-border);background:transparent;font-size:.75rem;cursor:pointer;transition:all .2s;color:var(--text2);font-family:inherit;}
+.admin-p .atabs{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap;}
+.admin-p .atab{padding:5px 14px;border-radius:20px;border:1px solid var(--card-border);background:transparent;font-size:.74rem;cursor:pointer;transition:all .2s;color:var(--text2);font-family:'Inter','Noto Sans SC',sans-serif;font-weight:500;}
+.admin-p .atab:hover{background:rgba(0,0,0,0.03);}
 .admin-p .atab.active{background:linear-gradient(135deg,var(--pink2),var(--grad2));color:white;border-color:transparent;}
-.admin-p .atc{display:none;}
+.admin-p .atc{display:none;animation:fadeIn .25s ease;}
 .admin-p .atc.active{display:block;}
-.iprev{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0;}
-.iprev .ip{width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--card-border);}
+.admin-p .atc-inner{padding-top:4px;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.iprev{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0;}
+.iprev .ip{width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--card-border);}
 .iprev .ip img{width:100%;height:100%;object-fit:cover;}
+
+/* Admin Lock Gate */
+.admin-lock{text-align:center;padding:28px 16px;}
+.admin-lock .lock-icon{font-size:2.8rem;margin-bottom:10px;}
+.admin-lock h3{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.admin-lock p{font-size:.78rem;color:var(--text2);margin-bottom:16px;line-height:1.5;}
+.admin-lock input{width:100%;max-width:380px;padding:12px 16px;border:1px solid var(--card-border);border-radius:14px;font-family:'Inter','Noto Sans SC',sans-serif;font-size:.82rem;background:#FAFAFA;outline:none;transition:all .2s;text-align:center;margin:0 auto 10px;display:block;}
+.admin-lock input:focus{border-color:var(--pink2);box-shadow:0 0 0 3px rgba(255,107,122,0.08);background:white;}
+.admin-lock .lock-status{font-size:.72rem;min-height:20px;margin-top:6px;}
+.admin-lock .lock-status.ok{color:var(--green);}
+.admin-lock .lock-status.er{color:#FF3B30;}
+.admin-unlocked{display:none;}
+.admin-unlocked.show{display:block;}
 
 /* Toast */
 .tst{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1D1D1F;color:white;padding:10px 22px;border-radius:30px;font-size:.8rem;opacity:0;transition:all .4s;z-index:3000;pointer-events:none;}
@@ -391,80 +409,109 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 <div class="admin-o" id="adminOverlay">
   <div class="admin-p">
     <button class="ac" onclick="closeAdmin()">✕</button>
-    <h3>⚙️ 管理面板</h3>
-    <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:12px;font-size:.75rem;margin-bottom:10px;" id="setupTip">
-      🔑 <strong>First time?</strong> Set your GitHub Token below.<br>
-      Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Tokens</a> → Generate → Fine-grained → <code>akitolau-admin</code><br>
-      Repository: <strong>Only select</strong> → <code>akitolau/akitolau.github.io</code><br>
-      Permissions: Contents → <strong>Read and write</strong>
-    </div>
-    <label>🔑 管理员Token</label>
-    <input type="password" id="admToken" placeholder="GitHub Token">
-    <button class="ab blue" onclick="saveAdmToken()" style="margin-top:4px;">💾 保存</button>
-    <label>🔑 访客Token <span style="font-weight:400;color:var(--text3);">(让访客也能留言)</span></label>
-    <input type="password" id="pubToken" placeholder="Guestbook token">
-    <button class="ab green" onclick="savePubToken()" style="margin-top:4px;">💾 保存</button>
 
-    <div class="atabs" style="margin-top:12px;">
-      <button class="atab active" onclick="switchATab('music',this)">🎵 音乐</button>
-      <button class="atab" onclick="switchATab('diary',this)">📖 日记</button>
-      <button class="atab" onclick="switchATab('designs',this)">🎨 设计稿</button>
-      <button class="atab" onclick="switchATab('about',this)">🧸 关于</button>
-      <button class="atab" onclick="switchATab('photos',this)">📸 照片</button>
-      <button class="atab" onclick="switchATab('msgs',this)">💬 留言</button>
+    <!-- 🔒 Lock Gate -->
+    <div class="admin-lock" id="adminLock">
+      <div class="lock-icon">🔒</div>
+      <h3 data-i18n="admin.lockTitle">管理员验证</h3>
+      <p data-i18n="admin.lockDesc">请输入管理员Token以解锁管理面板</p>
+      <input type="password" id="lockToken" placeholder="粘贴你的 GitHub Token..." autocomplete="off">
+      <button class="ab blue" id="unlockBtn" onclick="unlockAdmin()">🔓 解锁</button>
+      <div class="lock-status" id="lockStatus"></div>
     </div>
 
-    <!-- Music admin -->
-    <div class="atc active" id="at-music">
-      <label>专辑标题</label><input id="aTitle" placeholder="e.g. Seasons of Music">
-      <label>标签</label><input id="aTag" placeholder="e.g. Released · Piano">
-      <label>故事</label><textarea id="aStory" style="min-height:50px;"></textarea>
-      <label>图片 (封面自动取第一张)</label><input type="file" id="aImgs" accept="image/*" multiple onchange="prevAImgs(event)">
-      <div class="iprev" id="aImgPrev"></div>
-      <label>下载文件 (PDF/DOCX/图片)</label><input type="file" id="aFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAFiles(event)">
-      <div style="font-size:.7rem;color:var(--text3);margin:2px 0;" id="aFileNames">未选择文件</div>
-      <button class="ab blue" onclick="pubAlbum()">📤 发布专辑</button>
-      <div id="aList" style="margin-top:10px;"></div>
-    </div>
+    <!-- 🔓 Unlocked Content -->
+    <div class="admin-unlocked" id="adminUnlocked">
+      <h3>⚙️ 管理面板</h3>
+      <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:12px;font-size:.75rem;margin-bottom:10px;" id="setupTip">
+        🔑 <strong>First time?</strong> Set your GitHub Token below.<br>
+        Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Tokens</a> → Generate → Fine-grained → <code>akitolau-admin</code><br>
+        Repository: <strong>Only select</strong> → <code>akitolau/akitolau.github.io</code><br>
+        Permissions: Contents → <strong>Read and write</strong>
+      </div>
+      <label>🔑 管理员Token</label>
+      <input type="password" id="admToken" placeholder="GitHub Token">
+      <button class="ab blue" onclick="saveAdmToken()" style="margin-top:4px;">💾 保存</button>
+      <label>🔑 访客Token <span style="font-weight:400;color:var(--text3);">(让访客也能留言)</span></label>
+      <input type="password" id="pubToken" placeholder="Guestbook token">
+      <button class="ab green" onclick="savePubToken()" style="margin-top:4px;">💾 保存</button>
 
-    <!-- Diary admin -->
-    <div class="atc" id="at-diary">
-      <label>标题</label><input id="dTitle" placeholder="日记标题">
-      <label>图片</label><input type="file" id="dImgs" accept="image/*" multiple onchange="prevDImgs(event)">
-      <div class="iprev" id="dImgPrev"></div>
-      <label>内容</label><textarea id="dContent" style="min-height:80px;"></textarea>
-      <button class="ab blue" onclick="pubDiary()">📤 发布</button>
-      <div id="dList" style="margin-top:10px;"></div>
-    </div>
+      <div class="atabs" style="margin-top:12px;">
+        <button class="atab active" onclick="switchATab('music',this)">🎵 音乐</button>
+        <button class="atab" onclick="switchATab('diary',this)">📖 日记</button>
+        <button class="atab" onclick="switchATab('designs',this)">🎨 设计稿</button>
+        <button class="atab" onclick="switchATab('about',this)">🧸 关于</button>
+        <button class="atab" onclick="switchATab('photos',this)">📸 照片</button>
+        <button class="atab" onclick="switchATab('msgs',this)">💬 留言</button>
+      </div>
 
-    <!-- Designs admin -->
-    <div class="atc" id="at-designs">
-      <label>标题</label><input id="dsTitle" placeholder="设计名称">
-      <label>上传设计稿 (图片)</label><input type="file" id="dsImgs" accept="image/*" multiple>
-      <button class="ab blue" onclick="pubDesign()">📤 上传</button>
-      <div id="dsList" style="margin-top:10px;"></div>
-    </div>
+      <!-- Music admin -->
+      <div class="atc active" id="at-music">
+        <div class="atc-inner">
+          <label>专辑标题</label><input id="aTitle" placeholder="e.g. Seasons of Music">
+          <label>标签</label><input id="aTag" placeholder="e.g. Released · Piano">
+          <label>故事</label><textarea id="aStory" style="min-height:50px;"></textarea>
+          <label>图片 (封面自动取第一张)</label><input type="file" id="aImgs" accept="image/*" multiple onchange="prevAImgs(event)">
+          <div class="iprev" id="aImgPrev"></div>
+          <label>下载文件 (PDF/DOCX/图片)</label><input type="file" id="aFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAFiles(event)">
+          <div style="font-size:.7rem;color:var(--text3);margin:2px 0;" id="aFileNames">未选择文件</div>
+          <button class="ab blue" onclick="pubAlbum()">📤 发布专辑</button>
+          <div id="aList" style="margin-top:10px;"></div>
+        </div>
+      </div>
 
-    <!-- About admin -->
-    <div class="atc" id="at-about">
-      <label>关于我 (支持多行文字)</label>
-      <textarea id="abText" style="min-height:100px;" placeholder="写写关于你自己的介绍..."></textarea>
-      <button class="ab blue" onclick="saveAbout()">💾 保存</button>
-    </div>
+      <!-- Diary admin -->
+      <div class="atc" id="at-diary">
+        <div class="atc-inner">
+          <label>标题</label><input id="dTitle" placeholder="日记标题">
+          <label>图片</label><input type="file" id="dImgs" accept="image/*" multiple onchange="prevDImgs(event)">
+          <div class="iprev" id="dImgPrev"></div>
+          <label>内容</label><textarea id="dContent" style="min-height:80px;"></textarea>
+          <button class="ab blue" onclick="pubDiary()">📤 发布</button>
+          <div id="dList" style="margin-top:10px;"></div>
+        </div>
+      </div>
 
-    <!-- Photos admin -->
-    <div class="atc" id="at-photos">
-      <label>上传照片</label><input type="file" id="phImgs" accept="image/*" multiple>
-      <button class="ab blue" onclick="pubPhotos()">📤 上传</button>
-      <div id="phList" style="margin-top:10px;"></div>
-    </div>
+      <!-- Designs admin -->
+      <div class="atc" id="at-designs">
+        <div class="atc-inner">
+          <label>标题</label><input id="dsTitle" placeholder="设计名称">
+          <label>上传设计稿 (图片)</label><input type="file" id="dsImgs" accept="image/*" multiple>
+          <button class="ab blue" onclick="pubDesign()">📤 上传</button>
+          <div id="dsList" style="margin-top:10px;"></div>
+        </div>
+      </div>
 
-    <!-- Messages admin -->
-    <div class="atc" id="at-msgs">
-      <div id="adminMsgs"></div>
-    </div>
+      <!-- About admin -->
+      <div class="atc" id="at-about">
+        <div class="atc-inner">
+          <label>关于我 (支持多行文字)</label>
+          <textarea id="abText" style="min-height:100px;" placeholder="写写关于你自己的介绍..."></textarea>
+          <button class="ab blue" onclick="saveAbout()">💾 保存</button>
+        </div>
+      </div>
 
-    <div class="ast" id="admStatus"></div>
+      <!-- Photos admin -->
+      <div class="atc" id="at-photos">
+        <div class="atc-inner">
+          <label>上传照片</label><input type="file" id="phImgs" accept="image/*" multiple>
+          <label>照片介绍 <span style="font-weight:400;color:var(--text3);">(选填，100字以内)</span></label>
+          <textarea id="phDesc" maxlength="100" placeholder="给这张照片写一段介绍..." style="min-height:50px;"></textarea>
+          <div style="font-size:.65rem;color:var(--text3);text-align:right;" id="phDescCount">0/100</div>
+          <button class="ab blue" onclick="pubPhotos()">📤 上传</button>
+          <div id="phList" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <!-- Messages admin -->
+      <div class="atc" id="at-msgs">
+        <div class="atc-inner">
+          <div id="adminMsgs"></div>
+        </div>
+      </div>
+
+      <div class="ast" id="admStatus"></div>
+    </div>
   </div>
 </div>
 
@@ -642,9 +689,51 @@ async function disPosts(){
 }
 
 // ===== ADMIN =====
+let _adminUnlocked=false;
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('show');}
 function saveAdmToken(){const t=document.getElementById('admToken').value.trim();if(!t){toast('Enter token');return;}localStorage.setItem('gh_token',t);document.getElementById('setupTip').style.display='none';toast('✅ Token saved');}
 function savePubToken(){const t=document.getElementById('pubToken').value.trim();if(!t){toast('Enter token');return;}localStorage.setItem('gh_pub',t);document.getElementById('setupTip').style.display='none';toast('✅ Guest token saved');}
+
+async function unlockAdmin(){
+  const t=document.getElementById('lockToken').value.trim();
+  const btn=document.getElementById('unlockBtn');
+  const st=document.getElementById('lockStatus');
+  if(!t){st.textContent='⚠️ 请输入Token';st.className='lock-status er';return;}
+  btn.disabled=true;btn.textContent='⏳ 验证中...';st.textContent='';st.className='lock-status';
+  try{
+    const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/index.html?ref=${B}`,{headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json'}});
+    if(!r.ok)throw new Error('验证失败');
+    // Token is valid!
+    localStorage.setItem('gh_token',t);
+    st.textContent='✅ 验证成功！已解锁';st.className='lock-status ok';
+    document.getElementById('adminLock').style.display='none';
+    document.getElementById('adminUnlocked').classList.add('show');
+    document.getElementById('setupTip').style.display='none';
+    document.getElementById('admToken').value=t;
+    _adminUnlocked=true;
+    loadAdminAlbums();loadAdminPosts();loadAdminMsgs();
+    toast('🔓 已解锁管理面板');
+  }catch(e){
+    st.textContent='❌ Token验证失败，请检查是否正确';st.className='lock-status er';
+    btn.disabled=false;btn.textContent='🔓 解锁';
+  }
+  btn.disabled=false;btn.textContent='🔓 解锁';
+}
+
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('show');
+  const saved=localStorage.getItem('gh_token');
+  const st=document.getElementById('lockStatus');
+  if(saved){
+    // Try auto-unlock
+    document.getElementById('lockToken').value=saved;
+    unlockAdmin();
+  }else{
+    document.getElementById('adminLock').style.display='block';
+    document.getElementById('adminUnlocked').classList.remove('show');
+    st.textContent='';st.className='lock-status';
+  }
+}
 
 function switchATab(n,btn){
   document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
@@ -741,18 +830,20 @@ async function disDesigns(){
   catch(e){}}
 async function pubPhotos(){
   const f=document.getElementById('phImgs');if(!f.files.length){toast('Select photos');return;}
+  const desc=document.getElementById('phDesc').value.trim();
   try{
     const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
-    const ex=await getF(PHP);const ph=ex?ex.content:[];urls.forEach(u=>ph.push({url:u,date:new Date().toISOString().slice(0,10)}));
+    const ex=await getF(PHP);const ph=ex?ex.content:[];const d=desc||'';
+    urls.forEach(u=>ph.push({url:u,date:new Date().toISOString().slice(0,10),desc:d}));
     await putF(PHP,ph,ex?ex.sha:null);setSt(true,'✅ Done!');
-    document.getElementById('phImgs').value='';disPhotos();toast('📸 Uploaded!');
+    document.getElementById('phImgs').value='';document.getElementById('phDesc').value='';document.getElementById('phDescCount').textContent='0/100';disPhotos();toast('📸 Uploaded!');
   }catch(e){setSt(false,'❌ Failed');}
 }
 async function disPhotos(){
   try{const d=await getF(PHP);phData=d?d.content:[];const c=document.getElementById('photosGrid');
   if(!phData||!phData.length){c.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有照片':'No photos yet')+'</div>';return;}
   const allUrls=phData.map(p=>p.url);
-  c.innerHTML=phData.map((p,i)=>`<div style=\"border-radius:10px;overflow:hidden;border:1px solid var(--card-border);aspect-ratio:1;cursor:pointer;\" onclick=\"openLB(${JSON.stringify(allUrls).replace(/\"/g,'&quot;')},${i})\"><img src=\"${esc(p.url)}\" style=\"width:100%;height:100%;object-fit:cover;\"></div>`).join('');}
+  c.innerHTML=phData.map((p,i)=>`<div style="border-radius:10px;overflow:hidden;border:1px solid var(--card-border);cursor:pointer;background:rgba(255,255,255,0.4);backdrop-filter:blur(4px);" onclick="openLB(${JSON.stringify(allUrls).replace(/"/g,'&quot;')},${i})"><img src="${esc(p.url)}" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;">${p.desc?`<div style="padding:6px 8px;font-size:.68rem;color:var(--text2);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(p.desc)}</div>`:''}</div>`).join('');}
   catch(e){}}
 async function saveAbout(){
   const t=document.getElementById('abText').value.trim();if(!t){toast('Write something');return;}
@@ -767,7 +858,8 @@ async function disAbout(){
 
 // ===== INIT =====
 const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLang);
-document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();document.getElementById('adminOverlay').classList.add('show');const t=localStorage.getItem('gh_token');if(t)document.getElementById('admToken').value=t;const pt=gPT();if(pt)document.getElementById('pubToken').value=pt;if(t||pt)document.getElementById('setupTip').style.display='none';loadAdminAlbums();loadAdminPosts();loadAdminMsgs();});
+document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();openAdmin();});
+document.getElementById('phDesc')?.addEventListener('input',function(){document.getElementById('phDescCount').textContent=this.value.length+'/100';});
 disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
 const lm=JSON.parse(localStorage.getItem('local_msgs')||'[]');lm.forEach(m=>spFm(m.name,m.text,m.time));
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='gbName'||a.id==='gbText'))postMsg();}if(e.key==='Escape')closeAdmin();});
