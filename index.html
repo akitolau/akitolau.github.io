@@ -484,6 +484,7 @@ function escHtml(s){const d=document.createElement('div');d.textContent=s;return
 function _ts(){return '&_ts='+Date.now();}
 
 async function ghFetch(url,opts={}){
+  // Use any available token for reads (avoids rate limiting)
   const tokens = [localStorage.getItem('gh_token'), getPublicToken()].filter(Boolean);
   const t = tokens[0] || '';
   const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
@@ -491,15 +492,9 @@ async function ghFetch(url,opts={}){
   if(!r.ok){const e=await r.text();throw new Error('GitHub error '+r.status);}
   return r.json();
 }
-async function ghFetchPublic(url,opts={}){
-  const r=await fetch(url+_ts(),{...opts,headers:{'Accept':'application/vnd.github.v3+json',...opts.headers}});
-  if(!r.ok)throw new Error('Fetch error '+r.status);
-  return r.json();
-}
-async function getFile(path, usePublic){
+async function getFile(path){
   try{
-    const fn=usePublic?ghFetchPublic:ghFetch;
-    const d=await fn(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`);
+    const d=await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`);
     return{content:JSON.parse(b64Decode(d.content)),sha:d.sha};
   }catch(e){return null;}
 }
@@ -560,7 +555,7 @@ document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').
 
 // ===== MESSAGES =====
 async function loadMessages(){
-  try{const d=await getFile(DATA_PATH, true);return d?d.content:[];}
+  try{const d=await getFile(DATA_PATH);return d?d.content:[];}
   catch(e){return [];}
 }
 const colors=['#FCE4EC','#E8F5E9','#FFF3E0','#F3E5F5','#E3F2FD','#FFF8E1'],animals=['🐱','🐶','🐰','🦊','🐼','🐨','🦁','🐸','🦄','🐧'];
@@ -627,7 +622,7 @@ async function deleteMessage(index){
 }
 
 // ===== BLOG =====
-async function loadPosts(){try{const d=await getFile(POSTS_PATH, true);return d?d.content:[];}catch(e){return[];}}
+async function loadPosts(){try{const d=await getFile(POSTS_PATH);return d?d.content:[];}catch(e){return[];}}
 async function displayPosts(){
   const list=document.getElementById('blogList');const posts=await loadPosts();
   if(!posts||posts.length===0){list.innerHTML='<div class="blog-empty">📝 还没有日志，敬请期待～</div>';return;}
@@ -654,7 +649,7 @@ async function publishPost(){
 }
 
 // ===== WORKS =====
-async function loadWorks(){try{const d=await getFile(WORKS_PATH, true);return d?d.content:[];}catch(e){return[];}}
+async function loadWorks(){try{const d=await getFile(WORKS_PATH);return d?d.content:[];}catch(e){return[];}}
 async function displayWorks(){
   const list=document.getElementById('albumList');const works=await loadWorks();
   if(!works||works.length===0){list.innerHTML='<div class="album-empty">📀 还没有作品，敬请期待～</div>';return;}
