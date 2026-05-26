@@ -250,7 +250,13 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .resume-map-wrap{margin-top:18px;border-radius:14px;overflow:hidden;border:1px solid var(--card-border);height:220px;}
 .resume-map-wrap .leaflet-container{height:100%;width:100%;border-radius:14px;}
 
-/* Global Footer */
+/* Photos */
+.photo-card{display:flex;gap:14px;border-radius:12px;overflow:hidden;border:1px solid var(--card-border);cursor:pointer;background:rgba(255,255,255,0.4);backdrop-filter:blur(4px);transition:transform .2s,box-shadow .2s;margin-bottom:10px;padding:10px;}
+.photo-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.06);}
+.photo-card .pc-img{width:120px;height:90px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+.photo-card .pc-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
+.photo-card .pc-desc{font-size:.8rem;color:var(--text2);line-height:1.6;word-break:break-word;}
+.photo-card .pc-date{font-size:.65rem;color:var(--text3);margin-top:4px;}
 .site-footer{margin-top:32px;padding:24px 0 16px;text-align:center;border-top:1px solid var(--card-border);}
 .site-footer .sf-email{font-size:.78rem;color:var(--text2);margin-bottom:6px;}
 .site-footer .sf-email a{color:var(--pink2);text-decoration:none;font-weight:500;}
@@ -431,8 +437,8 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
   <div class="section-wrap">
     <div class="section-title" data-i18n="photos.title">📸 摄影作品选</div>
     <div class="section-sub" data-i18n="photos.sub">镜头下的瞬间</div>
-    <div id="photosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;" data-i18n="photos.empty">还没有照片，从管理面板上传。</div>
+    <div id="photosGrid">
+      <div style="text-align:center;padding:40px;color:var(--text3);font-size:.85rem;" data-i18n="photos.empty">还没有照片，从管理面板上传。</div>
     </div>
   </div>
 </div>
@@ -937,9 +943,9 @@ async function pubPhotos(){
 }
 async function disPhotos(){
   try{const d=await getF(PHP);phData=d?d.content:[];const c=document.getElementById('photosGrid');
-  if(!phData||!phData.length){c.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有照片':'No photos yet')+'</div>';return;}
+  if(!phData||!phData.length){c.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有照片':'No photos yet')+'</div>';return;}
   const allUrls=phData.map(p=>p.url);
-  c.innerHTML=phData.map((p,i)=>`<div style="border-radius:10px;overflow:hidden;border:1px solid var(--card-border);cursor:pointer;background:rgba(255,255,255,0.4);backdrop-filter:blur(4px);" onclick="openLB(${JSON.stringify(allUrls).replace(/"/g,'&quot;')},${i})"><img src="${esc(p.url)}" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;">${p.desc?`<div style="padding:6px 8px;font-size:.68rem;color:var(--text2);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(p.desc)}</div>`:''}</div>`).join('');}
+  c.innerHTML=phData.map((p,i)=>`<div class="photo-card" onclick="openLB(${JSON.stringify(allUrls).replace(/"/g,'&quot;')},${i})"><img class="pc-img" src="${esc(p.url)}"><div class="pc-body">${p.desc?`<div class="pc-desc">${esc(p.desc)}</div>`:''}<div class="pc-date">📅 ${esc(p.date)}</div></div></div>`).join('');}
   catch(e){}}
 async function saveAbout(){
   const t=document.getElementById('abText').value.trim();if(!t){toast('Write something');return;}
