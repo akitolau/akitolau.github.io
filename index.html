@@ -257,6 +257,26 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .photo-card .pc-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
 .photo-card .pc-desc{font-size:.8rem;color:var(--text2);line-height:1.6;word-break:break-word;}
 .photo-card .pc-date{font-size:.65rem;color:var(--text3);margin-top:4px;}
+.photo-card .pc-actions{display:flex;gap:8px;align-items:center;margin-top:6px;}
+.photo-card .pc-like{cursor:pointer;font-size:.75rem;padding:2px 10px;border-radius:14px;border:1px solid var(--card-border);background:transparent;color:var(--text2);transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:3px;}
+.photo-card .pc-like:hover{background:#FFEBEE;border-color:var(--pink2);color:var(--pink2);}
+.photo-card .pc-like.liked{background:var(--pink2);border-color:var(--pink2);color:white;}
+.photo-card .pc-like.liked:hover{background:var(--pink2);opacity:.9;}
+.photo-card .pc-comment-btn{cursor:pointer;font-size:.75rem;padding:2px 10px;border-radius:14px;border:1px solid var(--card-border);background:transparent;color:var(--text2);transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:3px;}
+.photo-card .pc-comment-btn:hover{background:#E3F2FD;border-color:var(--blue);color:var(--blue);}
+.photo-card .pc-cmts{margin-top:6px;border-top:1px solid var(--card-border);padding-top:6px;display:none;}
+.photo-card .pc-cmts.open{display:block;}
+.photo-card .pc-cmt{font-size:.72rem;padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.04);display:flex;align-items:flex-start;gap:6px;}
+.photo-card .pc-cmt:last-child{border-bottom:none;}
+.photo-card .pc-cmt .cmt-name{font-weight:600;color:var(--text);font-size:.7rem;}
+.photo-card .pc-cmt .cmt-text{color:var(--text2);flex:1;word-break:break-word;}
+.photo-card .pc-cmt .cmt-del{cursor:pointer;color:var(--text3);font-size:.65rem;background:none;border:none;padding:0 2px;flex-shrink:0;}
+.photo-card .pc-cmt .cmt-del:hover{color:#FF3B30;}
+.photo-card .pc-cmt-form{display:none;gap:6px;margin-top:6px;align-items:flex-start;}
+.photo-card .pc-cmt-form.open{display:flex;flex-wrap:wrap;}
+.photo-card .pc-cmt-form input{flex:1;min-width:100px;padding:5px 8px;border:1px solid var(--card-border);border-radius:8px;font-size:.72rem;font-family:inherit;outline:none;}
+.photo-card .pc-cmt-form input:focus{border-color:var(--blue);}
+.photo-card .pc-cmt-form button{padding:5px 12px;border-radius:14px;border:none;background:var(--blue);color:white;font-size:.7rem;font-weight:500;cursor:pointer;font-family:inherit;}
 .site-footer{margin-top:32px;padding:24px 0 16px;text-align:center;border-top:1px solid var(--card-border);}
 .site-footer .sf-email{font-size:.78rem;color:var(--text2);margin-bottom:6px;}
 .site-footer .sf-email a{color:var(--pink2);text-decoration:none;font-weight:500;}
@@ -936,7 +956,7 @@ async function pubPhotos(){
   try{
     const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
     const ex=await getF(PHP);const ph=ex?ex.content:[];const d=desc||'';
-    urls.forEach(u=>ph.push({url:u,date:new Date().toISOString().slice(0,10),desc:d}));
+    urls.forEach(u=>ph.push({url:u,date:new Date().toISOString().slice(0,10),desc:d,likes:0,comments:[]}));
     await putF(PHP,ph,ex?ex.sha:null);setSt(true,'✅ Done!');
     document.getElementById('phImgs').value='';document.getElementById('phDesc').value='';document.getElementById('phDescCount').textContent='0/100';disPhotos();toast('📸 Uploaded!');
   }catch(e){setSt(false,'❌ Failed');}
@@ -945,8 +965,76 @@ async function disPhotos(){
   try{const d=await getF(PHP);phData=d?d.content:[];const c=document.getElementById('photosGrid');
   if(!phData||!phData.length){c.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有照片':'No photos yet')+'</div>';return;}
   const allUrls=phData.map(p=>p.url);
-  c.innerHTML=phData.map((p,i)=>`<div class="photo-card" onclick="openLB(${JSON.stringify(allUrls).replace(/"/g,'&quot;')},${i})"><img class="pc-img" src="${esc(p.url)}"><div class="pc-body">${p.desc?`<div class="pc-desc">${esc(p.desc)}</div>`:''}<div class="pc-date">📅 ${esc(p.date)}</div></div></div>`).join('');}
-  catch(e){}}
+  c.innerHTML=phData.map((p,i)=>{
+    const pLiked=localStorage.getItem('pl_'+i);
+    const cmts=(p.comments||[]).map((cm,ci)=>
+      `<div class="pc-cmt"><span class="cmt-name">${esc(cm.name)}</span><span class="cmt-text">${esc(cm.text)}</span><button class="cmt-del" onclick="event.stopPropagation();delPhotoComment(${i},${ci})">✕</button></div>`
+    ).join('');
+    return `<div class="photo-card">
+      <img class="pc-img" src="${esc(p.url)}" onclick="openLB(${JSON.stringify(allUrls).replace(/"/g,'&quot;')},${i})">
+      <div class="pc-body">
+        ${p.desc?`<div class="pc-desc">${esc(p.desc)}</div>`:''}
+        <div class="pc-date">📅 ${esc(p.date)}</div>
+        <div class="pc-actions">
+          <button class="pc-like${pLiked?' liked':''}" onclick="event.stopPropagation();likePhoto(${i})">${pLiked?'❤️':'🤍'} <span id="plc_${i}">${p.likes||0}</span></button>
+          <button class="pc-comment-btn" onclick="event.stopPropagation();document.getElementById('pcf_${i}').classList.toggle('open');document.getElementById('pcf_${i}').querySelector('input').focus();">💬 <span id="pcc_${i}">${(p.comments||[]).length}</span></button>
+        </div>
+        <div class="pc-cmt-form" id="pcf_${i}">
+          <input placeholder="你的名字" maxlength="20" id="pcn_${i}">
+          <input placeholder="说点什么…" maxlength="100" id="pct_${i}">
+          <button onclick="event.stopPropagation();addPhotoComment(${i})">发送</button>
+        </div>
+        <div class="pc-cmts${cmts?' open':''}" id="pccmts_${i}">${cmts}</div>
+      </div>
+    </div>`;
+  }).join('');}
+  catch(e){console.log(e);}}
+
+async function likePhoto(i){
+  try{
+    const d=await getF(PHP);const ph=d?d.content:[];
+    if(!ph[i])return;
+    if(localStorage.getItem('pl_'+i)){toast('已经赞过啦 ❤️');return;}
+    ph[i].likes=(ph[i].likes||0)+1;
+    await putF(PHP,ph,d?d.sha:null);
+    localStorage.setItem('pl_'+i,'1');
+    const el=document.getElementById('plc_'+i);
+    if(el)el.textContent=ph[i].likes;
+    const btn=el?.parentElement;
+    if(btn){btn.classList.add('liked');btn.innerHTML='❤️ <span id="plc_'+i+'">'+ph[i].likes+'</span>';}
+    toast('❤️ 已点赞！');
+  }catch(e){toast('❌ 点赞失败');}
+}
+
+async function addPhotoComment(i){
+  const name=document.getElementById('pcn_'+i).value.trim();
+  const text=document.getElementById('pct_'+i).value.trim();
+  if(!name||!text){toast('请填写名字和留言');return;}
+  if(text.length>100){toast('留言不能超过100字');return;}
+  try{
+    const d=await getF(PHP);const ph=d?d.content:[];
+    if(!ph[i])return;
+    const ts=new Date().toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+    if(!ph[i].comments)ph[i].comments=[];
+    ph[i].comments.push({name,text,time,id:Date.now()+Math.random()});
+    await putF(PHP,ph,d?d.sha:null);
+    document.getElementById('pcn_'+i).value='';document.getElementById('pct_'+i).value='';
+    document.getElementById('pcf_'+i).classList.remove('open');
+    disPhotos();
+    toast('💬 留言已发布！');
+  }catch(e){toast('❌ 留言失败');}
+}
+
+async function delPhotoComment(pi,ci){
+  if(!confirm('删除这条留言？'))return;
+  try{
+    const d=await getF(PHP);const ph=d?d.content:[];
+    if(!ph[pi]||!ph[pi].comments)return;
+    ph[pi].comments.splice(ci,1);
+    await putF(PHP,ph,d?d.sha:null);
+    disPhotos();toast('🗑️ 已删除');
+  }catch(e){toast('❌ 删除失败');}
+}
 async function saveAbout(){
   const t=document.getElementById('abText').value.trim();if(!t){toast('Write something');return;}
   const photoFile=document.getElementById('abPhoto').files[0];
