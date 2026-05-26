@@ -1,743 +1,776 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>🐱 Akito Lau · 小世界</title>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<title>Akito Lau</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap');
-  
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  :root {
-    --pink: #F7A8B8; --pink-light: #FCE4EC; --cream: #FFF8F0;
-    --brown: #8D6E63; --text: #5D4037; --text-light: #8D6E63;
-    --shadow: rgba(139, 110, 99, 0.1);
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
 
-  html { scroll-behavior: smooth; }
+:root{
+  --bg:#FAF7F5; --card:rgba(255,255,255,0.78); --card-border:rgba(0,0,0,0.06);
+  --text:#1D1D1F; --text2:#6E6E73; --text3:#86868B;
+  --pink:#F7A8B8; --pink2:#FF6B7A; --blue:#007AFF; --green:#34C759;
+  --radius:16px; --nav-h:52px;
+  --grad1:#F7A8B8; --grad2:#C084FC; --grad3:#818CF8; --grad4:#60A5FA;
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter','Noto Sans SC',sans-serif;
+  background: linear-gradient(135deg, #FFF0F5 0%, #FDE8F3 20%, #F3E8FF 40%, #E8EFFF 60%, #FDE8F3 80%, #FFF0F5 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color:var(--text);overflow-x:hidden;line-height:1.6;
+  min-height:100vh;
+}
+@keyframes gradientShift {
+  0%{background-position:0% 50%}
+  25%{background-position:100% 0%}
+  50%{background-position:100% 100%}
+  75%{background-position:0% 100%}
+  100%{background-position:0% 50%}
+}
 
-  body {
-    font-family: 'Noto Sans SC', sans-serif;
-    color: var(--text); line-height: 1.8; overflow-x: hidden;
-    background: linear-gradient(-45deg, #FFF8F0, #FCE4EC, #F3E5F5, #E8F5E9, #FFF3E0, #FFF8F0);
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
-    min-height: 100vh;
-  }
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    25% { background-position: 100% 0%; }
-    50% { background-position: 100% 100%; }
-    75% { background-position: 0% 100%; }
-    100% { background-position: 0% 50%; }
-  }
+/* Nav */
+nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,245,0.78);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);z-index:1000;border-bottom:1px solid var(--card-border);}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 20px;}
+.nav-left{display:flex;align-items:center;gap:12px;}
+.hamburger{background:none;border:none;font-size:1.4rem;cursor:pointer;padding:4px;color:var(--text);display:flex;align-items:center;transition:opacity .2s;}
+.hamburger:hover{opacity:.6;}
+.nav-logo{font-weight:700;font-size:1rem;color:var(--text);text-decoration:none;letter-spacing:-0.3px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.lang-btn{background:none;border:1px solid var(--card-border);border-radius:8px;padding:4px 10px;font-size:.75rem;font-weight:600;cursor:pointer;color:var(--text2);transition:all .2s;font-family:inherit;}
+.lang-btn:hover{background:var(--card);color:var(--text);}
+.lang-btn.active{background:var(--text);color:white;border-color:var(--text);}
 
-  nav {
-    position: fixed; top: 0; width: 100%;
-    background: rgba(255,248,240,0.88); backdrop-filter: blur(16px);
-    z-index: 1000; border-bottom: 2px solid var(--pink-light); padding: 0 20px;
-  }
-  .nav-inner {
-    max-width: 1000px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between; height: 56px;
-  }
-  .nav-logo { font-family:'Zen Maru Gothic',sans-serif; font-size:1.2rem; font-weight:900; color:var(--pink); text-decoration:none; cursor:pointer; }
-  .nav-links { display:flex; gap:4px; flex-wrap:wrap; }
-  .nav-links a { text-decoration:none; color:var(--text-light); font-size:0.78rem; font-weight:500; padding:5px 10px; border-radius:20px; transition:all 0.3s; }
-  .nav-links a:hover { background:var(--pink-light); color:var(--pink); }
+/* Sidebar */
+.sidebar-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.2);z-index:1500;opacity:0;pointer-events:none;transition:opacity .3s;}
+.sidebar-overlay.open{opacity:1;pointer-events:auto;}
+.sidebar{position:fixed;top:0;left:-320px;width:300px;height:100%;background:rgba(255,255,255,0.88);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);z-index:1501;transition:left .4s cubic-bezier(.22,1,.36,1);padding:80px 24px 24px;overflow-y:auto;border-right:1px solid var(--card-border);}
+.sidebar.open{left:0;}
+.sidebar-item{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:12px;font-size:.92rem;font-weight:500;color:var(--text2);cursor:pointer;transition:all .2s;margin-bottom:2px;text-decoration:none;}
+.sidebar-item:hover{background:rgba(0,0,0,0.04);color:var(--text);transform:translateX(4px);}
+.sidebar-item.active{background:linear-gradient(135deg,rgba(247,168,184,0.12),rgba(192,132,252,0.12));color:var(--pink2);font-weight:600;}
+.sidebar-item .si-icon{font-size:1.2rem;width:28px;text-align:center;}
+.sidebar-divider{height:1px;background:var(--card-border);margin:12px 0;}
+.sidebar-footer{position:absolute;bottom:20px;left:24px;right:24px;font-size:.72rem;color:var(--text3);}
 
-  .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:100px 20px 60px; background:rgba(255,248,240,0.3); backdrop-filter:blur(4px); position:relative; overflow:hidden; }
-  .hero h1 { font-family:'Zen Maru Gothic',sans-serif; font-size:2.8rem; font-weight:900; color:var(--brown); margin-bottom:6px; }
-  .hero h1 .highlight { color:var(--pink); }
-  .hero .subtitle { font-size:1rem; color:var(--text-light); margin-bottom:20px; letter-spacing:2px; }
+/* Main Layout */
+.main-content{margin-top:var(--nav-h);max-width:1200px;margin-left:auto;margin-right:auto;padding:0 20px 40px;position:relative;z-index:1;}
+.page-section{display:none;}
+.page-section.active{display:block;}
 
-  section { max-width:900px; margin:0 auto; padding:70px 24px; }
-  .section-title { font-family:'Zen Maru Gothic',sans-serif; font-size:1.5rem; font-weight:900; color:var(--brown); margin-bottom:8px; display:flex; align-items:center; gap:10px; }
-  .section-title::after { content:''; flex:1; height:2px; background:linear-gradient(90deg,var(--pink-light),transparent); }
-  .section-sub { font-size:0.82rem; color:var(--text-light); margin-bottom:28px; }
+/* Apple-style Hero */
+.hero-wrap{position:relative;min-height:85vh;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 -20px;padding:0 20px;}
+.hero-bg-text{
+  position:absolute;
+  font-size:clamp(4rem,13vw,13rem);
+  font-weight:900;
+  letter-spacing:-0.06em;
+  color:rgba(0,0,0,0.03);
+  user-select:none;pointer-events:none;
+  white-space:nowrap;text-align:center;width:100%;
+  line-height:1;top:48%;transform:translateY(-52%);
+  background:linear-gradient(180deg,rgba(247,168,184,0.08),rgba(129,140,248,0.08));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  text-shadow:
+    0 0 40px rgba(247,168,184,0.06),
+    0 0 80px rgba(129,140,248,0.04),
+    0 4px 20px rgba(0,0,0,0.04);
+  filter:drop-shadow(0 8px 30px rgba(247,168,184,0.08));
+  transform:translateY(-52%) perspective(600px) rotateX(2deg);
+  font-weight:800;
+}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:680px;}
+.hero-content h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px;color:var(--text);}
+.hero-content h1 .hl{background:linear-gradient(135deg,var(--pink2),var(--grad2),var(--grad3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-content p{font-size:1.15rem;color:var(--text2);font-weight:400;margin-bottom:24px;max-width:520px;margin-left:auto;margin-right:auto;}
+.hero-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.hero-tags span{padding:4px 14px;border-radius:20px;font-size:.78rem;background:var(--card);border:1px solid var(--card-border);color:var(--text2);backdrop-filter:blur(10px);}
 
-  .cat-pet-section { text-align:center; padding:50px 20px; background:rgba(255,255,255,0.4); backdrop-filter:blur(8px); border-radius:30px; margin:0 -24px 20px; position:relative; overflow:hidden; }
-  .cat-pet-section .section-inner { max-width:800px; margin:0 auto; }
-  .cat-stage { position:relative; width:220px; height:220px; margin:10px auto 10px; background:rgba(255,255,255,0.5); border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .cat-emoji { font-size:6rem; line-height:1; cursor:default; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s; user-select:none; position:relative; z-index:2; }
-  .cat-emoji.dodge { animation:dodgeAnim 0.6s ease; }
-  .cat-emoji.snuggle { animation:snuggleAnim 1s ease; }
-  .cat-emoji.dance { animation:danceAnim 0.8s ease infinite; }
-  @keyframes dodgeAnim { 0%{transform:translateX(0) scaleX(1)} 20%{transform:translateX(-25px) scaleX(-1)} 40%{transform:translateX(25px) scaleX(1)} 60%{transform:translateX(-12px) scaleX(-1)} 80%{transform:translateX(5px) scaleX(1)} 100%{transform:translateX(0) scaleX(1)} }
-  @keyframes snuggleAnim { 0%{transform:scale(1) rotate(0deg)} 25%{transform:scale(1.1) rotate(-5deg)} 50%{transform:scale(0.95) rotate(5deg)} 75%{transform:scale(1.05) rotate(-2deg)} 100%{transform:scale(1) rotate(0deg)} }
-  @keyframes danceAnim { 0%,100%{transform:translateY(0) rotate(0deg)} 10%{transform:translateY(-18px) rotate(-5deg)} 30%{transform:translateY(-22px) rotate(5deg)} 50%{transform:translateY(-25px) rotate(-8deg)} 70%{transform:translateY(-20px) rotate(-5deg)} 90%{transform:translateY(-15px) rotate(-2deg)} }
+/* Sections */
+.section-wrap{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:var(--radius);border:1px solid var(--card-border);padding:28px;margin-bottom:16px;box-shadow:0 2px 20px rgba(0,0,0,0.03);}
+.section-title{font-size:1.15rem;font-weight:700;margin-bottom:4px;letter-spacing:-0.02em;}
+.section-sub{font-size:.82rem;color:var(--text2);margin-bottom:20px;}
 
-  .pet-buttons { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
-  .pet-btn { padding:7px 18px; border-radius:30px; border:2px solid var(--pink-light); background:white; color:var(--text); font-size:0.82rem; font-weight:600; cursor:pointer; transition:all 0.3s; font-family:inherit; }
-  .pet-btn:hover { transform:translateY(-2px); }
-  .pet-btn.feed:hover { background:#FF8A65; color:white; border-color:#FF8A65; }
-  .pet-btn.pat:hover { background:#81D4FA; color:white; border-color:#81D4FA; }
-  .pet-btn.stroke:hover { background:#A5D6A7; color:white; border-color:#A5D6A7; }
-  .pet-reaction { min-height:28px; font-size:0.88rem; color:var(--text-light); margin-top:10px; }
-  .affection-wrap { max-width:280px; margin:10px auto 0; text-align:center; }
-  .affection-label { font-size:0.72rem; color:var(--text-light); margin-bottom:3px; }
-  .affection-bar-bg { width:100%; height:14px; background:#F0E0E0; border-radius:20px; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,0.06); position:relative; }
-  .affection-bar-fill { height:100%; width:50%; background:linear-gradient(90deg,#FFB6C1,#FF69B4); border-radius:20px; transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1); position:relative; }
-  .affection-bar-fill::after { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); animation:barShimmer 2s infinite; }
-  @keyframes barShimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-  .affection-pct { font-size:0.7rem; color:var(--pink); font-weight:700; margin-top:2px; }
+/* Pet */
+.pet-wrap{text-align:center;padding:30px 20px;}
+.pet-stage{width:180px;height:180px;margin:0 auto 8px;background:rgba(255,255,255,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.pet-emoji{font-size:5rem;transition:transform .4s cubic-bezier(.34,1.56,.64,1);user-select:none;cursor:default;}
+.pet-emoji.dodge{animation:doge .6s ease}
+.pet-emoji.snuggle{animation:snug 1s ease}
+.pet-emoji.dance{animation:dance .8s ease infinite}
+@keyframes doge{0%{transform:translateX(0) scaleX(1)}20%{transform:translateX(-25px) scaleX(-1)}40%{transform:translateX(25px) scaleX(1)}60%{transform:translateX(-12px) scaleX(-1)}80%{transform:translateX(5px) scaleX(1)}100%{transform:translateX(0) scaleX(1)}}
+@keyframes snug{0%{transform:scale(1) rotate(0)}25%{transform:scale(1.1) rotate(-5deg)}50%{transform:scale(.95) rotate(5deg)}75%{transform:scale(1.05) rotate(-2deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes dance{0%,100%{transform:translateY(0) rotate(0)}10%{transform:translateY(-18px) rotate(-5deg)}30%{transform:translateY(-22px) rotate(5deg)}50%{transform:translateY(-25px) rotate(-8deg)}70%{transform:translateY(-20px) rotate(-5deg)}90%{transform:translateY(-15px) rotate(-2deg)}}
+.pet-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.pet-btn{padding:6px 16px;border-radius:20px;border:1px solid var(--card-border);background:rgba(255,255,255,0.8);font-size:.78rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text2);}
+.pet-btn:hover{background:linear-gradient(135deg,var(--pink),var(--grad2));color:white;border-color:transparent;transform:translateY(-1px);}
+.pet-r{font-size:.82rem;color:var(--text2);margin-top:8px;min-height:24px;}
+.affection-wrap{max-width:240px;margin:8px auto 0;}
+.affection-label{font-size:.68rem;color:var(--text3);margin-bottom:2px;}
+.affection-bg{width:100%;height:6px;background:#E8E8ED;border-radius:10px;overflow:hidden;}
+.affection-fill{height:100%;width:50%;background:linear-gradient(90deg,var(--pink),var(--pink2));border-radius:10px;transition:width .5s cubic-bezier(.34,1.56,.64,1);}
+.affection-pct{font-size:.65rem;color:var(--pink2);font-weight:600;margin-top:2px;}
 
-  .celebration { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:4000; justify-content:center; align-items:center; flex-direction:column; pointer-events:none; }
-  .celebration.show { display:flex; }
-  .celebration .celebrate-text { font-family:'Zen Maru Gothic',sans-serif; font-size:3.5rem; font-weight:900; background:linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77,#4D96FF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:celebrateBounce 0.6s ease infinite alternate; pointer-events:none; }
-  @keyframes celebrateBounce { 0%{transform:scale(1) rotate(-2deg)} 100%{transform:scale(1.1) rotate(2deg)} }
-  .celebration .celebrate-sub { font-size:1.1rem; color:var(--text-light); margin-top:8px; animation:celebrateFade 1s ease; pointer-events:none; }
-  @keyframes celebrateFade { 0%{opacity:0;transform:translateY(20px)} 100%{opacity:1;transform:translateY(0)} }
+/* Guestbook */
+.gb-form{display:flex;flex-direction:column;gap:8px;}
+.gb-form input,.gb-form textarea{padding:10px 14px;border:1px solid var(--card-border);border-radius:12px;font-family:inherit;font-size:.82rem;background:rgba(255,255,255,0.8);outline:none;transition:border-color .2s;}
+.gb-form input:focus,.gb-form textarea:focus{border-color:var(--blue);}
+.gb-form textarea{min-height:60px;resize:vertical;}
+.gb-form button{padding:10px 22px;background:linear-gradient(135deg,var(--pink2),var(--grad2));border:none;border-radius:30px;color:white;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;align-self:flex-start;font-family:inherit;}
+.gb-form button:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 12px rgba(247,168,184,0.3);}
+.gb-msgs{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;}
+.gb-msg{padding:8px 12px;background:rgba(255,255,255,0.7);border-radius:10px;border-left:3px solid var(--pink);font-size:.8rem;}
+.gb-msg .gb-n{font-weight:600;color:var(--text);font-size:.75rem;}
+.gb-msg .gb-t{font-size:.62rem;color:#bbb;margin-left:4px;}
+.gb-msg .gb-m{color:var(--text2);margin-top:1px;}
 
-  .effect-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:500; overflow:hidden; }
-  .float-heart { position:absolute; font-size:1.3rem; animation:heartFloat 1.5s ease-out forwards; pointer-events:none; }
-  @keyframes heartFloat { 0%{opacity:1;transform:translateY(0) scale(0.5) rotate(0deg)} 100%{opacity:0;transform:translateY(-120px) scale(1.5) rotate(20deg)} }
-  .float-splatter { position:absolute; font-size:1.5rem; animation:splatterAnim 1s ease-out forwards; pointer-events:none; }
-  @keyframes splatterAnim { 0%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1.5) rotate(180deg)} 100%{opacity:0;transform:translateY(-60px) scale(2) rotate(360deg)} }
+/* Album cards */
+.album-c{background:rgba(255,255,255,0.7);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--card-border);transition:transform .2s,box-shadow .2s;}
+.album-c:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,0.06);}
+.album-h{display:flex;gap:14px;flex-wrap:wrap;}
+.album-cv{width:100px;height:100px;border-radius:12px;object-fit:cover;background:#f0f0f0;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;}
+.album-i{flex:1;min-width:160px;}
+.album-i h4{font-size:.95rem;font-weight:700;}
+.album-i .tag{display:inline-block;padding:1px 8px;border-radius:6px;font-size:.65rem;background:linear-gradient(135deg,var(--pink),var(--grad2));color:white;font-weight:600;margin:3px 0 4px;}
+.album-i p{font-size:.8rem;color:var(--text2);}
 
-  .works-section { background:rgba(255,255,255,0.35); backdrop-filter:blur(8px); border-radius:30px; padding:50px 24px; margin:0 -24px; }
-  .works-section .section-inner { max-width:900px; margin:0 auto; }
-  .album-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:24px; margin-bottom:20px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); transition:transform 0.3s,box-shadow 0.3s; }
-  .album-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(139,110,99,0.12); }
-  .album-header { display:flex; gap:20px; margin-bottom:16px; flex-wrap:wrap; }
-  .album-cover { width:140px; height:140px; border-radius:16px; object-fit:cover; background:linear-gradient(135deg,var(--pink-light),#F3E5F5); border:3px solid white; box-shadow:0 4px 12px var(--shadow); flex-shrink:0; }
-  .album-info { flex:1; min-width:200px; }
-  .album-info h3 { font-size:1.15rem; font-weight:700; color:var(--brown); }
-  .album-info .album-tag { display:inline-block; padding:2px 10px; border-radius:10px; font-size:0.7rem; background:var(--pink-light); color:var(--pink); font-weight:600; margin:4px 0 6px; }
-  .album-info p { font-size:0.85rem; color:var(--text-light); line-height:1.7; }
-  .album-gallery { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
-  .album-gallery .gal-thumb { width:80px; height:80px; border-radius:10px; overflow:hidden; cursor:pointer; border:2px solid var(--pink-light); transition:all 0.3s; object-fit:cover; background:#f0f0f0; }
-  .album-gallery .gal-thumb:hover { border-color:var(--pink); transform:scale(1.08); }
-  .album-downloads { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-  .album-downloads a { display:inline-flex; align-items:center; gap:4px; padding:5px 14px; border-radius:20px; font-size:0.75rem; font-weight:600; background:var(--cream); border:1px solid var(--pink-light); color:var(--brown); text-decoration:none; transition:all 0.3s; }
-  .album-downloads a:hover { background:var(--pink); color:white; border-color:var(--pink); }
-  .album-empty { text-align:center; padding:40px; color:var(--text-light); background:rgba(255,255,255,0.5); border-radius:18px; border:2px dashed var(--pink-light); }
+/* Blog posts */
+.blog-card{background:rgba(255,255,255,0.7);border-radius:14px;padding:16px 18px;margin-bottom:10px;border-left:3px solid var(--blue);}
+.blog-card .bc-d{font-size:.68rem;color:var(--text3);}
+.blog-card .bc-t{font-size:.92rem;font-weight:600;margin:2px 0;}
+.blog-card .bc-c{font-size:.8rem;color:var(--text2);}
+.post-gal{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;}
+.post-gal img{width:90px;height:65px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--card-border);transition:transform .2s;}
+.post-gal img:hover{transform:scale(1.05);}
 
-  .about-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:30px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); }
-  .about-grid { display:grid; grid-template-columns:80px 1fr; gap:16px; margin-bottom:16px; }
-  .about-avatar { width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg,var(--pink-light),#F3E5F5); display:flex; align-items:center; justify-content:center; font-size:2.5rem; border:3px solid white; box-shadow:0 4px 12px var(--shadow); }
-  .about-info h3 { font-size:1.2rem; font-weight:700; color:var(--brown); }
-  .about-info .tagline { font-size:0.82rem; color:var(--pink); margin-bottom:6px; }
-  .about-info p { font-size:0.85rem; color:var(--text-light); line-height:1.7; }
-  .timeline { margin-top:12px; }
-  .timeline-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--pink-light); }
-  .timeline-item:last-child { border-bottom:none; }
-  .timeline-year { min-width:85px; font-size:0.78rem; font-weight:700; color:var(--pink); padding-top:2px; }
-  .timeline-content { font-size:0.82rem; color:var(--text); line-height:1.5; }
-  .timeline-content .label { font-weight:700; }
+/* Lightbox */
+.lb{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:5000;justify-content:center;align-items:center;backdrop-filter:blur(12px);cursor:pointer;}
+.lb.show{display:flex;}
+.lb img{max-width:90vw;max-height:90vh;border-radius:12px;cursor:default;}
+.lb .lb-c{position:fixed;top:16px;right:24px;font-size:2rem;color:white;cursor:pointer;opacity:.7;background:none;border:none;}
+.lb .lb-n{position:fixed;top:50%;transform:translateY(-50%);font-size:2.2rem;color:white;cursor:pointer;opacity:.4;background:none;border:none;padding:16px;}
+.lb .lb-n:hover{opacity:.8;}
+.lb .lb-p{left:12px;}
+.lb .lb-nx{right:12px;}
 
-  .music-section { background:rgba(255,255,255,0.35); backdrop-filter:blur(8px); border-radius:30px; padding:50px 24px; margin:0 -24px; }
-  .music-section .section-inner { max-width:800px; margin:0 auto; }
-  .music-intro { background:rgba(255,255,255,0.7); border-radius:20px; padding:18px 22px; margin-bottom:18px; border-left:4px solid #CE93D8; }
-  .music-intro p { font-size:0.88rem; color:var(--text-light); line-height:1.8; }
-  .music-link-card { background:rgba(255,255,255,0.7); border-radius:20px; padding:22px; text-align:center; transition:transform 0.3s; }
-  .music-link-card:hover { transform:translateY(-4px); }
-  .music-link-card .big-icon { font-size:2.5rem; margin-bottom:8px; }
-  .music-link-card h3 { font-size:1.05rem; color:var(--brown); margin-bottom:4px; }
-  .music-link-card p { font-size:0.82rem; color:var(--text-light); margin-bottom:12px; }
-  .music-link-card a { display:inline-flex; align-items:center; gap:8px; padding:10px 26px; background:var(--pink); color:white; text-decoration:none; border-radius:30px; font-weight:700; font-size:0.88rem; transition:box-shadow 0.3s; }
-  .music-link-card a:hover { box-shadow:0 4px 16px rgba(247,168,184,0.5); }
+/* Floating msgs */
+#floatbox{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:900;overflow:hidden;}
+.fm{position:absolute;max-width:180px;padding:7px 10px;border-radius:12px;font-size:.72rem;line-height:1.3;pointer-events:auto;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16,auto;background:rgba(255,255,255,0.9);border:1px solid var(--card-border);box-shadow:0 4px 12px rgba(0,0,0,.06);animation:fma linear infinite;transition:transform .2s;}
+.fm:hover{animation-play-state:paused!important;transform:scale(1.06);z-index:901;}
+.fm .fn{font-weight:600;font-size:.7rem;}
+.fm .ft{color:var(--text2);}
+@keyframes fma{0%{transform:translateY(0)}25%{transform:translateY(-10px)}50%{transform:translateY(-5px)}75%{transform:translateY(-14px)}100%{transform:translateY(0)}}
 
-  .blog-list { display:flex; flex-direction:column; gap:14px; }
-  .blog-post { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:18px; padding:18px 22px; box-shadow:0 4px 16px var(--shadow); border-left:4px solid var(--pink); transition:transform 0.3s; }
-  .blog-post:hover { transform:translateX(4px); }
-  .blog-post .post-date { font-size:0.7rem; color:var(--pink); font-weight:500; }
-  .blog-post .post-title { font-size:1rem; font-weight:700; color:var(--brown); margin:4px 0; }
-  .blog-post .post-content { font-size:0.85rem; color:var(--text-light); line-height:1.7; }
-  .post-gallery { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; }
-  .post-gallery .gal-thumb { width:110px; height:80px; border-radius:10px; overflow:hidden; cursor:pointer; border:2px solid var(--pink-light); transition:all 0.3s; object-fit:cover; background:#f0f0f0; }
-  .post-gallery .gal-thumb:hover { border-color:var(--pink); transform:scale(1.05); }
-  .blog-empty { text-align:center; padding:35px; color:var(--text-light); background:rgba(255,255,255,0.5); border-radius:18px; border:2px dashed var(--pink-light); }
+/* Admin */
+.admin-o{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:2000;backdrop-filter:blur(8px);}
+.admin-o.show{display:flex;align-items:center;justify-content:center;}
+.admin-p{background:white;border-radius:20px;padding:24px;max-width:600px;width:90%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+.admin-p h3{font-size:1rem;margin-bottom:12px;}
+.admin-p .ac{float:right;font-size:1.1rem;cursor:pointer;color:var(--text3);background:none;border:none;}
+.admin-p label{font-size:.75rem;font-weight:600;display:block;margin-top:10px;margin-bottom:2px;}
+.admin-p input,.admin-p textarea{width:100%;padding:8px 12px;border:1px solid var(--card-border);border-radius:10px;font-family:inherit;font-size:.8rem;background:#FAFAFA;outline:none;}
+.admin-p input:focus,.admin-p textarea:focus{border-color:var(--blue);}
+.admin-p textarea{min-height:60px;resize:vertical;}
+.admin-p .ab{padding:8px 20px;border-radius:20px;border:none;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:8px;font-family:inherit;color:white;}
+.admin-p .ab:hover{opacity:.85;transform:translateY(-1px);}
+.admin-p .ab.blue{background:linear-gradient(135deg,var(--blue),#5AC8FA);}
+.admin-p .ab.green{background:linear-gradient(135deg,var(--green),#30D158);}
+.admin-p .ab.red{background:#FF3B30;}
+.admin-p .ab.sm{padding:3px 10px;font-size:.68rem;}
+.admin-p .ast{font-size:.75rem;padding:8px;border-radius:8px;display:none;margin-top:8px;}
+.admin-p .ast.ok{display:block;background:#E8F5E9;color:#2E7D32;}
+.admin-p .ast.er{display:block;background:#FFEBEE;color:#C62828;}
+.admin-p .atabs{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap;}
+.admin-p .atab{padding:4px 12px;border-radius:16px;border:1px solid var(--card-border);background:transparent;font-size:.75rem;cursor:pointer;transition:all .2s;color:var(--text2);font-family:inherit;}
+.admin-p .atab.active{background:linear-gradient(135deg,var(--pink2),var(--grad2));color:white;border-color:transparent;}
+.admin-p .atc{display:none;}
+.admin-p .atc.active{display:block;}
+.iprev{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0;}
+.iprev .ip{width:60px;height:60px;border-radius:6px;overflow:hidden;border:1px solid var(--card-border);}
+.iprev .ip img{width:100%;height:100%;object-fit:cover;}
 
-  .guestbook-form-area { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:28px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); margin-bottom:14px; }
-  .msg-form { display:flex; flex-direction:column; gap:10px; }
-  .msg-form input, .msg-form textarea { padding:10px 14px; border:2px solid var(--pink-light); border-radius:14px; font-family:inherit; font-size:0.82rem; color:var(--text); background:var(--cream); outline:none; transition:border-color 0.3s; resize:vertical; }
-  .msg-form input:focus, .msg-form textarea:focus { border-color:var(--pink); }
-  .msg-form textarea { min-height:70px; }
-  .msg-form button { padding:10px 22px; background:linear-gradient(135deg,var(--pink),#EF9A9A); border:none; border-radius:30px; color:white; font-size:0.88rem; font-weight:700; cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; align-self:flex-start; }
-  .msg-form button:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(247,168,184,0.4); }
-  .guestbook-msgs { background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:22px 28px; box-shadow:0 4px 20px var(--shadow); border:1px solid rgba(255,255,255,0.5); }
-  .guestbook-msgs .gb-title { font-size:0.88rem; font-weight:700; color:var(--brown); margin-bottom:10px; }
-  .gb-msg-list { display:flex; flex-direction:column; gap:8px; max-height:380px; overflow-y:auto; }
-  .gb-msg-item { padding:8px 12px; background:var(--cream); border-radius:12px; border-left:3px solid var(--pink-light); }
-  .gb-msg-item .gb-name { font-weight:700; font-size:0.78rem; color:var(--brown); }
-  .gb-msg-item .gb-time { font-size:0.62rem; color:#bbb; margin-left:6px; }
-  .gb-msg-item .gb-text { font-size:0.8rem; color:var(--text-light); margin-top:2px; }
-  .gb-empty { text-align:center; padding:18px; color:var(--text-light); font-size:0.78rem; }
+/* Toast */
+.tst{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1D1D1F;color:white;padding:10px 22px;border-radius:30px;font-size:.8rem;opacity:0;transition:all .4s;z-index:3000;pointer-events:none;}
+.tst.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  #float-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999; overflow:hidden; }
-  .float-msg { position:absolute; max-width:200px; padding:8px 12px; border-radius:14px; font-size:0.75rem; line-height:1.4; pointer-events:auto; cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16,auto; background:white; border:2px solid var(--pink-light); box-shadow:0 4px 16px var(--shadow); animation:floatAnim linear infinite; transition:transform 0.3s,box-shadow 0.3s; transform-origin:center; }
-  .float-msg:hover { animation-play-state:paused!important; transform:scale(1.08); box-shadow:0 8px 30px rgba(247,168,184,0.3); z-index:1000; border-color:var(--pink); }
-  .float-msg .f-name { font-weight:700; color:var(--brown); font-size:0.72rem; }
-  .float-msg .f-text { color:var(--text-light); margin-top:2px; word-break:break-word; }
-  .float-msg .f-time { font-size:0.58rem; color:#bbb; margin-top:3px; text-align:right; }
-  .float-msg .f-del { position:absolute; top:-5px; right:-5px; width:18px; height:18px; border-radius:50%; background:#E53935; color:white; font-size:0.6rem; display:none; align-items:center; justify-content:center; cursor:pointer; border:2px solid white; line-height:1; }
-  .float-msg:hover .f-del { display:flex; }
-  @keyframes floatAnim { 0%{transform:translateY(0) rotate(0deg)} 25%{transform:translateY(-12px) rotate(1deg)} 50%{transform:translateY(-6px) rotate(-1deg)} 75%{transform:translateY(-16px) rotate(0.5deg)} 100%{transform:translateY(0) rotate(0deg)} }
+/* Sidebar toggle animation for hamburger */
+.ham-open .hamburger{opacity:.6;}
 
-  .lightbox { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.82); z-index:5000; justify-content:center; align-items:center; backdrop-filter:blur(8px); cursor:pointer; }
-  .lightbox.show { display:flex; }
-  .lightbox img { max-width:90vw; max-height:90vh; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.5); object-fit:contain; cursor:default; }
-  .lightbox .lb-close { position:fixed; top:18px; right:25px; font-size:2.2rem; color:white; cursor:pointer; z-index:5001; opacity:0.7; transition:opacity 0.3s; background:none; border:none; }
-  .lightbox .lb-close:hover { opacity:1; }
-  .lightbox .lb-nav { position:fixed; top:50%; transform:translateY(-50%); font-size:2.5rem; color:white; cursor:pointer; opacity:0.5; transition:opacity 0.3s; background:none; border:none; padding:15px; }
-  .lightbox .lb-nav:hover { opacity:1; }
-  .lightbox .lb-prev { left:15px; }
-  .lightbox .lb-next { right:15px; }
+@keyframes float-heart{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-100px) scale(0.3)}}
+@keyframes sf{0%{opacity:1;transform:scale(0) rotate(0)}50%{opacity:1;transform:scale(1.2) rotate(180deg)}100%{opacity:0;transform:scale(0) rotate(360deg)}}
 
-  .admin-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.45); z-index:2000; backdrop-filter:blur(8px); }
-  .admin-overlay.show { display:flex; align-items:center; justify-content:center; }
-  .admin-panel { background:white; border-radius:24px; padding:28px; max-width:620px; width:90%; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
-  .admin-panel h2 { font-size:1.15rem; color:var(--brown); margin-bottom:14px; }
-  .admin-panel .close-btn { float:right; font-size:1.2rem; cursor:pointer; color:var(--text-light); border:none; background:none; }
-  .admin-panel label { font-size:0.8rem; font-weight:600; color:var(--text); display:block; margin-top:12px; margin-bottom:3px; }
-  .admin-panel input, .admin-panel textarea, .admin-panel select { width:100%; padding:9px 12px; border:2px solid var(--pink-light); border-radius:12px; font-family:inherit; font-size:0.82rem; background:var(--cream); outline:none; }
-  .admin-panel input:focus, .admin-panel textarea:focus { border-color:var(--pink); }
-  .admin-panel textarea { min-height:70px; resize:vertical; }
-  .admin-panel .admin-btn { margin-top:10px; padding:9px 22px; background:linear-gradient(135deg,var(--pink),#EF9A9A); border:none; border-radius:30px; color:white; font-size:0.82rem; font-weight:700; cursor:pointer; transition:transform 0.2s; }
-  .admin-panel .admin-btn:hover { transform:translateY(-2px); }
-  .admin-panel .admin-btn.secondary { background:linear-gradient(135deg,#CE93D8,#BA68C8); }
-  .admin-panel .admin-btn.danger { background:linear-gradient(135deg,#EF9A9A,#E57373); }
-  .admin-panel .admin-btn.small { padding:3px 10px; font-size:0.7rem; margin:0 0 0 6px; }
-  .admin-panel .admin-btn.tiny { padding:2px 6px; font-size:0.62rem; margin:0; }
-  .admin-panel .admin-btn.green { background:linear-gradient(135deg,#81C784,#66BB6A); }
-  .admin-panel .admin-status { margin-top:10px; padding:8px; border-radius:10px; font-size:0.78rem; display:none; }
-  .admin-panel .admin-status.success { display:block; background:#E8F5E9; color:#388E3C; }
-  .admin-panel .admin-status.error { display:block; background:#FFEBEE; color:#E53935; }
-  .admin-panel .admin-msgs { margin-top:10px; max-height:220px; overflow-y:auto; }
-  .admin-panel .admin-msg-item { padding:7px 10px; background:var(--cream); border-radius:10px; margin-bottom:5px; font-size:0.78rem; display:flex; align-items:flex-start; gap:8px; }
-  .admin-panel .admin-msg-item .am-info { flex:1; }
-  .admin-panel .admin-msg-item .am-name { font-weight:700; color:var(--brown); }
-  .admin-panel .admin-msg-item .am-text { color:var(--text-light); }
-  .admin-panel .admin-album-item { display:flex; align-items:center; justify-content:space-between; padding:7px 10px; background:var(--cream); border-radius:10px; margin-bottom:5px; font-size:0.78rem; }
-  .admin-panel .admin-album-item .aa-title { font-weight:600; color:var(--brown); flex:1; }
-  .admin-panel .admin-post-list { margin-top:8px; }
-  .admin-panel .admin-post-item { display:flex; align-items:center; justify-content:space-between; padding:7px 10px; background:var(--cream); border-radius:10px; margin-bottom:5px; font-size:0.78rem; }
-  .admin-panel .admin-post-item .ap-title { font-weight:600; color:var(--brown); flex:1; }
-  .admin-panel .admin-post-item .ap-date { color:var(--text-light); font-size:0.68rem; margin-right:6px; }
-  .img-preview { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
-  .img-preview .ip-item { position:relative; width:70px; height:70px; border-radius:8px; overflow:hidden; border:2px solid var(--pink-light); }
-  .img-preview .ip-item img { width:100%; height:100%; object-fit:cover; }
-  .img-preview .ip-item .ip-del { position:absolute; top:-3px; right:-3px; width:16px; height:16px; border-radius:50%; background:#E53935; color:white; font-size:0.55rem; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid white; }
-  .tab-bar { display:flex; gap:4px; margin-bottom:14px; flex-wrap:wrap; }
-  .tab-btn { padding:5px 14px; border-radius:20px; border:1px solid var(--pink-light); background:transparent; color:var(--text-light); font-size:0.78rem; cursor:pointer; transition:all 0.3s; }
-  .tab-btn.active { background:var(--pink); color:white; border-color:var(--pink); }
-  .tab-content { display:none; }
-  .tab-content.active { display:block; }
-  .setup-banner { background:#FFF3E0; border:1px solid #FFE082; border-radius:12px; padding:14px; margin-bottom:14px; font-size:0.8rem; }
-  .setup-banner strong { color:#E65100; }
-  .setup-banner a { color:#1976D2; }
-  .setup-banner code { background:#FFF8E1; padding:2px 6px; border-radius:4px; font-size:0.75rem; }
-
-  footer { text-align:center; padding:35px 20px; color:var(--text-light); font-size:0.78rem; border-top:1px solid var(--pink-light); background:rgba(255,255,255,0.5); }
-  footer .footer-cat { font-size:1.8rem; margin-bottom:4px; }
-  footer a { color:var(--pink); text-decoration:none; }
-  .toast { position:fixed; bottom:25px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--brown); color:white; padding:10px 22px; border-radius:30px; font-size:0.82rem; opacity:0; transition:all 0.5s; z-index:3000; box-shadow:0 4px 20px rgba(0,0,0,0.2); pointer-events:none; }
-  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-  @media (max-width:600px) {
-    .hero h1 { font-size:2rem; }
-    .about-grid { grid-template-columns:1fr; text-align:center; }
-    .about-avatar { margin:0 auto; }
-    .album-header { flex-direction:column; align-items:center; text-align:center; }
-    .album-cover { width:120px; height:120px; }
-    section { padding:50px 16px; }
-    .cat-stage { width:180px; height:180px; }
-    .cat-emoji { font-size:5rem; }
-    .celebration .celebrate-text { font-size:2.2rem; }
-  }
+@media(max-width:700px){
+  .sidebar{width:260px;left:-280px;}
+  .main-content{padding:0 14px 30px;}
+  .hero-wrap{margin:0 -14px;padding:0 14px;min-height:75vh;}
+  .album-h{flex-direction:column;align-items:center;text-align:center;}
+  .album-cv{width:80px;height:80px;}
+}
 </style>
 </head>
 <body>
 
+<!-- Nav -->
 <nav>
   <div class="nav-inner">
-    <a class="nav-logo" id="logoLink">🐱 Akito</a>
-    <div class="nav-links">
-      <a href="#pet">宠物</a>
-      <a href="#works">作品</a>
-      <a href="#about">关于</a>
-      <a href="#music">音乐</a>
-      <a href="#blog">日志</a>
-      <a href="#guestbook">留言</a>
+    <div class="nav-left">
+      <button class="hamburger" id="hamBtn" onclick="toggleSidebar()">☰</button>
+      <a class="nav-logo" id="logoLink" data-i18n="site.name">Akito Lau</a>
+    </div>
+    <div class="nav-right">
+      <button class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn active" id="langZh" onclick="setLang('zh')">中</button>
     </div>
   </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero" id="home">
-  <h1>Welcome to <span class="highlight">Akito Lau</span>'s</h1>
-  <h1>Little World <span class="highlight">🪐</span></h1>
-  <p class="subtitle">分享我热爱的一切 · Everything I Love</p>
-  <div class="hero-tags" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
-    <span style="padding:3px 12px;border-radius:15px;font-size:0.75rem;background:white;border:1.5px solid var(--pink-light);color:var(--text-light);">🎵 独立音乐人</span>
-    <span style="padding:3px 12px;border-radius:15px;font-size:0.75rem;background:#E8F5E9;border:1.5px solid #A5D6A7;color:#388E3C;">🏔️ 户外爱好者</span>
-    <span style="padding:3px 12px;border-radius:15px;font-size:0.75rem;background:white;border:1.5px solid var(--pink-light);color:var(--text-light);">🐱 猫猫教</span>
-    <span style="padding:3px 12px;border-radius:15px;font-size:0.75rem;background:white;border:1.5px solid var(--pink-light);color:var(--text-light);">📊 数据人</span>
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sbOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item active" data-page="home" onclick="goPage('home')">
+    <span class="si-icon">🏠</span><span data-i18n="nav.home">主页</span>
   </div>
-</section>
-
-<!-- Pet Cat -->
-<div class="cat-pet-section" id="pet">
-  <div class="section-inner">
-    <div class="section-title" style="justify-content:center;">🐱 我的电子奶牛猫</div>
-    <div class="section-sub" style="text-align:center;">戳一戳它会有反应哦～</div>
-    <div class="cat-stage"><div class="cat-emoji" id="petEmoji">🐱</div></div>
-    <div class="affection-wrap">
-      <div class="affection-label">💕 亲密度</div>
-      <div class="affection-bar-bg"><div class="affection-bar-fill" id="affectionFill" style="width:50%"></div></div>
-      <div class="affection-pct" id="affectionPct">50%</div>
-    </div>
-    <div class="pet-buttons">
-      <button class="pet-btn feed" onclick="petAction('feed')">🍼 喂猫</button>
-      <button class="pet-btn pat" onclick="petAction('pat')">✋ 拍一拍</button>
-      <button class="pet-btn stroke" onclick="petAction('stroke')">🤲 仔细抚摸</button>
-    </div>
-    <div class="pet-reaction" id="petReaction">🐱 奶牛猫好奇地看着你...</div>
+  <div class="sidebar-item" data-page="music" onclick="goPage('music')">
+    <span class="si-icon">🎵</span><span data-i18n="nav.music">音乐库</span>
   </div>
+  <div class="sidebar-item" data-page="diary" onclick="goPage('diary')">
+    <span class="si-icon">📖</span><span data-i18n="nav.diary">Akito的日记</span>
+  </div>
+  <div class="sidebar-item" data-page="designs" onclick="goPage('designs')">
+    <span class="si-icon">🎨</span><span data-i18n="nav.designs">我的设计稿</span>
+  </div>
+  <div class="sidebar-item" data-page="about" onclick="goPage('about')">
+    <span class="si-icon">🧸</span><span data-i18n="nav.about">关于我</span>
+  </div>
+  <div class="sidebar-item" data-page="photos" onclick="goPage('photos')">
+    <span class="si-icon">📸</span><span data-i18n="nav.photos">摄影作品选</span>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-item" onclick="document.getElementById('adminOverlay').classList.add('show')">
+    <span class="si-icon">⚙️</span><span data-i18n="nav.admin">管理面板</span>
+  </div>
+  <div class="sidebar-footer">&copy; 2026 Akito Lau</div>
 </div>
 
-<div class="effect-container" id="effectContainer"></div>
-<div class="celebration" id="celebrationOverlay">
-  <div class="celebrate-text">🥳 人，你真好！🥳</div>
-  <div class="celebrate-sub">奶牛猫感动得跳起了舞～</div>
-</div>
+<!-- Main Content -->
+<div class="main-content">
 
-<!-- Works -->
-<div class="works-section" id="works">
-  <div class="section-inner">
-    <div class="section-title">🎵 我的音乐作品</div>
-    <div class="section-sub">专辑 & 歌词本 & 背后的故事</div>
-    <div class="album-list" id="albumList"><div class="album-empty">📀 作品加载中...</div></div>
-  </div>
-</div>
-
-<!-- About -->
-<section id="about">
-  <div class="section-title">🧸 关于 Akito</div>
-  <div class="section-sub">About Me</div>
-  <div class="about-card">
-    <div class="about-grid">
-      <div class="about-avatar">🧑‍💻</div>
-      <div class="about-info">
-        <h3>Akito Lau</h3>
-        <p class="tagline">✨ 数据 × 音乐 × 户外 · 永远保持好奇</p>
-        <p>现于完美（中国）数据与AI部门工作，中国人民大学金融硕士毕业。</p>
+<!-- HOME -->
+<div class="page-section active" id="page-home">
+  <div class="hero-wrap">
+    <div class="hero-bg-text">Akito Lau</div>
+    <div class="hero-content">
+      <h1>Welcome to <span class="hl">Akito Lau</span>'s<br>Little World</h1>
+      <p data-i18n="hero.sub">分享我热爱的一切——音乐、设计和生活。</p>
+      <div class="hero-tags">
+        <span>🎵 Musician</span><span>🎨 Designer</span><span>🐱 Cat Lover</span><span>📊 Data</span>
       </div>
     </div>
-    <div class="timeline">
-      <div class="timeline-item"><div class="timeline-year">2026 - 至今</div><div class="timeline-content"><span class="label">完美（中国）</span> · 数据与AI部门</div></div>
-      <div class="timeline-item"><div class="timeline-year">2025 - 2026</div><div class="timeline-content"><span class="label">华为技术有限公司</span> · 吉林区域零售与渠道助理</div></div>
-      <div class="timeline-item"><div class="timeline-year">2023 - 2025</div><div class="timeline-content"><span class="label">中国人民大学</span> · 金融硕士（苏州研究院）</div></div>
-      <div class="timeline-item"><div class="timeline-year">2019 - 2023</div><div class="timeline-content"><span class="label">中国人民大学</span> · 管理学学士（商学院）</div></div>
-      <div class="timeline-item"><div class="timeline-year">2022（春）</div><div class="timeline-content"><span class="label">芬兰阿尔托大学</span> · 交换生</div></div>
-      <div class="timeline-item"><div class="timeline-year">🎵</div><div class="timeline-content">独立音乐人</div></div>
-    </div>
   </div>
-</section>
 
-<!-- Music -->
-<div class="music-section" id="music">
-  <div class="section-inner">
-    <div class="section-title">🎧 听我的音乐</div>
-    <div class="section-sub">网易云音乐 · Independent Musician</div>
-    <div class="music-intro"><p>除了和数据打交道，我也是一个独立音乐人 🎹</p></div>
-    <div class="music-link-card">
-      <div class="big-icon">🎧</div>
-      <h3>Akito Lau 在网易云音乐</h3>
-      <p>点击前往主页收听全部作品 🎶</p>
-      <a href="https://music.163.com/#/artist?id=123805900" target="_blank">🎵 前往网易云音乐</a>
+  <!-- Pet Cat -->
+  <div class="section-wrap pet-wrap">
+    <div class="section-title" data-i18n="pet.title" style="text-align:center;justify-content:center;">🐱 我的电子奶牛猫</div>
+    <div class="pet-stage"><div class="pet-emoji" id="petEmoji">🐱</div></div>
+    <div class="affection-wrap">
+      <div class="affection-label" id="affLabel" data-i18n="pet.affection">💕 亲密度</div>
+      <div class="affection-bg"><div class="affection-fill" id="affFill" style="width:50%"></div></div>
+      <div class="affection-pct" id="affPct">50%</div>
+    </div>
+    <div class="pet-btns">
+      <button class="pet-btn" onclick="petAct('feed')" data-i18n="pet.feed">🍼 喂猫</button>
+      <button class="pet-btn" onclick="petAct('pat')" data-i18n="pet.pat">✋ 拍一拍</button>
+      <button class="pet-btn" onclick="petAct('stroke')" data-i18n="pet.stroke">🤲 抚摸</button>
+    </div>
+    <div class="pet-r" id="petR">🐱 Meow~</div>
+  </div>
+
+  <!-- Albums on home -->
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="home.albums">🎵 最新专辑</div>
+    <div id="homeAlbums"></div>
+  </div>
+
+  <!-- Guestbook on home -->
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="home.guestbook">💌 留言板</div>
+    <div class="section-sub" data-i18n="gb.sub">来都来了，留句话吧！</div>
+    <div class="gb-form">
+      <input id="gbName" placeholder="Your name" maxlength="20">
+      <textarea id="gbText" placeholder="Say something..." maxlength="200"></textarea>
+      <button onclick="postMsg()" data-i18n="gb.send">✉️ 发送</button>
+    </div>
+    <div style="margin-top:12px;"><div class="gb-msgs" id="gbList"><div style="color:var(--text3);font-size:.78rem;text-align:center;padding:16px;" data-i18n="gb.empty">还没有留言...</div></div></div>
+  </div>
+</div>
+
+<!-- MUSIC -->
+<div class="page-section" id="page-music">
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="music.title">🎵 音乐库</div>
+    <div class="section-sub" data-i18n="music.sub">专辑 & 歌词本 & 故事</div>
+    <div id="musicAlbums"></div>
+  </div>
+  <div class="section-wrap" style="text-align:center;">
+    <div style="font-size:2rem;margin-bottom:8px;">🎧</div>
+    <h3 style="font-size:1rem;font-weight:600;margin-bottom:4px;" data-i18n="music.netease">在网易云听我的音乐</h3>
+    <p style="font-size:.8rem;color:var(--text2);margin-bottom:10px;" data-i18n="music.neteaseSub">点击前往我的音乐人主页</p>
+    <a href="https://music.163.com/#/artist?id=123805900" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 22px;background:linear-gradient(135deg,var(--pink2),var(--grad2));color:white;text-decoration:none;border-radius:30px;font-weight:600;font-size:.85rem;">🎵 NetEase Music</a>
+  </div>
+</div>
+
+<!-- DIARY -->
+<div class="page-section" id="page-diary">
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="diary.title">📖 Akito的日记</div>
+    <div class="section-sub" data-i18n="diary.sub">日常笔记与思考</div>
+    <div id="diaryPosts"></div>
+  </div>
+</div>
+
+<!-- DESIGNS -->
+<div class="page-section" id="page-designs">
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="designs.title">🎨 我的设计稿</div>
+    <div class="section-sub" data-i18n="designs.sub">设计作品与草图</div>
+    <div id="designsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;" data-i18n="designs.empty">还没有设计稿，从管理面板上传。</div>
     </div>
   </div>
 </div>
 
-<!-- Blog -->
-<section id="blog">
-  <div class="section-title">📖 日常日志</div>
-  <div class="section-sub">Akito 的随手记</div>
-  <div class="blog-list" id="blogList"><div class="blog-empty">📝 加载中...</div></div>
-</section>
-
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lb-close" onclick="closeLightbox()">✕</button>
-  <button class="lb-nav lb-prev" onclick="prevImage(event)">‹</button>
-  <img id="lbImage" src="" alt="preview">
-  <button class="lb-nav lb-next" onclick="nextImage(event)">›</button>
-</div>
-
-<!-- Guestbook -->
-<section id="guestbook">
-  <div class="section-title">💌 朋友留言板</div>
-  <div class="section-sub">来都来了，留句话吧～</div>
-  <div class="guestbook-form-area">
-    <div class="msg-form">
-      <input type="text" id="msgName" placeholder="你的名字（昵称也行）" maxlength="20">
-      <textarea id="msgText" placeholder="想跟 Akito 说什么？📝" maxlength="200"></textarea>
-      <button onclick="postMessage()">✉️ 留下足迹</button>
+<!-- ABOUT -->
+<div class="page-section" id="page-about">
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="about.title">🧸 关于我</div>
+    <div id="aboutContent">
+      <p style="color:var(--text2);font-size:.88rem;line-height:1.8;" data-i18n="about.default">Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。</p>
+    </div>
+    <div style="margin-top:16px;">
+      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2026</span><span style="color:var(--text2);">完美中国 · 数据与AI</span></div>
+      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2025-2026</span><span style="color:var(--text2);">华为 · 零售与渠道</span></div>
+      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2023-2025</span><span style="color:var(--text2);">人大 · 金融硕士</span></div>
+      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2019-2023</span><span style="color:var(--text2);">人大 · 管理学学士</span></div>
     </div>
   </div>
-  <div class="guestbook-msgs">
-    <div class="gb-title">💬 全部留言</div>
-    <div class="gb-msg-list" id="gbMsgList"><div class="gb-empty">加载中...</div></div>
-  </div>
-</section>
+</div>
 
-<div id="float-container"></div>
+<!-- PHOTOS -->
+<div class="page-section" id="page-photos">
+  <div class="section-wrap">
+    <div class="section-title" data-i18n="photos.title">📸 摄影作品选</div>
+    <div class="section-sub" data-i18n="photos.sub">镜头下的瞬间</div>
+    <div id="photosGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;" data-i18n="photos.empty">还没有照片，从管理面板上传。</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main-content -->
+
+<!-- Lightbox -->
+<div class="lb" id="lb" onclick="closeLB()">
+  <button class="lb-c" onclick="closeLB()">✕</button>
+  <button class="lb-n lb-p" onclick="prevImg(event)">‹</button>
+  <img id="lbImg" src="">
+  <button class="lb-n lb-nx" onclick="nextImg(event)">›</button>
+</div>
+
+<!-- Floating msgs -->
+<div id="floatbox"></div>
+
+<!-- Toast -->
+<div class="tst" id="tst"></div>
 
 <!-- Admin Panel -->
-<div class="admin-overlay" id="adminOverlay">
-  <div class="admin-panel">
-    <button class="close-btn" onclick="closeAdmin()">✕</button>
-    <h2>🔐 管理面板</h2>
-    <div class="setup-banner" id="setupBanner">
-      <strong>🔑 首次使用：</strong>需要配置两个 Token<br><br>
-      <strong>① 管理员 Token（已有就不用再填）</strong><br>
-      用于发布日志/专辑/删除留言<br><br>
-      <strong>② 访客留言 Token（新的👇）</strong><br>
-      这个 Token 能让访客的留言保存到服务器，你就能看到了！<br>
-      权限极小，只能写 messages.json 一个文件<br>
-      生成后粘贴到下面的「访客留言 Token」框里
+<div class="admin-o" id="adminOverlay">
+  <div class="admin-p">
+    <button class="ac" onclick="closeAdmin()">✕</button>
+    <h3>⚙️ 管理面板</h3>
+    <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:12px;font-size:.75rem;margin-bottom:10px;" id="setupTip">
+      🔑 <strong>First time?</strong> Set your GitHub Token below.<br>
+      Go to <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Tokens</a> → Generate → Fine-grained → <code>akitolau-admin</code><br>
+      Repository: <strong>Only select</strong> → <code>akitolau/akitolau.github.io</code><br>
+      Permissions: Contents → <strong>Read and write</strong>
+    </div>
+    <label>🔑 管理员Token</label>
+    <input type="password" id="admToken" placeholder="GitHub Token">
+    <button class="ab blue" onclick="saveAdmToken()" style="margin-top:4px;">💾 保存</button>
+    <label>🔑 访客Token <span style="font-weight:400;color:var(--text3);">(让访客也能留言)</span></label>
+    <input type="password" id="pubToken" placeholder="Guestbook token">
+    <button class="ab green" onclick="savePubToken()" style="margin-top:4px;">💾 保存</button>
+
+    <div class="atabs" style="margin-top:12px;">
+      <button class="atab active" onclick="switchATab('music',this)">🎵 音乐</button>
+      <button class="atab" onclick="switchATab('diary',this)">📖 日记</button>
+      <button class="atab" onclick="switchATab('designs',this)">🎨 设计稿</button>
+      <button class="atab" onclick="switchATab('about',this)">🧸 关于</button>
+      <button class="atab" onclick="switchATab('photos',this)">📸 照片</button>
+      <button class="atab" onclick="switchATab('msgs',this)">💬 留言</button>
     </div>
 
-    <label>🔑 管理员 Token</label>
-    <input type="password" id="ghToken" placeholder="管理员 GitHub Token">
-    <button class="admin-btn secondary" onclick="saveToken()">💾 保存</button>
-
-    <label style="margin-top:8px;">🔑 访客留言 Token <span style="font-weight:400;color:#bbb;font-size:0.7rem;">（让所有人都能留言）</span></label>
-    <input type="password" id="publicToken" placeholder="粘贴访客留言专用 Token">
-    <button class="admin-btn green" onclick="savePublicToken()">💾 保存访客 Token</button>
-
-    <div class="tab-bar" style="margin-top:14px;">
-      <button class="tab-btn active" onclick="switchTab('write',this)">✍️ 写日志</button>
-      <button class="tab-btn" onclick="switchTab('manage',this)">📋 管理日志</button>
-      <button class="tab-btn" onclick="switchTab('works',this)">🎵 作品</button>
-      <button class="tab-btn" onclick="switchTab('msgs',this)">💬 留言</button>
+    <!-- Music admin -->
+    <div class="atc active" id="at-music">
+      <label>专辑标题</label><input id="aTitle" placeholder="e.g. Seasons of Music">
+      <label>标签</label><input id="aTag" placeholder="e.g. Released · Piano">
+      <label>故事</label><textarea id="aStory" style="min-height:50px;"></textarea>
+      <label>图片 (封面自动取第一张)</label><input type="file" id="aImgs" accept="image/*" multiple onchange="prevAImgs(event)">
+      <div class="iprev" id="aImgPrev"></div>
+      <label>下载文件 (PDF/DOCX/图片)</label><input type="file" id="aFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAFiles(event)">
+      <div style="font-size:.7rem;color:var(--text3);margin:2px 0;" id="aFileNames">未选择文件</div>
+      <button class="ab blue" onclick="pubAlbum()">📤 发布专辑</button>
+      <div id="aList" style="margin-top:10px;"></div>
     </div>
 
-    <div class="tab-content active" id="tab-write">
-      <label>📝 标题</label><input type="text" id="postTitle" placeholder="日志标题">
-      <label>📷 图片（可多选）</label>
-      <input type="file" id="postImages" accept="image/*" multiple onchange="previewPostImages(event)">
-      <div class="img-preview" id="postImgPreview"></div>
-      <label>📄 正文</label><textarea id="postContent" placeholder="写点什么吧..." style="min-height:100px;"></textarea>
-      <button class="admin-btn" onclick="publishPost()">📤 发布日志</button>
+    <!-- Diary admin -->
+    <div class="atc" id="at-diary">
+      <label>标题</label><input id="dTitle" placeholder="日记标题">
+      <label>图片</label><input type="file" id="dImgs" accept="image/*" multiple onchange="prevDImgs(event)">
+      <div class="iprev" id="dImgPrev"></div>
+      <label>内容</label><textarea id="dContent" style="min-height:80px;"></textarea>
+      <button class="ab blue" onclick="pubDiary()">📤 发布</button>
+      <div id="dList" style="margin-top:10px;"></div>
     </div>
 
-    <div class="tab-content" id="tab-manage">
-      <label>已发布日志（<span id="postCount">0</span> 篇）</label>
-      <div class="admin-post-list" id="adminPostList"><div style="color:var(--text-light);font-size:0.78rem;">暂无日志</div></div>
+    <!-- Designs admin -->
+    <div class="atc" id="at-designs">
+      <label>标题</label><input id="dsTitle" placeholder="设计名称">
+      <label>上传设计稿 (图片)</label><input type="file" id="dsImgs" accept="image/*" multiple>
+      <button class="ab blue" onclick="pubDesign()">📤 上传</button>
+      <div id="dsList" style="margin-top:10px;"></div>
     </div>
 
-    <div class="tab-content" id="tab-works">
-      <label>📀 专辑名称</label>
-      <input type="text" id="albumTitle" placeholder="如：Seasons of Music">
-      <label>🏷️ 标签</label>
-      <input type="text" id="albumTag" placeholder="例如：已发布 · 钢琴独奏">
-      <label>📖 背后的故事</label>
-      <textarea id="albumStory" placeholder="这张专辑的故事..." style="min-height:60px;"></textarea>
-      <label>🖼️ 图片（可多选）</label>
-      <input type="file" id="albumImages" accept="image/*" multiple onchange="previewAlbumImages(event)">
-      <div class="img-preview" id="albumImgPreview"></div>
-      <label>📎 可下载文件（PDF / DOCX 等）</label>
-      <input type="file" id="albumFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAlbumFiles(event)">
-      <div style="font-size:0.7rem;color:var(--text-light);margin:4px 0;" id="albumFileNames">暂未选择文件</div>
-      <button class="admin-btn" onclick="publishAlbum()">📤 发布专辑</button>
-      <label style="margin-top:16px;">📋 已发布专辑</label>
-      <div class="admin-post-list" id="adminAlbumList"><div style="color:var(--text-light);font-size:0.78rem;">暂无专辑</div></div>
+    <!-- About admin -->
+    <div class="atc" id="at-about">
+      <label>关于我 (支持多行文字)</label>
+      <textarea id="abText" style="min-height:100px;" placeholder="写写关于你自己的介绍..."></textarea>
+      <button class="ab blue" onclick="saveAbout()">💾 保存</button>
     </div>
 
-    <div class="tab-content" id="tab-msgs">
-      <label>留言管理（<span id="msgCount">0</span> 条）</label>
-      <div class="admin-msgs" id="adminMsgs"><div style="color:var(--text-light);font-size:0.78rem;">暂无留言</div></div>
+    <!-- Photos admin -->
+    <div class="atc" id="at-photos">
+      <label>上传照片</label><input type="file" id="phImgs" accept="image/*" multiple>
+      <button class="ab blue" onclick="pubPhotos()">📤 上传</button>
+      <div id="phList" style="margin-top:10px;"></div>
     </div>
 
-    <div class="admin-status" id="adminStatus"></div>
+    <!-- Messages admin -->
+    <div class="atc" id="at-msgs">
+      <div id="adminMsgs"></div>
+    </div>
+
+    <div class="ast" id="admStatus"></div>
   </div>
 </div>
-
-<footer>
-  <div class="footer-cat">🐱</div>
-  <p>&copy; 2026 Akito Lau</p>
-</footer>
-
-<div class="toast" id="toast"></div>
 
 <script>
 // ===== CONFIG =====
-const REPO_OWNER='akitolau', REPO_NAME='akitolau.github.io', BRANCH='main';
-const DATA_PATH='data/messages.json', POSTS_PATH='data/posts.json', WORKS_PATH='data/works.json';
+const O='akitolau',R='akitolau.github.io',B='main';
+const MP='data/messages.json',PP='data/posts.json',WP='data/works.json',DP='data/designs.json',PHP='data/photos.json',AP='data/about.json';
 
-// Public guestbook token — embedded so visitors can write messages too.
-// The admin sets this via the admin panel. It gets saved to localStorage.
-function getPublicToken() { return localStorage.getItem('gh_public_token') || ''; }
-
-function b64Encode(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
-function b64Decode(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-
-// Cache-busting timestamp
+function gPT(){return localStorage.getItem('gh_pub')||'';}
 function _ts(){return '&_ts='+Date.now();}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function toast(m){const t=document.getElementById('tst');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
-async function ghFetch(url,opts={}){
-  // Use any available token for reads (avoids rate limiting)
-  const tokens = [localStorage.getItem('gh_token'), getPublicToken()].filter(Boolean);
-  const t = tokens[0] || '';
-  const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
+function b64E(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
+function b64D(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
+
+function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||'';}
+
+async function ghF(url,opts={}){
+  const t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
   const r=await fetch(url+_ts(),{...opts,headers:h});
-  if(!r.ok){const e=await r.text();throw new Error('GitHub error '+r.status);}
-  return r.json();
+  if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
 }
-async function getFile(path){
-  try{
-    const d=await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`);
-    return{content:JSON.parse(b64Decode(d.content)),sha:d.sha};
-  }catch(e){return null;}
+async function getF(path){
+  try{const d=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
+  catch(e){return null;}
 }
-async function putFile(path,content,sha,token){
-  const t=token||localStorage.getItem('gh_token');
-  if(!t)throw new Error('No token for write');
-  const body={message:'Update '+path,content:b64Encode(JSON.stringify(content,null,2)),branch:BRANCH,...(sha?{sha}:{})};
-  const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{
-    method:'PUT',
-    headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-    body:JSON.stringify(body)
+async function putF(path,c,sha,pt){
+  const t=pt||localStorage.getItem('gh_token')||localStorage.getItem('gh_pub');if(!t)throw new Error('No token');
+  const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
+  const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('Write failed');return r.json();
+}
+async function upFile(name,data,tok){
+  const t=tok||getTok();if(!t)throw new Error('No token');
+  const d=data.includes('base64,')?data.split('base64,')[1]:data;
+  const folder=name.match(/\.(pdf|docx)$/i)?'downloads':'images';
+  let sha=null;try{const ex=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}?ref=${B}`);sha=ex.sha;}catch(e1){}
+  const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
+  if(!r.ok)throw new Error('Upload fail');return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
+}
+function readF(f){return new Promise((rs,rj)=>{const r=new FileReader();r.onload=()=>rs(r.result);r.onerror=rj;r.readAsDataURL(f);});}
+
+// ===== TRANSLATION =====
+let lang='zh';
+const i18n={
+  zh:{
+    'site.name':'Akito Lau',
+    'nav.home':'主页','nav.music':'音乐库','nav.diary':'Akito的日记','nav.designs':'我的设计稿','nav.about':'关于我','nav.photos':'摄影作品选','nav.admin':'管理面板',
+    'hero.sub':'分享我热爱的一切——音乐、设计和生活。',
+    'pet.title':'🐱 我的电子奶牛猫','pet.affection':'💕 亲密度','pet.feed':'🍼 喂猫','pet.pat':'✋ 拍一拍','pet.stroke':'🤲 抚摸',
+    'home.albums':'🎵 最新专辑','home.guestbook':'💌 留言板',
+    'gb.sub':'来都来了，留句话吧！','gb.send':'✉️ 发送','gb.empty':'还没有留言...',
+    'music.title':'🎵 音乐库','music.sub':'专辑 & 歌词本 & 故事','music.netease':'在网易云听我的音乐','music.neteaseSub':'点击前往我的音乐人主页',
+    'diary.title':'📖 Akito的日记','diary.sub':'日常笔记与思考',
+    'designs.title':'🎨 我的设计稿','designs.sub':'设计作品与草图','designs.empty':'还没有设计稿，从管理面板上传。',
+    'about.title':'🧸 关于我','about.default':'Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。',
+    'photos.title':'📸 摄影作品选','photos.sub':'镜头下的瞬间','photos.empty':'还没有照片，从管理面板上传。',
+  },
+  en:{
+    'site.name':'Akito Lau',
+    'nav.home':'Home','nav.music':'Music','nav.diary':'Akito\'s Diary','nav.designs':'Designs','nav.about':'About','nav.photos':'Photography','nav.admin':'Admin',
+    'hero.sub':'Sharing everything I love — music, design, and life.',
+    'pet.title':'🐱 My Digital Cow Cat','pet.affection':'💕 Affection','pet.feed':'🍼 Feed','pet.pat':'✋ Pat','pet.stroke':'🤲 Stroke',
+    'home.albums':'🎵 Latest Albums','home.guestbook':'💌 Guestbook',
+    'gb.sub':'Leave a message below!','gb.send':'✉️ Send','gb.empty':'No messages yet...',
+    'music.title':'🎵 Music Library','music.sub':'Albums, lyrics & stories','music.netease':'Listen on NetEase Music','music.neteaseSub':'Click to visit my artist page',
+    'diary.title':'📖 Akito\'s Diary','diary.sub':'Daily notes & thoughts',
+    'designs.title':'🎨 My Designs','designs.sub':'Design works & drafts','designs.empty':'No designs yet. Upload from admin panel.',
+    'about.title':'🧸 About Me','about.default':'Akito Lau — Data analyst, independent musician, outdoor enthusiast. Graduated from Renmin University of China.',
+    'photos.title':'📸 Photography','photos.sub':'Moments captured','photos.empty':'No photos yet. Upload from admin panel.',
+  }
+};
+
+function setLang(l){
+  lang=l;const el=i18n[l];
+  document.querySelectorAll('[data-i18n]').forEach(e=>{
+    const k=e.getAttribute('data-i18n');if(el[k])e.textContent=el[k];
   });
-  if(!r.ok){const e=await r.text();throw new Error('Write failed: '+r.status);}
-  return r.json();
-}
-async function uploadFile(filename,base64Data,token){
-  const t=token||localStorage.getItem('gh_token');if(!t)throw new Error('No token');
-  const data=base64Data.includes('base64,')?base64Data.split('base64,')[1]:base64Data;
-  let sha=null;
-  try{const ex=await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filename}`);sha=ex.sha;}catch(e){}
-  const folder=filename.match(/\.(pdf|docx)$/i)?'downloads':'images';
-  const path=folder+'/'+filename;
-  const r=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`,{
-    method:'PUT',
-    headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-    body:JSON.stringify({message:'Upload '+filename,content:data,branch:BRANCH,...(sha?{sha}:{})})
-  });
-  if(!r.ok)throw new Error('Upload failed');
-  return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${path}`;
-}
-function readFileAsBase64(file){
-  return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file);});
+  document.getElementById('langEn').classList.toggle('active',l==='en');
+  document.getElementById('langZh').classList.toggle('active',l==='zh');
+  localStorage.setItem('akito_lang',l);
 }
 
-// ===== CAT PET =====
-const petEmoji=document.getElementById('petEmoji'),petReaction=document.getElementById('petReaction');
-const affectionFill=document.getElementById('affectionFill'),affectionPct=document.getElementById('affectionPct');
-const celebrationOverlay=document.getElementById('celebrationOverlay');
-let catTimer=null,affection=50,isCelebrating=false;
-function updateAffection(){const p=Math.round(affection);affectionFill.style.width=p+'%';affectionPct.textContent=p+'%';localStorage.setItem('cat_affection',p);}
-function spawnEffects(e,c,cls){const ct=document.getElementById('effectContainer');for(let i=0;i<c;i++){const el=document.createElement('div');el.className=cls;el.textContent=e;el.style.left=(20+Math.random()*60)+'%';el.style.top=(30+Math.random()*40)+'%';el.style.animationDelay=(Math.random()*0.3)+'s';ct.appendChild(el);setTimeout(()=>el.remove(),2000);}}
-function triggerCelebration(){isCelebrating=true;petEmoji.textContent='💃';petEmoji.classList.add('dance');petReaction.textContent='💃 奶牛猫开心地跳起舞来！！';celebrationOverlay.classList.add('show');spawnEffects('🎉',10,'float-heart');spawnEffects('🌟',8,'float-splatter');spawnEffects('💖',8,'float-heart');setTimeout(()=>{celebrationOverlay.classList.remove('show');petEmoji.classList.remove('dance');affection=50;updateAffection();isCelebrating=false;const f=['🐱','🐈','🐈⬛','😺'];petEmoji.textContent=f[Math.floor(Math.random()*f.length)];petReaction.textContent='🐱 奶牛猫亲密度已重置～再来一次吧！';},3000);}
-function petAction(a){if(isCelebrating)return;if(catTimer)clearTimeout(catTimer);
-  if(a==='feed'){petEmoji.textContent='😻';petReaction.textContent='😻 奶牛猫开心地冒爱心！♡♡♡';spawnEffects('❤️',8,'float-heart');spawnEffects('✨',5,'float-splatter');affection=Math.min(100,affection+10);}
-  else if(a==='pat'){petEmoji.textContent='🙀';petEmoji.classList.remove('dodge');void petEmoji.offsetWidth;petEmoji.classList.add('dodge');petReaction.textContent='🙀 喵！！奶牛猫被吓到跳起来躲开了...';spawnEffects('💥',3,'float-splatter');spawnEffects('❕',3,'float-splatter');}
-  else if(a==='stroke'){petEmoji.textContent='🥰';petEmoji.classList.remove('snuggle');void petEmoji.offsetWidth;petEmoji.classList.add('snuggle');petReaction.textContent='🥰 奶牛猫舒服地蹭了蹭你的手～咕噜咕噜～';spawnEffects('💕',5,'float-heart');spawnEffects('🌸',4,'float-splatter');affection=Math.min(100,affection+20);}
-  updateAffection();if(affection>=100){triggerCelebration();return;}
-  catTimer=setTimeout(()=>{const f=['🐱','🐈','🐈⬛','😺'];petEmoji.textContent=f[Math.floor(Math.random()*f.length)];petEmoji.classList.remove('dodge','snuggle');petReaction.textContent='🐱 奶牛猫好奇地看着你...';},3000);}
-const savedA=parseInt(localStorage.getItem('cat_affection'));if(!isNaN(savedA)&&savedA>=0&&savedA<=100){affection=savedA;updateAffection();}
+// ===== SIDEBAR & NAVIGATION =====
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sbOverlay').classList.toggle('open');
+}
+function goPage(p){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.toggle('active',i.dataset.page===p));
+  toggleSidebar();window.scrollTo(0,0);
+}
+
+// ===== PET =====
+const pE=document.getElementById('petEmoji'),pR=document.getElementById('petR'),aF=document.getElementById('affFill'),aP=document.getElementById('affPct');
+let aff=50,cel=false,ct=null;
+function uA(){const p=Math.round(aff);aF.style.width=p+'%';aP.textContent=p+'%';localStorage.setItem('ca',p);}
+function sE(e,c,cls){const ct=document.getElementById('effectContainer')||(()=>{const d=document.createElement('div');d.id='effectContainer';d.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:500;overflow:hidden;';document.body.appendChild(d);return d;})();for(let i=0;i<c;i++){const el=document.createElement('div');el.className=cls;el.textContent=e;el.style.cssText=`position:absolute;font-size:${Math.random()>.5?'1.3':'1.1'}rem;left:${20+Math.random()*60}%;top:${30+Math.random()*40}%;animation:${cls==='float-heart'?'hf':'sf'} ${1+Math.random()*0.5}s ease-out forwards;`;ct.appendChild(el);setTimeout(()=>el.remove(),2000);}}
+function trigCel(){cel=true;pE.textContent='💃';pE.classList.add('dance');pR.textContent='💃 Dancing!! 🎉';document.querySelector('.celebration')||(()=>{const d=document.createElement('div');d.className='celebration';d.innerHTML='<div style=\"font-size:3rem;font-weight:900;background:linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77,#4D96FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;\">🥳 You are the best! 🥳</div>';d.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:4000;pointer-events:none;';document.body.appendChild(d);})();sE('🎉',8,'float-heart');sE('💖',8,'float-heart');
+  setTimeout(()=>{document.querySelector('.celebration')?.remove();aff=50;uA();cel=false;pE.classList.remove('dance');pE.textContent='🐱';pR.textContent='🐱 Meow~';},3000);
+}
+function petAct(a){
+  if(cel)return;if(ct)clearTimeout(ct);
+  if(a==='feed'){pE.textContent='😻';pR.textContent='😻 Hearts! ♡♡♡';sE('❤️',6,'float-heart');aff=Math.min(100,aff+10);}
+  else if(a==='pat'){pE.textContent='🙀';pE.classList.remove('dodge');void pE.offsetWidth;pE.classList.add('dodge');pR.textContent='🙀 Meow!! Dodged!';sE('💥',3,'float-splatter');}
+  else if(a==='stroke'){pE.textContent='🥰';pE.classList.remove('snuggle');void pE.offsetWidth;pE.classList.add('snuggle');pR.textContent='🥰 Purrr~ so cozy~';sE('💕',4,'float-heart');aff=Math.min(100,aff+20);}
+  uA();if(aff>=100){trigCel();return;}
+  ct=setTimeout(()=>{pE.textContent='🐱';pE.classList.remove('dodge','snuggle');pR.textContent='🐱 Meow~';},3000);
+}
+const sA=parseInt(localStorage.getItem('ca'));if(!isNaN(sA)&&sA>=0&&sA<=100){aff=sA;uA();}
 
 // ===== LIGHTBOX =====
-let lbImages=[],lbIndex=0;
-function openLightbox(imgs,i){lbImages=imgs;lbIndex=i;document.getElementById('lbImage').src=imgs[i];document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('show');document.body.style.overflow='';}
-function nextImage(e){e.stopPropagation();lbIndex=(lbIndex+1)%lbImages.length;document.getElementById('lbImage').src=lbImages[lbIndex];}
-function prevImage(e){e.stopPropagation();lbIndex=(lbIndex-1+lbImages.length)%lbImages.length;document.getElementById('lbImage').src=lbImages[lbIndex];}
-document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').classList.contains('show'))return;if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight'){e.preventDefault();nextImage(e);}if(e.key==='ArrowLeft'){e.preventDefault();prevImage(e);}});
+let lIm=[],lIx=0;
+function openLB(im,i){lIm=im;lIx=i;document.getElementById('lbImg').src=im[i];document.getElementById('lb').classList.add('show');document.body.style.overflow='hidden';}
+function closeLB(){document.getElementById('lb').classList.remove('show');document.body.style.overflow='';}
+function nextImg(e){e.stopPropagation();lIx=(lIx+1)%lIm.length;document.getElementById('lbImg').src=lIm[lIx];}
+function prevImg(e){e.stopPropagation();lIx=(lIx-1+lIm.length)%lIm.length;document.getElementById('lbImg').src=lIm[lIx];}
+document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('show'))return;if(e.key==='Escape')closeLB();if(e.key==='ArrowRight'){e.preventDefault();nextImg(e);}if(e.key==='ArrowLeft'){e.preventDefault();prevImg(e);}});
 
 // ===== MESSAGES =====
-async function loadMessages(){
-  try{const d=await getFile(DATA_PATH);return d?d.content:[];}
-  catch(e){return [];}
+async function loadMs(){try{const d=await getF(MP);return d?d.content:[];}catch(e){return[];}}
+const cols=['#FCE4EC','#E8F5E9','#FFF3E0','#F3E5F5','#E3F2FD','#FFF8E1'],anis=['🐱','🐶','🐰','🦊','🐼','🐨','🦁','🐸','🦄','🐧'];
+function spFm(n,t,ts){
+  const c=document.getElementById('floatbox'),el=document.createElement('div');el.className='fm';
+  const co=cols[Math.floor(Math.random()*cols.length)],an=anis[Math.floor(Math.random()*anis.length)];
+  const sx=5+Math.random()*70,sy=10+Math.random()*60,du=6+Math.random()*8,sz=150+Math.random()*50;
+  el.style.cssText=`left:${sx}%;top:${sy}%;width:${sz}px;background:${co};animation-duration:${du}s;`;
+  el.innerHTML=`<div class=\"fn\">${an} ${esc(n)}</div><div class=\"ft\">${esc(t)}</div>`;
+  c.appendChild(el);
+  setTimeout(()=>{if(el.parentNode){el.style.opacity='0';el.style.transition='opacity .8s';setTimeout(()=>el.remove(),800);}},(du+4)*1000);
 }
-const colors=['#FCE4EC','#E8F5E9','#FFF3E0','#F3E5F5','#E3F2FD','#FFF8E1'],animals=['🐱','🐶','🐰','🦊','🐼','🐨','🦁','🐸','🦄','🐧'];
-function spawnFloatingMessage(name,text,timeStr){
-  const c=document.getElementById('float-container'),el=document.createElement('div');el.className='float-msg';
-  const color=colors[Math.floor(Math.random()*colors.length)],animal=animals[Math.floor(Math.random()*animals.length)];
-  const sx=5+Math.random()*70,sy=10+Math.random()*60,dur=6+Math.random()*8,sz=160+Math.random()*60;
-  el.style.cssText=`left:${sx}%;top:${sy}%;width:${sz}px;background:${color};animation-duration:${dur}s;border-color:transparent;`;
-  el.innerHTML=`<div class="f-name">${animal} ${escHtml(name)}</div><div class="f-text">${escHtml(text)}</div><div class="f-time">${escHtml(timeStr)}</div>`;
-  const db=document.createElement('button');db.className='f-del';db.textContent='✕';db.title='隐藏此留言';
-  db.onclick=e=>{e.stopPropagation();el.style.opacity='0';el.style.transition='opacity 0.3s';setTimeout(()=>el.remove(),300);};
-  el.appendChild(db);c.appendChild(el);
-  setTimeout(()=>{if(el.parentNode){el.style.opacity='0';el.style.transition='opacity 1s';setTimeout(()=>el.remove(),1000);}},(dur+5)*1000);
+async function disFM(){document.getElementById('floatbox').innerHTML='';const ms=await loadMs();ms.forEach(m=>spFm(m.name,m.text,m.time));}
+async function disGB(){
+  const c=document.getElementById('gbList');
+  try{const ms=await loadMs();if(!ms||!ms.length){c.innerHTML='<div style="color:var(--text3);font-size:.78rem;text-align:center;padding:16px;" data-i18n="gb.empty">'+(lang==='zh'?'还没有留言...':'No messages yet...')+'</div>';return;}
+  c.innerHTML=ms.slice().reverse().map(m=>`<div class=\"gb-msg\"><span class=\"gb-n\">${esc(m.name)}</span><span class=\"gb-t\">${esc(m.time)}</span><div class=\"gb-m\">${esc(m.text)}</div></div>`).join('');}
+  catch(e){c.innerHTML='<div style="color:var(--text3);font-size:.78rem;text-align:center;padding:16px;">Loading...</div>';}
 }
-async function displayFloatingMessages(){const c=document.getElementById('float-container');c.innerHTML='';const msgs=await loadMessages();msgs.forEach(m=>spawnFloatingMessage(m.name,m.text,m.time));return msgs;}
-async function displayMessageList(){
-  const c=document.getElementById('gbMsgList');
-  try{const msgs=await loadMessages();if(msgs.length===0){c.innerHTML='<div class="gb-empty">还没有留言，来做第一个朋友吧 ✨</div>';return;}
-  c.innerHTML=msgs.slice().reverse().map(m=>`<div class="gb-msg-item"><span class="gb-name">${escHtml(m.name)}</span><span class="gb-time">${escHtml(m.time)}</span><div class="gb-text">${escHtml(m.text)}</div></div>`).join('');}
-  catch(e){c.innerHTML='<div class="gb-empty">留言加载失败</div>';}
-}
-
-async function postMessage(){
-  const n=document.getElementById('msgName').value.trim(),t=document.getElementById('msgText').value.trim();
-  if(!n||!t){showToast('🐱 名字和留言都要填哦～');return;}
+async function postMsg(){
+  const n=document.getElementById('gbName').value.trim(),t=document.getElementById('gbText').value.trim();
+  if(!n||!t){toast('Please fill in name and message');return;}
   const ts=new Date().toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-  
-  // Try with public token first, then fallback to admin token
-  const publicToken = getPublicToken();
-  const writeToken = publicToken || localStorage.getItem('gh_token');
-  
-  if(!writeToken){
-    // No token at all — save locally only
-    const l=JSON.parse(localStorage.getItem('local_msgs')||'[]');
-    l.push({name:n,text:t,time:ts});
-    localStorage.setItem('local_msgs',JSON.stringify(l));
-    showToast('💾 留言已保存到本地（管理员配置Token后可永久保存）');
-    spawnFloatingMessage(n,t,ts);
-    document.getElementById('msgName').value='';document.getElementById('msgText').value='';
-    return;
-  }
-  
-  try{
-    const ex=await getFile(DATA_PATH);
-    const ms=ex?ex.content:[];
-    ms.push({name:n,text:t,time:ts});
-    await putFile(DATA_PATH, ms, ex?ex.sha:null, writeToken);
-    showToast('🎈 留言已保存！');
-  } catch(e){
-    const l=JSON.parse(localStorage.getItem('local_msgs')||'[]');
-    l.push({name:n,text:t,time:ts});
-    localStorage.setItem('local_msgs',JSON.stringify(l));
-    showToast('💾 已保存（本地模式）');
-  }
-  spawnFloatingMessage(n,t,ts);
-  document.getElementById('msgName').value='';document.getElementById('msgText').value='';
-  displayFloatingMessages();displayMessageList();
+  spFm(n,t,ts);
+  const pubT=gPT(),admT=localStorage.getItem('gh_token');const wt=pubT||admT;
+  if(wt){try{const ex=await getF(MP);const ms=ex?ex.content:[];ms.push({name:n,text:t,time:ts});await putF(MP,ms,ex?ex.sha:null,wt);toast('🎈 Saved!');}catch(e){toast('💾 Saved (local)');}}
+  else{toast('💾 Saved (local)');}
+  document.getElementById('gbName').value='';document.getElementById('gbText').value='';disFM();disGB();
 }
 
-async function deleteMessage(index){
-  if(!confirm('确定删除此留言？'))return;
-  try{const ex=await getFile(DATA_PATH);const ms=ex?ex.content:[];if(index<0||index>=ms.length)return;ms.splice(index,1);await putFile(DATA_PATH,ms,ex?ex.sha:null);showToast('🗑️ 已删除');displayFloatingMessages();displayMessageList();if(document.getElementById('adminOverlay').classList.contains('show'))loadAdminMessages();}
-  catch(e){showToast('❌ 删除失败');}
-}
-
-// ===== BLOG =====
-async function loadPosts(){try{const d=await getFile(POSTS_PATH);return d?d.content:[];}catch(e){return[];}}
-async function displayPosts(){
-  const list=document.getElementById('blogList');const posts=await loadPosts();
-  if(!posts||posts.length===0){list.innerHTML='<div class="blog-empty">📝 还没有日志，敬请期待～</div>';return;}
-  list.innerHTML=posts.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(p=>{
-    const g=p.images&&p.images.length?`<div class="post-gallery">${p.images.map((img,i)=>`<img class="gal-thumb" src="${escHtml(img)}" onclick="event.stopPropagation();openLightbox(${JSON.stringify(p.images).replace(/"/g,'&quot;')},${i})" alt="photo">`).join('')}</div>`:'';
-    return `<div class="blog-post"><div class="post-date">📅 ${escHtml(p.date)}</div><div class="post-title">${escHtml(p.title)}</div>${g}<div class="post-content">${escHtml(p.content).replace(/\n/g,'<br>')}</div></div>`;
+// ===== ALBUMS =====
+async function loadW(){try{const d=await getF(WP);return d?d.content:[];}catch(e){return[];}}
+async function disAlbums(containerId){
+  const c=document.getElementById(containerId);const ws=await loadW();
+  if(!ws||!ws.length){c.innerHTML='<div style="color:var(--text3);font-size:.8rem;text-align:center;padding:20px;">No albums yet</div>';return;}
+  c.innerHTML=ws.map(w=>{
+    const g=w.images&&w.images.length?`<div class=\"post-gal\">${w.images.map((img,i)=>`<img src=\"${esc(img)}\" onclick=\"openLB(${JSON.stringify(w.images).replace(/\"/g,'&quot;')},${i})\">`).join('')}</div>`:'';
+    const dl=w.downloads&&w.downloads.length?`<div style=\"display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;\">${w.downloads.map(d=>`<a href=\"${esc(d.url)}\" target=\"_blank\" style=\"display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:14px;font-size:.7rem;font-weight:500;background:rgba(255,255,255,0.7);border:1px solid var(--card-border);color:var(--text);text-decoration:none;\">📥 ${esc(d.name)}</a>`).join('')}</div>`:'';
+    const cv=w.cover?`<img class=\"album-cv\" src=\"${esc(w.cover)}\">`:`<div class=\"album-cv\" style=\"display:flex;align-items:center;justify-content:center;font-size:2rem;\">🎵</div>`;
+    return `<div class=\"album-c\"><div class=\"album-h\">${cv}<div class=\"album-i\"><h4>${esc(w.title)}</h4>${w.tag?`<span class=\"tag\">${esc(w.tag)}</span>`:''}${w.story?`<p>${esc(w.story)}</p>`:''}</div></div>${g}${dl}</div>`;
   }).join('');
 }
-let pendingPostImages=[];
-function previewPostImages(e){pendingPostImages=[];const ct=document.getElementById('postImgPreview');ct.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pendingPostImages.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip-item';d.innerHTML=`<img src="${ev.target.result}">`;ct.appendChild(d);};r.readAsDataURL(f);}}
-async function publishPost(){
-  const t=document.getElementById('postTitle').value.trim(),c=document.getElementById('postContent').value.trim();
-  if(!t||!c){showToast('标题和内容都要填哦～');return;}
-  const status=document.getElementById('adminStatus');
-  try{
-    const urls=[];for(const p of pendingPostImages){try{const u=await uploadFile(p.name,p.base64);urls.push(u);}catch(e){showToast('⚠️ 图片上传失败');}}
-    const ex=await getFile(POSTS_PATH);const ps=ex?ex.content:[];const ds=new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'});
-    const po={title:t,content:c,date:ds};if(urls.length)po.images=urls;ps.push(po);
-    await putFile(POSTS_PATH,ps,ex?ex.sha:null);
-    status.className='admin-status success';status.textContent='✅ 日志发布成功！共 '+urls.length+' 张图片';
-    document.getElementById('postTitle').value='';document.getElementById('postContent').value='';document.getElementById('postImages').value='';document.getElementById('postImgPreview').innerHTML='';pendingPostImages=[];
-    displayPosts();showToast('📝 日志已发布！');setTimeout(()=>{status.className='admin-status';},3000);
-  }catch(e){status.className='admin-status error';status.textContent='❌ 发布失败：'+e.message;}
-}
 
-// ===== WORKS =====
-async function loadWorks(){try{const d=await getFile(WORKS_PATH);return d?d.content:[];}catch(e){return[];}}
-async function displayWorks(){
-  const list=document.getElementById('albumList');const works=await loadWorks();
-  if(!works||works.length===0){list.innerHTML='<div class="album-empty">📀 还没有作品，敬请期待～</div>';return;}
-  list.innerHTML=works.map(w=>{
-    const g=w.images&&w.images.length?`<div class="album-gallery">${w.images.map((img,i)=>`<img class="gal-thumb" src="${escHtml(img)}" onclick="event.stopPropagation();openLightbox(${JSON.stringify(w.images).replace(/"/g,'&quot;')},${i})">`).join('')}</div>`:'';
-    const dl=w.downloads&&w.downloads.length?`<div class="album-downloads">${w.downloads.map(d=>`<a href="${escHtml(d.url)}" target="_blank" download>📥 ${escHtml(d.name)}</a>`).join('')}</div>`:'';
-    const cover=w.cover?`<img class="album-cover" src="${escHtml(w.cover)}">`:`<div class="album-cover" style="display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎵</div>`;
-    return `<div class="album-card"><div class="album-header">${cover}<div class="album-info"><h3>${escHtml(w.title)}</h3>${w.tag?`<div class="album-tag">${escHtml(w.tag)}</div>`:''}${w.story?`<p>${escHtml(w.story).replace(/\n/g,'<br>')}</p>`:''}</div></div>${g}${dl}</div>`;
+// ===== POSTS =====
+async function loadP(){try{const d=await getF(PP);return d?d.content:[];}catch(e){return[];}}
+async function disPosts(){
+  const c=document.getElementById('diaryPosts');const ps=await loadP();
+  if(!ps||!ps.length){c.innerHTML='<div style="color:var(--text3);font-size:.8rem;text-align:center;padding:20px;">No posts yet</div>';return;}
+  c.innerHTML=ps.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(p=>{
+    const g=p.images&&p.images.length?`<div class=\"post-gal\">${p.images.map((img,i)=>`<img src=\"${esc(img)}\" onclick=\"openLB(${JSON.stringify(p.images).replace(/\"/g,'&quot;')},${i})\">`).join('')}</div>`:'';
+    return `<div class=\"blog-card\"><div class=\"bc-d\">📅 ${esc(p.date)}</div><div class=\"bc-t\">${esc(p.title)}</div>${g}<div class=\"bc-c\">${esc(p.content).replace(/\n/g,'<br>')}</div></div>`;
   }).join('');
-}
-let pendingAlbumImages=[],pendingAlbumFiles=[];
-function previewAlbumImages(e){pendingAlbumImages=[];const ct=document.getElementById('albumImgPreview');ct.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pendingAlbumImages.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip-item';d.innerHTML=`<img src="${ev.target.result}">`;ct.appendChild(d);};r.readAsDataURL(f);}}
-function previewAlbumFiles(e){pendingAlbumFiles=[];const names=[];for(const f of e.target.files)names.push(f.name);pendingAlbumFiles=Array.from(e.target.files);document.getElementById('albumFileNames').textContent=names.length?'📎 '+names.join(', '):'暂未选择文件';}
-async function publishAlbum(){
-  const title=document.getElementById('albumTitle').value.trim(),tag=document.getElementById('albumTag').value.trim(),story=document.getElementById('albumStory').value.trim();
-  if(!title){showToast('专辑名称不能为空～');return;}
-  const status=document.getElementById('adminStatus');
-  try{
-    const coverUrls=[];for(const p of pendingAlbumImages){try{const u=await uploadFile(p.name,p.base64);coverUrls.push(u);}catch(e){showToast('⚠️ 图片上传失败');}}
-    const fileUrls=[];for(const f of pendingAlbumFiles){try{const b=await readFileAsBase64(f);const fn=Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await uploadFile(fn,b);fileUrls.push({name:f.name,url:u});}catch(e){showToast('⚠️ 文件上传失败');}}
-    const ex=await getFile(WORKS_PATH);const ws=ex?ex.content:[];const album={title,tag,story,cover:coverUrls.length?coverUrls[0]:null,images:coverUrls,downloads:fileUrls};
-    ws.push(album);await putFile(WORKS_PATH,ws,ex?ex.sha:null);
-    status.className='admin-status success';status.textContent='✅ 专辑发布成功！';
-    document.getElementById('albumTitle').value='';document.getElementById('albumTag').value='';document.getElementById('albumStory').value='';document.getElementById('albumImages').value='';document.getElementById('albumFiles').value='';document.getElementById('albumImgPreview').innerHTML='';document.getElementById('albumFileNames').textContent='暂未选择文件';pendingAlbumImages=[];pendingAlbumFiles=[];
-    displayWorks();loadAdminAlbums();showToast('📀 专辑已发布！');setTimeout(()=>{status.className='admin-status';},3000);
-  }catch(e){status.className='admin-status error';status.textContent='❌ 发布失败：'+e.message;}
-}
-async function deleteAlbum(index){
-  if(!confirm('确定删除此专辑？'))return;
-  try{const ex=await getFile(WORKS_PATH);const ws=ex?ex.content:[];if(index<0||index>=ws.length)return;ws.splice(index,1);await putFile(WORKS_PATH,ws,ex?ex.sha:null);showToast('🗑️ 专辑已删除');displayWorks();loadAdminAlbums();}
-  catch(e){showToast('❌ 删除失败');}
 }
 
 // ===== ADMIN =====
-function openAdmin(){
-  document.getElementById('adminOverlay').classList.add('show');
-  const t=localStorage.getItem('gh_token');if(t)document.getElementById('ghToken').value=t;
-  const pt=getPublicToken();if(pt)document.getElementById('publicToken').value=pt;
-  if(t||pt)document.getElementById('setupBanner').style.display='none';
-  refreshAdmin();
-}
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('show');}
-function saveToken(){
-  const t=document.getElementById('ghToken').value.trim();
-  if(!t){showToast('请粘贴 GitHub Token');return;}localStorage.setItem('gh_token',t);
-  document.getElementById('setupBanner').style.display='none';showToast('✅ 管理员 Token 已保存！');refreshAdmin();
-}
-function savePublicToken(){
-  const t=document.getElementById('publicToken').value.trim();
-  if(!t){showToast('请粘贴访客留言 Token');return;}localStorage.setItem('gh_public_token',t);
-  document.getElementById('setupBanner').style.display='none';showToast('✅ 访客留言 Token 已保存！现在所有人都能留言了！');refreshAdmin();
-}
-async function refreshAdmin(){await Promise.all([loadAdminMessages(),loadAdminPosts(),loadAdminAlbums()]);}
-async function loadAdminMessages(){
-  try{const ms=await loadMessages();document.getElementById('msgCount').textContent=ms.length;const c=document.getElementById('adminMsgs');
-  if(ms.length===0){c.innerHTML='<div style="color:var(--text-light);font-size:0.78rem;padding:8px;">暂无留言</div>';return;}
-  c.innerHTML=ms.map((m,i)=>`<div class="admin-msg-item"><div class="am-info"><span class="am-name">${escHtml(m.name)}</span><span style="font-size:0.62rem;color:#bbb;margin-left:6px;">${escHtml(m.time)}</span><br><span class="am-text">${escHtml(m.text)}</span></div><button class="admin-btn tiny danger" onclick="deleteMessage(${i})">删除</button></div>`).join('');}
-  catch(e){document.getElementById('adminMsgs').innerHTML='<div style="color:#E53935;">加载失败</div>';}
-}
-async function loadAdminPosts(){
-  try{const ps=await loadPosts();document.getElementById('postCount').textContent=ps.length;const c=document.getElementById('adminPostList');
-  if(ps.length===0){c.innerHTML='<div style="color:var(--text-light);font-size:0.78rem;">暂无日志</div>';return;}
-  c.innerHTML=ps.map((p,i)=>`<div class="admin-post-item"><span class="ap-title">${escHtml(p.title)}</span><span class="ap-date">${escHtml(p.date)}</span><button class="admin-btn small danger" onclick="deletePost(${i})">删除</button></div>`).join('');}
-  catch(e){document.getElementById('adminPostList').innerHTML='<div style="color:#E53935;">加载失败</div>';}
-}
-async function deletePost(i){
-  if(!confirm('确定删除？'))return;
-  try{const ex=await getFile(POSTS_PATH);const ps=ex?ex.content:[];if(i<0||i>=ps.length)return;ps.splice(i,1);await putFile(POSTS_PATH,ps,ex?ex.sha:null);showToast('🗑️ 已删除');loadAdminPosts();displayPosts();}
-  catch(e){showToast('❌ 删除失败');}
-}
-async function loadAdminAlbums(){
-  try{const ws=await loadWorks();const c=document.getElementById('adminAlbumList');
-  if(!ws||ws.length===0){c.innerHTML='<div style="color:var(--text-light);font-size:0.78rem;">暂无专辑</div>';return;}
-  c.innerHTML=ws.map((w,i)=>`<div class="admin-album-item"><span class="aa-title">🎵 ${escHtml(w.title)}</span><button class="admin-btn small danger" onclick="deleteAlbum(${i})">删除</button></div>`).join('');}
-  catch(e){document.getElementById('adminAlbumList').innerHTML='<div style="color:#E53935;">加载失败</div>';}
-}
-function switchTab(name,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');document.getElementById('tab-'+name).classList.add('active');
-  if(name==='manage')loadAdminPosts();if(name==='msgs')loadAdminMessages();if(name==='works')loadAdminAlbums();
+function saveAdmToken(){const t=document.getElementById('admToken').value.trim();if(!t){toast('Enter token');return;}localStorage.setItem('gh_token',t);document.getElementById('setupTip').style.display='none';toast('✅ Token saved');}
+function savePubToken(){const t=document.getElementById('pubToken').value.trim();if(!t){toast('Enter token');return;}localStorage.setItem('gh_pub',t);document.getElementById('setupTip').style.display='none';toast('✅ Guest token saved');}
+
+function switchATab(n,btn){
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.atc').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');document.getElementById('at-'+n).classList.add('active');
+  if(n==='msgs')loadAdminMsgs();if(n==='diary')loadAdminPosts();if(n==='music')loadAdminAlbums();
 }
 
+function setSt(s,m){const e=document.getElementById('admStatus');e.className='ast '+(s?'ok':'er');e.textContent=m;e.style.display='block';setTimeout(()=>{e.style.display='none';},4000);}
+
+// Admin Albums
+let pAImg=[],pAFiles=[];
+function prevAImgs(e){pAImg=[];const c=document.getElementById('aImgPrev');c.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pAImg.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip';d.innerHTML=`<img src=\"${ev.target.result}\">`;c.appendChild(d);};r.readAsDataURL(f);}}
+function previewAFiles(e){pAFiles=[];const ns=[];for(const f of e.target.files)ns.push(f.name);pAFiles=Array.from(e.target.files);document.getElementById('aFileNames').textContent=ns.length?'📎 '+ns.join(', '):'No files';}
+async function pubAlbum(){
+  const t=document.getElementById('aTitle').value.trim(),tag=document.getElementById('aTag').value.trim(),story=document.getElementById('aStory').value.trim();
+  if(!t){toast('Title required');return;}
+  try{
+    const urls=[];for(const p of pAImg){try{const u=await upFile(p.name,p.base64);urls.push(u);}catch(e){toast('⚠️ Image upload fail');}}
+    const fUrls=[];for(const f of pAFiles){try{const b=await readF(f);const fn=Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);fUrls.push({name:f.name,url:u});}catch(e){toast('⚠️ File upload fail');}}
+    const ex=await getF(WP);const ws=ex?ex.content:[];ws.push({title:t,tag,story,cover:urls.length?urls[0]:null,images:urls,downloads:fUrls});
+    await putF(WP,ws,ex?ex.sha:null);
+    setSt(true,'✅ Album published!');document.getElementById('aTitle').value='';document.getElementById('aTag').value='';document.getElementById('aStory').value='';document.getElementById('aImgs').value='';document.getElementById('aFiles').value='';document.getElementById('aImgPrev').innerHTML='';document.getElementById('aFileNames').textContent='No files';pAImg=[];pAFiles=[];
+    disAlbums('homeAlbums');disAlbums('musicAlbums');loadAdminAlbums();toast('📀 Published!');
+  }catch(e){setSt(false,'❌ Failed: '+e.message);}
+}
+async function loadAdminAlbums(){
+  try{const ws=await loadW();const c=document.getElementById('aList');
+  if(!ws||!ws.length){c.innerHTML='<div style="color:var(--text3);font-size:.75rem;padding:8px;">No albums</div>';return;}
+  c.innerHTML=ws.map((w,i)=>`<div style=\"display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#FAFAFA;border-radius:8px;margin-bottom:4px;font-size:.75rem;\"><span>🎵 ${esc(w.title)}</span><button class=\"ab red sm\" onclick=\"delAlbum(${i})\">Delete</button></div>`).join('');}
+  catch(e){document.getElementById('aList').innerHTML='<div style="color:#C62828;font-size:.75rem;">Load failed</div>';}
+}
+async function delAlbum(i){
+  if(!confirm('Delete this album?'))return;
+  try{const ex=await getF(WP);const ws=ex?ex.content:[];if(i<0||i>=ws.length)return;ws.splice(i,1);await putF(WP,ws,ex?ex.sha:null);toast('🗑️ Deleted');disAlbums('homeAlbums');disAlbums('musicAlbums');loadAdminAlbums();}
+  catch(e){toast('❌ Delete failed');}
+}
+
+// Admin Diary
+let pDImg=[];
+function prevDImgs(e){pDImg=[];const c=document.getElementById('dImgPrev');c.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pDImg.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip';d.innerHTML=`<img src=\"${ev.target.result}\">`;c.appendChild(d);};r.readAsDataURL(f);}}
+async function pubDiary(){
+  const t=document.getElementById('dTitle').value.trim(),c=document.getElementById('dContent').value.trim();
+  if(!t||!c){toast('Title and content required');return;}
+  try{
+    const urls=[];for(const p of pDImg){try{const u=await upFile(p.name,p.base64);urls.push(u);}catch(e){toast('⚠️ Image upload fail');}}
+    const ex=await getF(PP);const ps=ex?ex.content:[];const ds=new Date().toLocaleString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'});
+    const po={title:t,content:c,date:ds};if(urls.length)po.images=urls;ps.push(po);
+    await putF(PP,ps,ex?ex.sha:null);
+    setSt(true,'✅ Post published!');document.getElementById('dTitle').value='';document.getElementById('dContent').value='';document.getElementById('dImgs').value='';document.getElementById('dImgPrev').innerHTML='';pDImg=[];disPosts();loadAdminPosts();toast('📝 Published!');
+  }catch(e){setSt(false,'❌ Failed: '+e.message);}
+}
+async function loadAdminPosts(){
+  try{const ps=await loadP();const c=document.getElementById('dList');
+  if(!ps||!ps.length){c.innerHTML='<div style="color:var(--text3);font-size:.75rem;padding:8px;">No posts</div>';return;}
+  c.innerHTML=ps.map((p,i)=>`<div style=\"display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#FAFAFA;border-radius:8px;margin-bottom:4px;font-size:.75rem;\"><span>📝 ${esc(p.title)}</span><button class=\"ab red sm\" onclick=\"delPost(${i})\">Delete</button></div>`).join('');}
+  catch(e){document.getElementById('dList').innerHTML='<div style="color:#C62828;font-size:.75rem;">Load failed</div>';}
+}
+async function delPost(i){
+  if(!confirm('Delete?'))return;
+  try{const ex=await getF(PP);const ps=ex?ex.content:[];if(i<0||i>=ps.length)return;ps.splice(i,1);await putF(PP,ps,ex?ex.sha:null);toast('🗑️ Deleted');disPosts();loadAdminPosts();}
+  catch(e){toast('❌ Delete failed');}
+}
+
+// Admin Messages
+async function delMsg(i){
+  if(!confirm('Delete this message?'))return;
+  try{const ex=await getF(MP);const ms=ex?ex.content:[];if(i<0||i>=ms.length)return;ms.splice(i,1);await putF(MP,ms,ex?ex.sha:null);toast('🗑️ Deleted');disFM();disGB();loadAdminMsgs();}
+  catch(e){toast('❌ Delete failed');}
+}
+async function loadAdminMsgs(){
+  try{const ms=await loadMs();const c=document.getElementById('adminMsgs');
+  if(!ms||!ms.length){c.innerHTML='<div style="color:var(--text3);font-size:.75rem;padding:8px;">No messages</div>';return;}
+  c.innerHTML=ms.map((m,i)=>`<div style=\"display:flex;align-items:flex-start;gap:6px;padding:6px 8px;background:#FAFAFA;border-radius:8px;margin-bottom:4px;font-size:.75rem;\"><div style=\"flex:1;\"><strong>${esc(m.name)}</strong> <span style=\"color:#bbb;font-size:.65rem;\">${esc(m.time)}</span><br><span style=\"color:var(--text2);\">${esc(m.text)}</span></div><button class=\"ab red sm\" onclick=\"delMsg(${i})\">✕</button></div>`).join('');}
+  catch(e){document.getElementById('adminMsgs').innerHTML='<div style="color:#C62828;font-size:.75rem;">Load failed</div>';}
+}
+
+// Designs, Photos, About
+let dsData=[],phData=[];
+async function pubDesign(){
+  const t=document.getElementById('dsTitle').value.trim();const f=document.getElementById('dsImgs');
+  if(!t||!f.files.length){toast('Title and images required');return;}
+  try{
+    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
+    const ex=await getF(DP);const ds=ex?ex.content:[];ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
+    await putF(DP,ds,ex?ex.sha:null);setSt(true,'✅ Done!');
+    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();toast('🎨 Uploaded!');
+  }catch(e){setSt(false,'❌ Failed');}
+}
+async function disDesigns(){
+  try{const d=await getF(DP);dsData=d?d.content:[];const c=document.getElementById('designsGrid');
+  if(!dsData||!dsData.length){c.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有设计稿':'No designs yet')+'</div>';return;}
+  c.innerHTML=dsData.map(d=>`<div style=\"background:rgba(255,255,255,0.6);backdrop-filter:blur(8px);border-radius:12px;overflow:hidden;border:1px solid var(--card-border);\"><div style=\"aspect-ratio:4/3;overflow:hidden;background:#f5f5f5;\">${d.images&&d.images[0]?`<img src=\"${esc(d.images[0])}\" style=\"width:100%;height:100%;object-fit:cover;cursor:pointer;\" onclick=\"openLB(${JSON.stringify(d.images||[]).replace(/\"/g,'&quot;')},0)\">`:''}</div><div style=\"padding:8px 10px;font-size:.78rem;font-weight:500;\">${esc(d.title)}</div></div>`).join('');}
+  catch(e){}}
+async function pubPhotos(){
+  const f=document.getElementById('phImgs');if(!f.files.length){toast('Select photos');return;}
+  try{
+    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
+    const ex=await getF(PHP);const ph=ex?ex.content:[];urls.forEach(u=>ph.push({url:u,date:new Date().toISOString().slice(0,10)}));
+    await putF(PHP,ph,ex?ex.sha:null);setSt(true,'✅ Done!');
+    document.getElementById('phImgs').value='';disPhotos();toast('📸 Uploaded!');
+  }catch(e){setSt(false,'❌ Failed');}
+}
+async function disPhotos(){
+  try{const d=await getF(PHP);phData=d?d.content:[];const c=document.getElementById('photosGrid');
+  if(!phData||!phData.length){c.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有照片':'No photos yet')+'</div>';return;}
+  const allUrls=phData.map(p=>p.url);
+  c.innerHTML=phData.map((p,i)=>`<div style=\"border-radius:10px;overflow:hidden;border:1px solid var(--card-border);aspect-ratio:1;cursor:pointer;\" onclick=\"openLB(${JSON.stringify(allUrls).replace(/\"/g,'&quot;')},${i})\"><img src=\"${esc(p.url)}\" style=\"width:100%;height:100%;object-fit:cover;\"></div>`).join('');}
+  catch(e){}}
+async function saveAbout(){
+  const t=document.getElementById('abText').value.trim();if(!t){toast('Write something');return;}
+  try{const ex=await getF(AP);await putF(AP,{text:t},ex?ex.sha:null);setSt(true,'✅ About saved!');disAbout();toast('💾 Saved!');}
+  catch(e){setSt(false,'❌ Failed');}
+}
+async function disAbout(){
+  try{const d=await getF(AP);const c=document.getElementById('aboutContent');
+  if(d&&d.content&&d.content.text)c.innerHTML='<p style=\"color:var(--text2);font-size:.88rem;line-height:1.8;white-space:pre-wrap;\">'+esc(d.content.text)+'</p>';
+  else c.innerHTML='<p style=\"color:var(--text2);font-size:.88rem;line-height:1.8;\">'+(lang==='zh'?'Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。':'Akito Lau — Data analyst, independent musician, outdoor enthusiast. Graduated from Renmin University of China.')+'</p>';}
+  catch(e){}}
+
 // ===== INIT =====
-document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();openAdmin();});
-displayWorks();displayPosts();displayFloatingMessages();displayMessageList();
-const lms=JSON.parse(localStorage.getItem('local_msgs')||'[]');lms.forEach(m=>spawnFloatingMessage(m.name,m.text,m.time));
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='msgName'||a.id==='msgText'))postMessage();}if(e.key==='Escape')closeAdmin();});
+const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLang);
+document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();document.getElementById('adminOverlay').classList.add('show');const t=localStorage.getItem('gh_token');if(t)document.getElementById('admToken').value=t;const pt=gPT();if(pt)document.getElementById('pubToken').value=pt;if(t||pt)document.getElementById('setupTip').style.display='none';loadAdminAlbums();loadAdminPosts();loadAdminMsgs();});
+disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
+const lm=JSON.parse(localStorage.getItem('local_msgs')||'[]');lm.forEach(m=>spFm(m.name,m.text,m.time));
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='gbName'||a.id==='gbText'))postMsg();}if(e.key==='Escape')closeAdmin();});
 </script>
 </body>
 </html>
