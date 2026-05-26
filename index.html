@@ -57,7 +57,6 @@
   }
   .nav-links a:hover { background: var(--pink-light); color: var(--pink); }
 
-  /* ========== HERO ========== */
   .hero {
     min-height: 100vh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -101,7 +100,6 @@
   }
   .section-sub { font-size: 0.82rem; color: var(--text-light); margin-bottom: 28px; }
 
-  /* About */
   .about-card {
     background: white; border-radius: 24px; padding: 30px;
     box-shadow: 0 4px 20px var(--shadow); border: 2px solid var(--pink-light);
@@ -124,7 +122,6 @@
   .timeline-content { font-size: 0.85rem; color: var(--text); line-height: 1.5; }
   .timeline-content .label { font-weight: 700; }
 
-  /* Music */
   .music-section {
     background: linear-gradient(180deg, #FFF8F0 0%, #F3E5F5 100%);
     border-radius: 30px; padding: 50px 24px; margin: 0 -24px;
@@ -163,17 +160,38 @@
   .blog-post .post-date { font-size: 0.72rem; color: var(--pink); font-weight: 500; }
   .blog-post .post-title { font-size: 1.05rem; font-weight: 700; color: var(--brown); margin: 4px 0; }
   .blog-post .post-content { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; }
+  .blog-post .post-content img {
+    max-width: 100%; border-radius: 12px; margin: 8px 0;
+    border: 1px solid var(--pink-light);
+  }
   .blog-empty {
     text-align: center; padding: 40px; color: var(--text-light);
     background: white; border-radius: 18px;
     border: 2px dashed var(--pink-light);
   }
 
-  /* Guestbook Form */
   .guestbook-form-area {
     background: white; border-radius: 24px; padding: 30px;
     box-shadow: 0 4px 20px var(--shadow); border: 2px solid var(--pink-light);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+  }
+  /* Message list in guestbook */
+  .guestbook-msgs {
+    background: white; border-radius: 24px; padding: 24px 30px;
+    box-shadow: 0 4px 20px var(--shadow); border: 2px solid var(--pink-light);
+  }
+  .guestbook-msgs .gb-title {
+    font-size: 0.9rem; font-weight: 700; color: var(--brown); margin-bottom: 12px;
+  }
+  .gb-msg-list { display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; }
+  .gb-msg-item {
+    padding: 10px 14px; background: var(--cream); border-radius: 12px;
+    border-left: 3px solid var(--pink-light);
+  }
+  .gb-msg-item .gb-name { font-weight: 700; font-size: 0.8rem; color: var(--brown); }
+  .gb-msg-item .gb-time { font-size: 0.65rem; color: #bbb; margin-left: 6px; }
+  .gb-msg-item .gb-text { font-size: 0.82rem; color: var(--text-light); margin-top: 2px; }
+  .gb-empty { text-align: center; padding: 20px; color: var(--text-light); font-size: 0.8rem; }
   }
   .msg-form { display: flex; flex-direction: column; gap: 12px; }
   .msg-form input, .msg-form textarea {
@@ -193,7 +211,6 @@
   }
   .msg-form button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(247,168,184,0.4); }
 
-  /* Floating Messages */
   #float-container {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
@@ -203,7 +220,8 @@
     position: absolute; max-width: 220px;
     padding: 10px 14px; border-radius: 16px;
     font-size: 0.78rem; line-height: 1.5;
-    pointer-events: auto; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16, auto;
+    pointer-events: auto;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16, auto;
     background: white; border: 2px solid var(--pink-light);
     box-shadow: 0 4px 16px var(--shadow);
     animation: floatAnim linear infinite;
@@ -239,7 +257,7 @@
   .admin-overlay.show { display: flex; align-items: center; justify-content: center; }
   .admin-panel {
     background: white; border-radius: 24px; padding: 30px;
-    max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;
+    max-width: 550px; width: 90%; max-height: 85vh; overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   }
   .admin-panel h2 { font-size: 1.2rem; color: var(--brown); margin-bottom: 16px; }
@@ -247,7 +265,7 @@
     float: right; font-size: 1.3rem; cursor: pointer; color: var(--text-light);
     border: none; background: none;
   }
-  .admin-panel label { font-size: 0.82rem; font-weight: 600; color: var(--text); display: block; margin-top: 12px; margin-bottom: 4px; }
+  .admin-panel label { font-size: 0.82rem; font-weight: 600; color: var(--text); display: block; margin-top: 14px; margin-bottom: 4px; }
   .admin-panel input, .admin-panel textarea, .admin-panel select {
     width: 100%; padding: 10px 14px;
     border: 2px solid var(--pink-light); border-radius: 12px;
@@ -255,25 +273,25 @@
     background: var(--cream); outline: none;
   }
   .admin-panel input:focus, .admin-panel textarea:focus { border-color: var(--pink); }
-  .admin-panel textarea { min-height: 100px; resize: vertical; }
+  .admin-panel textarea { min-height: 80px; resize: vertical; }
   .admin-panel .admin-btn {
-    margin-top: 16px; padding: 10px 24px;
+    margin-top: 12px; padding: 10px 24px;
     background: linear-gradient(135deg, var(--pink), #EF9A9A);
     border: none; border-radius: 30px; color: white;
     font-size: 0.85rem; font-weight: 700; cursor: pointer;
     transition: transform 0.2s;
   }
   .admin-panel .admin-btn:hover { transform: translateY(-2px); }
-  .admin-panel .admin-btn.secondary {
-    background: linear-gradient(135deg, #CE93D8, #BA68C8);
-  }
+  .admin-panel .admin-btn.secondary { background: linear-gradient(135deg, #CE93D8, #BA68C8); }
+  .admin-panel .admin-btn.danger { background: linear-gradient(135deg, #EF9A9A, #E57373); }
+  .admin-panel .admin-btn.small { padding: 4px 12px; font-size: 0.72rem; margin: 0; margin-left: 6px; }
   .admin-panel .admin-status {
     margin-top: 12px; padding: 10px; border-radius: 10px;
     font-size: 0.8rem; display: none;
   }
   .admin-panel .admin-status.success { display: block; background: #E8F5E9; color: #388E3C; }
   .admin-panel .admin-status.error { display: block; background: #FFEBEE; color: #E53935; }
-  .admin-panel .admin-msgs { margin-top: 12px; }
+  .admin-panel .admin-msgs { margin-top: 12px; max-height: 200px; overflow-y: auto; }
   .admin-panel .admin-msg-item {
     padding: 8px 12px; background: var(--cream); border-radius: 10px;
     margin-bottom: 6px; font-size: 0.8rem;
@@ -281,13 +299,34 @@
   .admin-panel .admin-msg-item .am-name { font-weight: 700; color: var(--brown); }
   .admin-panel .admin-msg-item .am-text { color: var(--text-light); }
 
+  /* Admin - Post List */
+  .admin-post-list { margin-top: 10px; }
+  .admin-post-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; background: var(--cream); border-radius: 10px;
+    margin-bottom: 6px; font-size: 0.8rem;
+  }
+  .admin-post-item .ap-title { font-weight: 600; color: var(--brown); flex: 1; }
+  .admin-post-item .ap-date { color: var(--text-light); font-size: 0.7rem; margin-right: 8px; }
+
   .setup-banner {
     background: #FFF3E0; border: 1px solid #FFE082; border-radius: 12px;
     padding: 16px; margin-bottom: 16px; font-size: 0.82rem;
   }
   .setup-banner strong { color: #E65100; }
+  .setup-banner a { color: #1976D2; }
+  .setup-banner code { background: #FFF8E1; padding: 2px 6px; border-radius: 4px; font-size: 0.78rem; }
 
-  /* Footer */
+  .tab-bar { display: flex; gap: 4px; margin-bottom: 16px; }
+  .tab-btn {
+    padding: 6px 16px; border-radius: 20px; border: 1px solid var(--pink-light);
+    background: transparent; color: var(--text-light); font-size: 0.8rem;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .tab-btn.active { background: var(--pink); color: white; border-color: var(--pink); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
   footer {
     text-align: center; padding: 40px 20px; color: var(--text-light);
     font-size: 0.8rem; border-top: 2px solid var(--pink-light); background: white;
@@ -295,7 +334,6 @@
   footer .footer-cat { font-size: 2rem; margin-bottom: 6px; }
   footer a { color: var(--pink); text-decoration: none; }
 
-  /* Toast */
   .toast {
     position: fixed; bottom: 30px; left: 50%;
     transform: translateX(-50%) translateY(80px);
@@ -407,6 +445,14 @@
       <button onclick="postMessage()">✉️ 留下足迹</button>
     </div>
   </div>
+
+  <!-- Message List -->
+  <div class="guestbook-msgs">
+    <div class="gb-title">💬 全部留言</div>
+    <div class="gb-msg-list" id="gbMsgList">
+      <div class="gb-empty">还没有留言，来做第一个朋友吧 ✨</div>
+    </div>
+  </div>
 </section>
 
 <!-- Floating Messages -->
@@ -419,28 +465,53 @@
     <h2>🔐 管理面板</h2>
 
     <div class="setup-banner" id="setupBanner">
-      <strong>🔑 首次使用：</strong>需要生成一个 GitHub Token 才能使用管理功能。
+      <strong>🔑 首次使用：</strong>需要生成 GitHub Token
       <br><br>
-      <strong>步骤：</strong><br>
-      1. 打开 <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Token 设置页</a><br>
-      2. 点 "Generate new token" → "Fine-grained token"<br>
+      1. 打开 <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Token 设置</a><br>
+      2. Generate new token → Fine-grained token<br>
       3. Token name: <code>akitolau-site</code><br>
-      4. Repository access: <strong>Only select repositories</strong> → 选 <code>akitolau/akitolau.github.io</code><br>
+      4. Repository: <strong>Only select</strong> → <code>akitolau/akitolau.github.io</code><br>
       5. Permissions: Contents → <strong>Read and write</strong><br>
-      6. 生成后复制 Token，粘贴到下面 👇
+      6. 生成后复制 Token 粘贴到下面 👇
     </div>
 
-    <label>GitHub Token</label>
+    <label>🔑 GitHub Token</label>
     <input type="password" id="ghToken" placeholder="粘贴你的 GitHub Token">
     <button class="admin-btn secondary" onclick="saveToken()">💾 保存 Token</button>
 
-    <label>📝 写日志</label>
-    <input type="text" id="postTitle" placeholder="日志标题">
-    <textarea id="postContent" placeholder="写点什么吧...支持 Markdown 格式"></textarea>
-    <button class="admin-btn" onclick="publishPost()">📤 发布日志</button>
+    <!-- Tabs -->
+    <div class="tab-bar" style="margin-top:16px;">
+      <button class="tab-btn active" onclick="switchTab('write',this)">✍️ 写日志</button>
+      <button class="tab-btn" onclick="switchTab('manage',this)">📋 管理日志</button>
+      <button class="tab-btn" onclick="switchTab('msgs',this)">💬 留言</button>
+    </div>
 
-    <label>💬 查看留言（共 <span id="msgCount">0</span> 条）</label>
-    <div class="admin-msgs" id="adminMsgs"></div>
+    <!-- Tab: Write -->
+    <div class="tab-content active" id="tab-write">
+      <label>📝 日志标题</label>
+      <input type="text" id="postTitle" placeholder="标题">
+      <label>📷 图片链接（可选）</label>
+      <input type="url" id="postImage" placeholder="https://... 贴一张图片的链接">
+      <label>📄 正文内容</label>
+      <textarea id="postContent" placeholder="写点什么吧..." style="min-height:120px;"></textarea>
+      <button class="admin-btn" onclick="publishPost()">📤 发布日志</button>
+    </div>
+
+    <!-- Tab: Manage Posts -->
+    <div class="tab-content" id="tab-manage">
+      <label>已发布的日志（<span id="postCount">0</span> 篇）</label>
+      <div class="admin-post-list" id="adminPostList">
+        <div style="color:var(--text-light);font-size:0.8rem;">暂无日志</div>
+      </div>
+    </div>
+
+    <!-- Tab: Messages -->
+    <div class="tab-content" id="tab-msgs">
+      <label>朋友留言（共 <span id="msgCount">0</span> 条）</label>
+      <div class="admin-msgs" id="adminMsgs">
+        <div style="color:var(--text-light);font-size:0.8rem;">暂无留言</div>
+      </div>
+    </div>
 
     <div class="admin-status" id="adminStatus"></div>
   </div>
@@ -448,9 +519,10 @@
 
 <footer>
   <div class="footer-cat">🐱</div>
-  <p>© 2026 Akito Lau · Made with 💕</p>
+  <p>&copy; 2026 Akito Lau &middot; Made with &#128156;</p>
   <p style="font-size:0.75rem; margin-top:4px;">
-    Powered by GitHub Pages · <a href="https://music.163.com/#/artist?id=123805900" target="_blank">网易云音乐</a>
+    Powered by GitHub Pages &middot; 
+    <a href="https://music.163.com/#/artist?id=123805900" target="_blank">&#127926; 网易云音乐</a>
   </p>
 </footer>
 
@@ -463,6 +535,26 @@ const REPO_NAME = 'akitolau.github.io';
 const DATA_PATH = 'data/messages.json';
 const POSTS_PATH = 'data/posts.json';
 const BRANCH = 'main';
+
+// ========== UNICODE-SAFE BASE64 ==========
+function b64Encode(str) {
+  // Properly handle Unicode in base64
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function b64Decode(str) {
+  const binary = atob(str);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new TextDecoder().decode(bytes);
+}
 
 // ========== TOAST ==========
 function showToast(msg) {
@@ -480,35 +572,33 @@ catBtn.addEventListener('click', () => {
   catIdx = (catIdx + 1) % catFaces.length;
   catBtn.textContent = catFaces[catIdx];
 });
-// Secret admin entrance: double-click the logo
+// Secret admin: double-click logo
 document.getElementById('logoLink').addEventListener('dblclick', (e) => {
   e.preventDefault();
   openAdmin();
 });
 
-// ========== GITHUB API HELPERS ==========
+// ========== GITHUB API ==========
 async function ghFetch(url, options = {}) {
   const token = localStorage.getItem('gh_token');
   const headers = {
     'Accept': 'application/vnd.github.v3+json',
-    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+    ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
     ...options.headers
   };
   const res = await fetch(url, { ...options, headers });
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`GitHub API error ${res.status}: ${err.slice(0,200)}`);
+    throw new Error('GitHub API error ' + res.status + ': ' + err.slice(0,200));
   }
   return res.json();
 }
 
 async function getFileContent(path) {
   try {
-    const data = await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}?ref=${BRANCH}`);
-    return {
-      content: JSON.parse(atob(data.content)),
-      sha: data.sha
-    };
+    const data = await ghFetch('https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path + '?ref=' + BRANCH);
+    const decoded = b64Decode(data.content);
+    return { content: JSON.parse(decoded), sha: data.sha };
   } catch(e) {
     return null;
   }
@@ -519,17 +609,16 @@ async function updateFile(path, newContent, sha) {
   if (!token) throw new Error('No token');
   
   const body = {
-    message: `Update ${path}`,
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(newContent, null, 2)))),
+    message: 'Update ' + path,
+    content: b64Encode(JSON.stringify(newContent, null, 2)),
     branch: BRANCH,
-    ...(sha ? { sha } : {})
+    ...(sha ? { sha: sha } : {})
   };
   
-  const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
-  const res = await fetch(url, {
+  const res = await fetch('https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/contents/' + path, {
     method: 'PUT',
     headers: {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': 'Bearer ' + token,
       'Accept': 'application/vnd.github.v3+json',
       'Content-Type': 'application/json'
     },
@@ -537,7 +626,7 @@ async function updateFile(path, newContent, sha) {
   });
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Update failed: ${res.status} ${err.slice(0,200)}`);
+    throw new Error('Update failed: ' + res.status + ' ' + err.slice(0,200));
   }
   return res.json();
 }
@@ -545,9 +634,8 @@ async function updateFile(path, newContent, sha) {
 // ========== LOAD MESSAGES ==========
 async function loadMessages() {
   try {
-    const data = await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${DATA_PATH}?ref=${BRANCH}`);
-    const msgs = JSON.parse(atob(data.content));
-    return Array.isArray(msgs) ? msgs : [];
+    const data = await getFileContent(DATA_PATH);
+    return data ? data.content : [];
   } catch(e) {
     return [];
   }
@@ -575,16 +663,8 @@ function spawnFloatingMessage(name, text, timeStr) {
   const duration = 6 + Math.random() * 8;
   const size = 160 + Math.random() * 60;
   
-  el.style.cssText = `
-    left:${startX}%; top:${startY}%; width:${size}px;
-    background:${color}; animation-duration:${duration}s;
-    border-color:transparent;
-  `;
-  el.innerHTML = `
-    <div class="f-name">${animal} ${escHtml(name)}</div>
-    <div class="f-text">${escHtml(text)}</div>
-    <div class="f-time">${escHtml(timeStr)}</div>
-  `;
+  el.style.cssText = 'left:' + startX + '%; top:' + startY + '%; width:' + size + 'px; background:' + color + '; animation-duration:' + duration + 's; border-color:transparent;';
+  el.innerHTML = '<div class="f-name">' + animal + ' ' + escHtml(name) + '</div><div class="f-text">' + escHtml(text) + '</div><div class="f-time">' + escHtml(timeStr) + '</div>';
   container.appendChild(el);
   setTimeout(() => { if(el.parentNode) { el.style.opacity='0'; el.style.transition='opacity 1s'; setTimeout(()=>el.remove(),1000); } }, (duration+5)*1000);
 }
@@ -600,23 +680,21 @@ async function postMessage() {
   const now = new Date();
   const timeStr = now.toLocaleString('zh-CN', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
   
-  // Show locally immediately
   spawnFloatingMessage(name, text, timeStr);
   
-  // Try to save to GitHub
   try {
     const existing = await getFileContent(DATA_PATH);
     const msgs = existing ? existing.content : [];
     msgs.push({ name, text, time: timeStr });
-    const sha = existing ? existing.sha : null;
-    await updateFile(DATA_PATH, msgs, sha);
-    showToast('🎈 留言已保存！看它在屏幕上飘～');
+    await updateFile(DATA_PATH, msgs, existing ? existing.sha : null);
+    showToast('🎈 留言已保存！');
+    displayMessageList();
   } catch(e) {
-    // Save to localStorage as fallback
     const local = JSON.parse(localStorage.getItem('local_msgs') || '[]');
     local.push({ name, text, time: timeStr });
     localStorage.setItem('local_msgs', JSON.stringify(local));
-    showToast('💾 留言已保存（本地模式）。管理员同步后可见～');
+    showToast('💾 留言已保存（本地模式）');
+    displayMessageList();
   }
   
   document.getElementById('msgName').value = '';
@@ -626,9 +704,8 @@ async function postMessage() {
 // ========== LOAD BLOG POSTS ==========
 async function loadPosts() {
   try {
-    const data = await ghFetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${POSTS_PATH}?ref=${BRANCH}`);
-    const posts = JSON.parse(atob(data.content));
-    return Array.isArray(posts) ? posts : [];
+    const data = await getFileContent(POSTS_PATH);
+    return data ? data.content : [];
   } catch(e) {
     return [];
   }
@@ -644,13 +721,15 @@ async function displayPosts() {
   }
   
   list.innerHTML = posts.sort((a,b) => new Date(b.date) - new Date(a.date))
-    .map(p => `
-      <div class="blog-post">
-        <div class="post-date">📅 ${escHtml(p.date)}</div>
-        <div class="post-title">${escHtml(p.title)}</div>
-        <div class="post-content">${escHtml(p.content).replace(/\n/g, '<br>')}</div>
-      </div>
-    `).join('');
+    .map(p => {
+      const imgHtml = p.image ? '<img src="' + escHtml(p.image) + '" alt="' + escHtml(p.title) + '">' : '';
+      return '<div class="blog-post">'
+        + '<div class="post-date">📅 ' + escHtml(p.date) + '</div>'
+        + '<div class="post-title">' + escHtml(p.title) + '</div>'
+        + imgHtml
+        + '<div class="post-content">' + escHtml(p.content).replace(/\n/g, '<br>') + '</div>'
+        + '</div>';
+    }).join('');
 }
 
 // ========== ADMIN PANEL ==========
@@ -660,9 +739,10 @@ function openAdmin() {
   if (token) {
     document.getElementById('ghToken').value = token;
     document.getElementById('setupBanner').style.display = 'none';
-    loadAdminMessages();
+    refreshAdmin();
   }
 }
+
 function closeAdmin() {
   document.getElementById('adminOverlay').classList.remove('show');
 }
@@ -673,9 +753,14 @@ function saveToken() {
   localStorage.setItem('gh_token', token);
   document.getElementById('setupBanner').style.display = 'none';
   showToast('✅ Token 已保存！');
-  loadAdminMessages();
+  refreshAdmin();
 }
 
+async function refreshAdmin() {
+  await Promise.all([loadAdminMessages(), loadAdminPosts()]);
+}
+
+// Messages tab
 async function loadAdminMessages() {
   try {
     const msgs = await loadMessages();
@@ -685,21 +770,58 @@ async function loadAdminMessages() {
       container.innerHTML = '<div style="color:var(--text-light);font-size:0.8rem;padding:10px;">暂无留言</div>';
       return;
     }
-    container.innerHTML = msgs.slice().reverse().map(m => `
-      <div class="admin-msg-item">
-        <span class="am-name">${escHtml(m.name)}</span>
-        <span style="font-size:0.65rem;color:#bbb;margin-left:6px;">${escHtml(m.time)}</span>
-        <br><span class="am-text">${escHtml(m.text)}</span>
-      </div>
-    `).join('');
+    container.innerHTML = msgs.slice().reverse().map(m => 
+      '<div class="admin-msg-item"><span class="am-name">' + escHtml(m.name) + '</span>'
+      + '<span style="font-size:0.65rem;color:#bbb;margin-left:6px;">' + escHtml(m.time) + '</span><br>'
+      + '<span class="am-text">' + escHtml(m.text) + '</span></div>'
+    ).join('');
   } catch(e) {
     document.getElementById('adminMsgs').innerHTML = '<div style="color:#E53935;font-size:0.8rem;">加载失败：' + e.message + '</div>';
+  }
+}
+
+// Posts management tab
+async function loadAdminPosts() {
+  try {
+    const posts = await loadPosts();
+    document.getElementById('postCount').textContent = posts.length;
+    const container = document.getElementById('adminPostList');
+    if (posts.length === 0) {
+      container.innerHTML = '<div style="color:var(--text-light);font-size:0.8rem;">暂无日志</div>';
+      return;
+    }
+    container.innerHTML = posts.map((p, idx) => 
+      '<div class="admin-post-item">'
+      + '<span class="ap-title">' + escHtml(p.title) + '</span>'
+      + '<span class="ap-date">' + escHtml(p.date) + '</span>'
+      + '<button class="admin-btn small danger" onclick="deletePost(' + idx + ')">删除</button>'
+      + '</div>'
+    ).join('');
+  } catch(e) {
+    document.getElementById('adminPostList').innerHTML = '<div style="color:#E53935;font-size:0.8rem;">加载失败：' + e.message + '</div>';
+  }
+}
+
+async function deletePost(index) {
+  if (!confirm('确定要删除这篇日志吗？')) return;
+  try {
+    const existing = await getFileContent(POSTS_PATH);
+    const posts = existing ? existing.content : [];
+    if (index < 0 || index >= posts.length) return;
+    posts.splice(index, 1);
+    await updateFile(POSTS_PATH, posts, existing ? existing.sha : null);
+    showToast('🗑️ 日志已删除');
+    loadAdminPosts();
+    displayPosts();
+  } catch(e) {
+    showToast('❌ 删除失败：' + e.message);
   }
 }
 
 async function publishPost() {
   const title = document.getElementById('postTitle').value.trim();
   const content = document.getElementById('postContent').value.trim();
+  const image = document.getElementById('postImage').value.trim();
   if (!title || !content) { showToast('标题和内容都要填哦～'); return; }
   
   const status = document.getElementById('adminStatus');
@@ -709,33 +831,81 @@ async function publishPost() {
     const posts = existing ? existing.content : [];
     const now = new Date();
     const dateStr = now.toLocaleString('zh-CN', { year:'numeric', month:'2-digit', day:'2-digit' });
-    posts.push({ title, content, date: dateStr });
-    const sha = existing ? existing.sha : null;
-    await updateFile(POSTS_PATH, posts, sha);
+    
+    const post = { title, content, date: dateStr };
+    if (image) post.image = image;
+    posts.push(post);
+    
+    await updateFile(POSTS_PATH, posts, existing ? existing.sha : null);
     
     status.className = 'admin-status success';
     status.textContent = '✅ 日志发布成功！';
     document.getElementById('postTitle').value = '';
     document.getElementById('postContent').value = '';
+    document.getElementById('postImage').value = '';
     displayPosts();
+    loadAdminPosts();
     showToast('📝 日志已发布！');
+    setTimeout(() => { status.className = 'admin-status'; }, 3000);
   } catch(e) {
     status.className = 'admin-status error';
     status.textContent = '❌ 发布失败：' + e.message;
   }
 }
 
+// ========== TAB SWITCHING ==========
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'manage') loadAdminPosts();
+  if (name === 'msgs') loadAdminMessages();
+}
+
+// ========== DISPLAY MESSAGE LIST ==========
+async function displayMessageList() {
+  const container = document.getElementById('gbMsgList');
+  try {
+    const msgs = await loadMessages();
+    if (msgs.length === 0) {
+      container.innerHTML = '<div class="gb-empty">还没有留言，来做第一个朋友吧 ✨</div>';
+      return;
+    }
+    container.innerHTML = msgs.slice().reverse().map(m =>
+      '<div class="gb-msg-item">'
+      + '<span class="gb-name">' + escHtml(m.name) + '</span>'
+      + '<span class="gb-time">' + escHtml(m.time) + '</span>'
+      + '<div class="gb-text">' + escHtml(m.text) + '</div>'
+      + '</div>'
+    ).join('');
+  } catch(e) {
+    // Fallback to local messages
+    const local = JSON.parse(localStorage.getItem('local_msgs') || '[]');
+    if (local.length === 0) {
+      container.innerHTML = '<div class="gb-empty">还没有留言，来做第一个朋友吧 ✨</div>';
+      return;
+    }
+    container.innerHTML = local.slice().reverse().map(m =>
+      '<div class="gb-msg-item">'
+      + '<span class="gb-name">' + escHtml(m.name) + '</span>'
+      + '<span class="gb-time">' + escHtml(m.time) + '</span>'
+      + '<div class="gb-text">' + escHtml(m.text) + '</div>'
+      + '</div>'
+    ).join('');
+  }
+}
+
 // ========== INIT ==========
 displayPosts();
 displayFloatingMessages();
+displayMessageList();
 
-// Also load local messages & try to sync
+// Load local fallback messages
 const localMsgs = JSON.parse(localStorage.getItem('local_msgs') || '[]');
-if (localMsgs.length > 0) {
-  localMsgs.forEach(m => spawnFloatingMessage(m.name, m.text, m.time));
-}
+localMsgs.forEach(m => spawnFloatingMessage(m.name, m.text, m.time));
 
-// Keyboard shortcut for admin
+// Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
     const active = document.activeElement;
