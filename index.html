@@ -4,6 +4,7 @@
 <meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
 <meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <title>Akito Lau</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -216,6 +217,39 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .tst{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1D1D1F;color:white;padding:10px 22px;border-radius:30px;font-size:.8rem;opacity:0;transition:all .4s;z-index:3000;pointer-events:none;}
 .tst.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
+/* About - Profile */
+.about-top{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:24px;}
+.about-photo-wrap{flex-shrink:0;width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid white;box-shadow:0 4px 16px rgba(0,0,0,0.08);background:#f5f5f7;cursor:pointer;transition:transform .3s;}
+.about-photo-wrap:hover{transform:scale(1.03);}
+.about-photo-wrap img{width:100%;height:100%;object-fit:cover;}
+.about-photo-wrap .ph-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:var(--text3);}
+.about-intro{flex:1;min-width:220px;}
+.about-intro .poetic-text{font-size:.88rem;line-height:1.8;color:var(--text2);white-space:pre-wrap;}
+
+/* Resume Timeline */
+.resume-section{margin-top:20px;}
+.resume-section .rs-title{font-size:1rem;font-weight:700;margin-bottom:14px;letter-spacing:-0.02em;display:flex;align-items:center;gap:8px;}
+.resume-timeline{position:relative;padding-left:28px;}
+.resume-timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:linear-gradient(180deg,var(--pink),var(--grad2),var(--grad3));border-radius:2px;}
+.rt-item{position:relative;padding:0 0 18px 16px;}
+.rt-item:last-child{padding-bottom:0;}
+.rt-item::before{content:'';position:absolute;left:-22px;top:6px;width:12px;height:12px;border-radius:50%;background:white;border:2.5px solid var(--pink2);z-index:1;transition:all .2s;}
+.rt-item:hover::before{background:var(--pink2);transform:scale(1.2);}
+.rt-item.work::before{border-color:var(--blue);}
+.rt-item.work:hover::before{background:var(--blue);}
+.rt-item.edu::before{border-color:var(--green);}
+.rt-item.edu:hover::before{background:var(--green);}
+.rt-item.paper::before{border-color:var(--grad2);}
+.rt-item.paper:hover::before{background:var(--grad2);}
+.rt-period{font-size:.68rem;color:var(--text3);font-weight:500;margin-bottom:1px;}
+.rt-title{font-size:.85rem;font-weight:600;color:var(--text);}
+.rt-company{font-size:.78rem;color:var(--text2);}
+.rt-dot{margin:0 4px;color:var(--text3);}
+
+/* Map */
+.resume-map-wrap{margin-top:18px;border-radius:14px;overflow:hidden;border:1px solid var(--card-border);height:220px;}
+.resume-map-wrap .leaflet-container{height:100%;width:100%;border-radius:14px;}
+
 /* Sidebar toggle animation for hamburger */
 .ham-open .hamburger{opacity:.6;}
 
@@ -367,13 +401,20 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
   <div class="section-wrap">
     <div class="section-title" data-i18n="about.title">🧸 关于我</div>
     <div id="aboutContent">
-      <p style="color:var(--text2);font-size:.88rem;line-height:1.8;" data-i18n="about.default">Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。</p>
-    </div>
-    <div style="margin-top:16px;">
-      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2026</span><span style="color:var(--text2);">完美中国 · 数据与AI</span></div>
-      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2025-2026</span><span style="color:var(--text2);">华为 · 零售与渠道</span></div>
-      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--card-border);font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2023-2025</span><span style="color:var(--text2);">人大 · 金融硕士</span></div>
-      <div class="timeline-item" style="display:flex;gap:10px;padding:6px 0;font-size:.82rem;"><span style="min-width:80px;font-weight:600;color:var(--pink2);">2019-2023</span><span style="color:var(--text2);">人大 · 管理学学士</span></div>
+      <div class="about-top">
+        <div class="about-photo-wrap" id="aboutPhotoWrap">
+          <div class="ph-placeholder" id="aboutPhotoPlaceholder">📷</div>
+          <img id="aboutPhotoImg" style="display:none;" alt="Akito Lau">
+        </div>
+        <div class="about-intro">
+          <p class="poetic-text" id="aboutPoeticText" data-i18n="about.default">Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。</p>
+        </div>
+      </div>
+      <div class="resume-section" id="resumeSection">
+        <div class="rs-title" data-i18n="about.resume">📋 履历</div>
+        <div class="resume-timeline" id="resumeTimeline"></div>
+        <div class="resume-map-wrap" id="resumeMapWrap"><div id="resumeMap" style="height:220px;"></div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -485,9 +526,23 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
       <!-- About admin -->
       <div class="atc" id="at-about">
         <div class="atc-inner">
-          <label>关于我 (支持多行文字)</label>
-          <textarea id="abText" style="min-height:100px;" placeholder="写写关于你自己的介绍..."></textarea>
-          <button class="ab blue" onclick="saveAbout()">💾 保存</button>
+          <label>📸 证件照</label>
+          <input type="file" id="abPhoto" accept="image/*">
+          <div style="font-size:.72rem;color:var(--text3);margin:2px 0;">上传后将自动更新</div>
+          <label>📝 诗意简介 (支持多行)</label>
+          <textarea id="abText" style="min-height:80px;" placeholder="写写关于你自己的诗意介绍..."></textarea>
+          <button class="ab blue" onclick="saveAbout()">💾 保存简介</button>
+
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--card-border);">
+            <label>📋 履历管理</label>
+            <div style="font-size:.72rem;color:var(--text3);margin-bottom:8px;">每行一条：年份 | 职位 | 公司/学校 | 城市 | 类型(work/edu/paper)</div>
+            <textarea id="abResume" style="min-height:140px;font-size:.75rem;font-family:'SF Mono','Menlo',monospace;" placeholder="2026 | 数据分析师 | 完美中国 | 广东中山 | work
+2025 | 零售与渠道 | 华为 | 吉林 | work
+2023 | 金融硕士 | 中国人民大学（苏州） | 苏州 | edu
+2019 | 管理学学士 | 中国人民大学 | 北京 | edu
+2022 | 某某论文 | 题目名称 | 北京 | paper"></textarea>
+            <button class="ab blue" onclick="saveResume()">💾 保存履历</button>
+          </div>
         </div>
       </div>
 
@@ -847,14 +902,155 @@ async function disPhotos(){
   catch(e){}}
 async function saveAbout(){
   const t=document.getElementById('abText').value.trim();if(!t){toast('Write something');return;}
-  try{const ex=await getF(AP);await putF(AP,{text:t},ex?ex.sha:null);setSt(true,'✅ About saved!');disAbout();toast('💾 Saved!');}
-  catch(e){setSt(false,'❌ Failed');}
+  const photoFile=document.getElementById('abPhoto').files[0];
+  try{
+    let photoUrl=null;
+    if(photoFile){
+      const b64=await readF(photoFile);
+      const fn='about_'+Date.now()+'.jpg';
+      photoUrl=await upFile(fn,b64);
+    }
+    const ex=await getF(AP);
+    const cur=ex&&ex.content?ex.content:{};
+    const data={text:t,photo:photoUrl||cur.photo||null,resume:cur.resume||[]};
+    await putF(AP,data,ex?ex.sha:null);
+    setSt(true,'✅ About saved!');disAbout();
+    if(photoFile){document.getElementById('abPhoto').value='';}
+    toast('💾 Saved!');
+  }catch(e){setSt(false,'❌ Failed: '+e.message);}
 }
+
+async function saveResume(){
+  const text=document.getElementById('abResume').value.trim();
+  if(!text){toast('至少输入一条履历');return;}
+  const lines=text.split('\n').filter(l=>l.trim());
+  const resume=[];
+  for(const line of lines){
+    const parts=line.split('|').map(s=>s.trim());
+    if(parts.length>=4){
+      resume.push({
+        period:parts[0],title:parts[1],
+        company:parts[2],city:parts[3],
+        type:parts[4]||'work'
+      });
+    }
+  }
+  if(!resume.length){toast('格式有误，请检查');return;}
+  try{
+    const ex=await getF(AP);
+    const cur=ex&&ex.content?ex.content:{};
+    const data={text:cur.text||'Akito Lau',photo:cur.photo||null,resume};
+    await putF(AP,data,ex?ex.sha:null);
+    setSt(true,'✅ Resume saved!');disAbout();toast('📋 Resume saved!');
+  }catch(e){setSt(false,'❌ Failed: '+e.message);}
+}
+
+// City → coordinates for map
+const cityCoords={
+  '北京':[39.9042,116.4074],
+  '苏州':[31.2990,120.5853],
+  '上海':[31.2304,121.4737],
+  '深圳':[22.5431,114.0579],
+  '广东中山':[22.5197,113.3930],
+  '中山':[22.5197,113.3930],
+  '吉林':[43.8379,126.5496]
+};
+
+let _aboutMap=null;
 async function disAbout(){
-  try{const d=await getF(AP);const c=document.getElementById('aboutContent');
-  if(d&&d.content&&d.content.text)c.innerHTML='<p style=\"color:var(--text2);font-size:.88rem;line-height:1.8;white-space:pre-wrap;\">'+esc(d.content.text)+'</p>';
-  else c.innerHTML='<p style=\"color:var(--text2);font-size:.88rem;line-height:1.8;\">'+(lang==='zh'?'Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。':'Akito Lau — Data analyst, independent musician, outdoor enthusiast. Graduated from Renmin University of China.')+'</p>';}
-  catch(e){}}
+  try{
+    const d=await getF(AP);
+    const data=d&&d.content?d.content:null;
+    // Poetic text
+    const tp=document.getElementById('aboutPoeticText');
+    if(data&&data.text)tp.textContent=data.text;
+    else tp.textContent=lang==='zh'?'Akito Lau — 数据分析师、独立音乐人、户外爱好者。毕业于中国人民大学。':'Akito Lau — Data analyst, independent musician, outdoor enthusiast. Graduated from Renmin University of China.';
+
+    // Photo
+    const ph=document.getElementById('aboutPhotoImg');
+    const pl=document.getElementById('aboutPhotoPlaceholder');
+    if(data&&data.photo){
+      ph.src=data.photo;ph.style.display='block';
+      pl.style.display='none';
+    }else{
+      ph.style.display='none';
+      pl.style.display='flex';
+    }
+
+    // Resume timeline
+    const rt=document.getElementById('resumeTimeline');
+    const resume=data&&data.resume&&data.resume.length?data.resume:getDefaultResume();
+    rt.innerHTML=resume.map(r=>{
+      const icons={work:'💼',edu:'🎓',paper:'📄'};
+      return `<div class="rt-item ${r.type||'work'}">
+        <div class="rt-period">${esc(r.period)}</div>
+        <div class="rt-title">${icons[r.type]||'💼'} ${esc(r.title)}</div>
+        <div class="rt-company">${esc(r.company)}<span class="rt-dot">·</span>${esc(r.city)}</div>
+      </div>`;
+    }).join('');
+
+    // Map
+    renderResumeMap(resume);
+
+    // Load admin text if admin available
+    const admT=document.getElementById('abText');
+    if(admT&&data&&data.text)admT.value=data.text;
+    const admR=document.getElementById('abResume');
+    if(admR&&resume.length){
+      admR.value=resume.map(r=>`${r.period} | ${r.title} | ${r.company} | ${r.city} | ${r.type||'work'}`).join('\n');
+    }
+  }catch(e){console.log('About load error:',e);}
+}
+
+function getDefaultResume(){
+  return [
+    {period:'2026',title:'数据分析师',company:'完美中国',city:'广东中山',type:'work'},
+    {period:'2025',title:'零售与渠道',company:'华为',city:'吉林',type:'work'},
+    {period:'2023-2025',title:'金融硕士',company:'中国人民大学（苏州）',city:'苏州',type:'edu'},
+    {period:'2019-2023',title:'管理学学士',company:'中国人民大学',city:'北京',type:'edu'},
+  ];
+}
+
+function renderResumeMap(resume){
+  const container=document.getElementById('resumeMap');
+  if(!container)return;
+  // Gather unique cities
+  const cities=[];
+  const seen=new Set();
+  for(const r of resume){
+    if(!seen.has(r.city)){
+      seen.add(r.city);
+      const coords=cityCoords[r.city];
+      if(coords)cities.push({name:r.city,lat:coords[0],lng:coords[1],items:[r]});
+      else{cities.push({name:r.city,custom:true,items:[r]});}
+    }else{
+      const c=cities.find(c=>c.name===r.city);
+      if(c)c.items.push(r);
+    }
+  }
+  // Destroy old map
+  if(_aboutMap){_aboutMap.remove();_aboutMap=null;}
+  container.innerHTML='';
+  // If no known coords, hide map
+  const known=cities.filter(c=>!c.custom);
+  if(!known.length){document.getElementById('resumeMapWrap').style.display='none';return;}
+  document.getElementById('resumeMapWrap').style.display='block';
+  _aboutMap=L.map(container).setView([31.5,114],5);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',
+    maxZoom:12,minZoom:4
+  }).addTo(_aboutMap);
+  // Pins
+  const colors={work:'#007AFF',edu:'#34C759',paper:'#C084FC'};
+  known.forEach(c=>{
+    const icon=L.divIcon({
+      html:`<div style="background:${colors[c.items[0].type]||'#007AFF'};color:white;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.2);border:2px solid white;">${c.items.length}</div>`,
+      className:'',iconSize:[28,28],iconAnchor:[14,14]
+    });
+    const popup=c.items.map(r=>`<strong>${esc(r.title)}</strong><br><span style="color:#666;font-size:.78rem;">${esc(r.company)} · ${r.period}</span>`).join('<hr style="margin:3px 0;">');
+    L.marker([c.lat,c.lng],{icon}).addTo(_aboutMap).bindPopup(`<div style="font-size:.8rem;">${popup}</div>`);
+  });
+}
 
 // ===== INIT =====
 const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLang);
@@ -864,5 +1060,6 @@ disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disD
 const lm=JSON.parse(localStorage.getItem('local_msgs')||'[]');lm.forEach(m=>spFm(m.name,m.text,m.time));
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='gbName'||a.id==='gbText'))postMsg();}if(e.key==='Escape')closeAdmin();});
 </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
