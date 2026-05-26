@@ -9,5 +9,13 @@
     "content": "喵！",
     "date": "2026/05/26",
     "image": "https://share.google/wJCfHHbZb3Hvq3fcg"
+  },
+  {
+    "title": "测试一下文件～",
+    "content": "test test",
+    "date": "2026/05/26",
+    "images": [
+      "https://raw.githubusercontent.com/akitolau/akitolau.github.io/main/images/1779788196003_wallpaper.jpeg"
+    ]
   }
 ]
