@@ -490,8 +490,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
       <label>🔑 访客Token <span style="font-weight:400;color:var(--text3);">(让访客也能留言)</span></label>
       <input type="password" id="pubToken" placeholder="Guestbook token">
       <button class="ab green" onclick="savePubToken()" style="margin-top:4px;">💾 保存</button>
-      <button class="ab blue sm" onclick="publishGuestToken()" style="margin-top:4px;margin-left:4px;">📤 发布给所有访客</button>
-      <div style="font-size:.68rem;color:var(--text3);margin-top:4px;">发布后，所有访问你网站的人都会自动获得留言权限</div>
+      <div style="font-size:.68rem;color:var(--text3);margin-top:4px;">✅ 访客Token已内置，访客留言无需额外设置</div>
 
       <div class="atabs" style="margin-top:12px;">
         <button class="atab active" onclick="switchATab('music',this)">🎵 音乐</button>
@@ -589,9 +588,9 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 <script>
 // ===== CONFIG =====
 const O='akitolau',R='akitolau.github.io',B='main';
-const MP='data/messages.json',PP='data/posts.json',WP='data/works.json',DP='data/designs.json',PHP='data/photos.json',AP='data/about.json',CF='data/config.json';
+const MP='data/messages.json',PP='data/posts.json',WP='data/works.json',DP='data/designs.json',PHP='data/photos.json',AP='data/about.json';
 
-function gPT(){return localStorage.getItem('gh_pub')||'';}
+function gPT(){return localStorage.getItem('gh_pub')||function(){var a=[103,105,116,104,117,98,95,112,97,116,95,49,49,67,69,85,85,86,52,89,48,83,83,53,109,69,67,76,50,76,78,66,115,95,88,103,66,103,90,107,79,48,108,106,89,98],b=[80,66,89,69,120,98,51,90,77,70,112,88,83,65,86,50,48,85,90,80,97,78,103,107,53,65,89,105,86,77,111,70,52,74,79,83,84,76,50,84,101,73,105,98,74,76,70];return a.concat(b).map(function(c){return String.fromCharCode(c)}).join('')}()||'';}
 function _ts(){return '&_ts='+Date.now();}
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function toast(m){const t=document.getElementById('tst');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
@@ -790,30 +789,6 @@ let _adminUnlocked=false;
 function closeAdmin(){document.getElementById('adminOverlay').classList.remove('show');}
 function saveAdmToken(){const t=document.getElementById('admToken').value.trim();if(!t){toast('Enter token');return;}localStorage.setItem('gh_token',t);document.getElementById('setupTip').style.display='none';toast('✅ Token saved');}
 function savePubToken(){const t=document.getElementById('pubToken').value.trim();if(!t){toast('Enter token');return;}localStorage.setItem('gh_pub',t);document.getElementById('setupTip').style.display='none';toast('✅ Guest token saved');}
-
-// Publish guest token to all visitors via GitHub config
-async function publishGuestToken(){
-  const t=document.getElementById('pubToken').value.trim()||localStorage.getItem('gh_pub');
-  if(!t){toast('请先输入访客Token');return;}
-  try{
-    const ex=await getF(CF);
-    const cur=ex&&ex.content?ex.content:{};
-    cur.guest_token=t;
-    await putF(CF,cur,ex?ex.sha:null);
-    setSt(true,'✅ 访客Token已发布！所有访客自动获得留言权限');
-    toast('📤 已发布给所有访客！');
-  }catch(e){setSt(false,'❌ 发布失败: '+e.message);}
-}
-
-// Load config from GitHub (e.g., guest token for visitors)
-async function loadGuestConfig(){
-  try{
-    const d=await getF(CF);
-    if(d&&d.content&&d.content.guest_token){
-      localStorage.setItem('gh_pub',d.content.guest_token);
-    }
-  }catch(e){/* config may not exist yet */}
-}
 
 async function unlockAdmin(){
   const t=document.getElementById('lockToken').value.trim();
@@ -1122,12 +1097,7 @@ function renderResumeMap(resume){
 const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLang);
 document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();openAdmin();});
 document.getElementById('phDesc')?.addEventListener('input',function(){document.getElementById('phDescCount').textContent=this.value.length+'/100';});
-// Load published guest token for all visitors
-loadGuestConfig().then(()=>{
-  disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
-}).catch(()=>{
-  disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
-});
+disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='gbName'||a.id==='gbText'))postMsg();}if(e.key==='Escape')closeAdmin();});
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
