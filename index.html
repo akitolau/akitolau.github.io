@@ -631,7 +631,7 @@ function toast(m){const t=document.getElementById('tst');t.textContent=m;t.class
 function b64E(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
 function b64D(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
 
-function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||'';}
+function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||gPT()||'';}
 
 async function ghF(url,opts={}){
   const t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
