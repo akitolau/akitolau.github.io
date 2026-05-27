@@ -542,7 +542,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
           <label>故事</label><textarea id="aStory" style="min-height:50px;"></textarea>
           <label>图片 (封面自动取第一张)</label><input type="file" id="aImgs" accept="image/*" multiple onchange="prevAImgs(event)">
           <div class="iprev" id="aImgPrev"></div>
-          <label>下载文件 (PDF/DOCX/图片)</label><input type="file" id="aFiles" accept=".pdf,.docx,.jpg,.jpeg,.png" multiple onchange="previewAFiles(event)">
+          <label>下载文件</label><input type="file" id="aFiles" multiple onchange="previewAFiles(event)">
           <div style="font-size:.7rem;color:var(--text3);margin:2px 0;" id="aFileNames">未选择文件</div>
           <button class="ab blue" onclick="pubAlbum()">📤 发布专辑</button>
           <div id="aList" style="margin-top:10px;"></div>
@@ -651,7 +651,7 @@ async function putF(path,c,sha,pt){
 async function upFile(name,data,tok){
   const t=tok||getTok();if(!t)throw new Error('No token');
   const d=data.includes('base64,')?data.split('base64,')[1]:data;
-  const folder=name.match(/\.(pdf|docx)$/i)?'downloads':'images';
+  const folder=name.match(/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico|tiff?)$/i)?'images':'downloads';
   let sha=null;try{const ex=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}?ref=${B}`);sha=ex.sha;}catch(e1){}
   const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
   if(!r.ok)throw new Error('Upload fail');return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
@@ -800,7 +800,7 @@ async function disAlbums(containerId){
   if(!ws||!ws.length){c.innerHTML='<div style="color:var(--text3);font-size:.8rem;text-align:center;padding:20px;">No albums yet</div>';return;}
   c.innerHTML=ws.map(w=>{
     const g=w.images&&w.images.length?`<div class=\"post-gal\">${w.images.map((img,i)=>`<img src=\"${esc(img)}\" onclick=\"openLB(${JSON.stringify(w.images).replace(/\"/g,'&quot;')},${i})\">`).join('')}</div>`:'';
-    const dl=w.downloads&&w.downloads.length?`<div style=\"display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;\">${w.downloads.map(d=>`<a href=\"${esc(d.url)}\" target=\"_blank\" style=\"display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:14px;font-size:.7rem;font-weight:500;background:rgba(255,255,255,0.7);border:1px solid var(--card-border);color:var(--text);text-decoration:none;\">📥 ${esc(d.name)}</a>`).join('')}</div>`:'';
+    const dl=w.downloads&&w.downloads.length?(()=>{const imgs=w.downloads.filter(d=>d.name.match(/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico|tiff?)$/i));const docs=w.downloads.filter(d=>!d.name.match(/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico|tiff?)$/i));let h='';if(imgs.length)h+=`<div style=\"display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;\">${imgs.map(d=>`<a href=\"${esc(d.url)}\" target=\"_blank\" style=\"display:block;\"><img src=\"${esc(d.url)}\" style=\"height:100px;width:auto;border-radius:8px;object-fit:cover;border:1px solid var(--card-border);\"></a>`).join('')}</div>`;if(docs.length)h+=`<div style=\"margin-top:6px;\">${docs.map(d=>`<div style=\"padding:2px 0;\"><a href=\"${esc(d.url)}\" target=\"_blank\" style=\"display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:14px;font-size:.7rem;font-weight:500;background:rgba(255,255,255,0.7);border:1px solid var(--card-border);color:var(--text);text-decoration:none;\">📥 ${esc(d.name)}</a></div>`).join('')}</div>`;return h;})():'';
     const cv=w.cover?`<img class=\"album-cv\" src=\"${esc(w.cover)}\">`:`<div class=\"album-cv\" style=\"display:flex;align-items:center;justify-content:center;font-size:2rem;\">🎵</div>`;
     return `<div class=\"album-c\"><div class=\"album-h\">${cv}<div class=\"album-i\"><h4>${esc(w.title)}</h4>${w.tag?`<span class=\"tag\">${esc(w.tag)}</span>`:''}${w.story?`<p>${esc(w.story)}</p>`:''}</div></div>${g}${dl}</div>`;
   }).join('');
@@ -874,31 +874,62 @@ function switchATab(n,btn){
 function setSt(s,m){const e=document.getElementById('admStatus');e.className='ast '+(s?'ok':'er');e.textContent=m;e.style.display='block';setTimeout(()=>{e.style.display='none';},4000);}
 
 // Admin Albums
-let pAImg=[],pAFiles=[];
+let pAImg=[],pAFiles=[],editingAlbumIndex=null;
 function prevAImgs(e){pAImg=[];const c=document.getElementById('aImgPrev');c.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pAImg.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip';d.innerHTML=`<img src=\"${ev.target.result}\">`;c.appendChild(d);};r.readAsDataURL(f);}}
-function previewAFiles(e){pAFiles=[];const ns=[];for(const f of e.target.files)ns.push(f.name);pAFiles=Array.from(e.target.files);document.getElementById('aFileNames').textContent=ns.length?'📎 '+ns.join(', '):'No files';}
+function previewAFiles(e){pAFiles=[];const ns=[];for(const f of e.target.files){const ext=f.name.split('.').pop().toLowerCase();const icon=['png','jpg','jpeg','gif','webp','svg'].includes(ext)?'🖼️':'📄';ns.push(`<span style="display:block;padding:2px 0;">${icon} ${f.name} (${(f.size/1024).toFixed(1)}KB)</span>`);}pAFiles=Array.from(e.target.files);document.getElementById('aFileNames').innerHTML=ns.length?ns.join(''):'未选择文件';}
 async function pubAlbum(){
   const t=document.getElementById('aTitle').value.trim(),tag=document.getElementById('aTag').value.trim(),story=document.getElementById('aStory').value.trim();
   if(!t){toast('Title required');return;}
+  const btn=document.querySelector('#at-music .ab.blue');btn.disabled=true;btn.textContent='⏳ 发布中...';
   try{
     const urls=[];for(const p of pAImg){try{const u=await upFile(p.name,p.base64);urls.push(u);}catch(e){toast('⚠️ Image upload fail');}}
     const fUrls=[];for(const f of pAFiles){try{const b=await readF(f);const fn=Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);fUrls.push({name:f.name,url:u});}catch(e){toast('⚠️ File upload fail');}}
-    const ex=await getF(WP);const ws=ex?ex.content:[];ws.push({title:t,tag,story,cover:urls.length?urls[0]:null,images:urls,downloads:fUrls});
+    const ex=await getF(WP);const ws=ex?ex.content:[];
+    if(editingAlbumIndex!==null){
+      const old=ws[editingAlbumIndex];
+      ws[editingAlbumIndex]={title:t,tag,story,cover:urls.length?urls[0]:old.cover,images:urls.length?urls:old.images||[],downloads:[...(old.downloads||[]),...fUrls]};
+    }else{
+      ws.push({title:t,tag,story,cover:urls.length?urls[0]:null,images:urls,downloads:fUrls});
+    }
     await putF(WP,ws,ex?ex.sha:null);
-    setSt(true,'✅ Album published!');document.getElementById('aTitle').value='';document.getElementById('aTag').value='';document.getElementById('aStory').value='';document.getElementById('aImgs').value='';document.getElementById('aFiles').value='';document.getElementById('aImgPrev').innerHTML='';document.getElementById('aFileNames').textContent='No files';pAImg=[];pAFiles=[];
+    setSt(true,'✅ Album published!');cancelEdit();editingAlbumIndex=null;
     disAlbums('homeAlbums');disAlbums('musicAlbums');loadAdminAlbums();toast('📀 Published!');
   }catch(e){setSt(false,'❌ Failed: '+e.message);}
+  btn.disabled=false;btn.textContent=editingAlbumIndex!==null?'💾 保存修改':'📤 发布专辑';
+}
+function cancelEdit(){
+  document.getElementById('aTitle').value='';document.getElementById('aTag').value='';document.getElementById('aStory').value='';
+  document.getElementById('aImgs').value='';document.getElementById('aFiles').value='';document.getElementById('aImgPrev').innerHTML='';
+  document.getElementById('aFileNames').innerHTML='未选择文件';pAImg=[];pAFiles=[];editingAlbumIndex=null;
+  const btn=document.querySelector('#at-music .ab.blue');if(btn)btn.textContent='📤 发布专辑';
 }
 async function loadAdminAlbums(){
   try{const ws=await loadW();const c=document.getElementById('aList');
   if(!ws||!ws.length){c.innerHTML='<div style="color:var(--text3);font-size:.75rem;padding:8px;">No albums</div>';return;}
-  c.innerHTML=ws.map((w,i)=>`<div style=\"display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#FAFAFA;border-radius:8px;margin-bottom:4px;font-size:.75rem;\"><span>🎵 ${esc(w.title)}</span><button class=\"ab red sm\" onclick=\"delAlbum(${i})\">Delete</button></div>`).join('');}
+  c.innerHTML=ws.map((w,i)=>`<div style=\"display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#FAFAFA;border-radius:8px;margin-bottom:4px;font-size:.75rem;\"><span>🎵 ${esc(w.title)}</span><span><button class=\"ab green sm\" onclick=\"editAlbum(${i})\" style=\"margin-right:4px;\">✏️ Edit</button><button class=\"ab red sm\" onclick=\"delAlbum(${i})\">🗑️ Delete</button></span></div>`).join('');}
   catch(e){document.getElementById('aList').innerHTML='<div style="color:#C62828;font-size:.75rem;">Load failed</div>';}
 }
 async function delAlbum(i){
   if(!confirm('Delete this album?'))return;
-  try{const ex=await getF(WP);const ws=ex?ex.content:[];if(i<0||i>=ws.length)return;ws.splice(i,1);await putF(WP,ws,ex?ex.sha:null);toast('🗑️ Deleted');disAlbums('homeAlbums');disAlbums('musicAlbums');loadAdminAlbums();}
+  try{const ex=await getF(WP);const ws=ex?ex.content:[];if(i<0||i>=ws.length)return;ws.splice(i,1);await putF(WP,ws,ex?ex.sha:null);toast('🗑️ Deleted');disAlbums('homeAlbums');disAlbums('musicAlbums');loadAdminAlbums();if(editingAlbumIndex===i)cancelEdit();}
   catch(e){toast('❌ Delete failed');}
+}
+async function editAlbum(i){
+  try{const ws=await loadW();if(!ws||i<0||i>=ws.length)return;
+  const w=ws[i];
+  document.getElementById('aTitle').value=w.title;
+  document.getElementById('aTag').value=w.tag||'';
+  document.getElementById('aStory').value=w.story||'';
+  const prev=document.getElementById('aImgPrev');
+  if(w.images&&w.images.length)prev.innerHTML=w.images.map((u,j)=>`<div class="ip" onclick="window.open('${esc(u)}','_blank')"><img src="${esc(u)}"></div>`).join('');
+  else prev.innerHTML='';
+  const fnDiv=document.getElementById('aFileNames');
+  if(w.downloads&&w.downloads.length)fnDiv.innerHTML=w.downloads.map(d=>`<span style="display:block;padding:2px 0;">📎 ${esc(d.name)}</span>`).join('');
+  else fnDiv.innerHTML='未选择文件';
+  editingAlbumIndex=i;
+  const btn=document.querySelector('#at-music .ab.blue');if(btn)btn.textContent='💾 保存修改';
+  toast('✏️ Editing: '+w.title);}
+  catch(e){toast('❌ Load edit failed');}
 }
 
 // Admin Diary
