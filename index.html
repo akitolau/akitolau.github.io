@@ -168,11 +168,20 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 
 /* Floating msgs */
 #floatbox{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:900;overflow:hidden;}
-.fm{position:absolute;max-width:180px;padding:7px 10px;border-radius:12px;font-size:.72rem;line-height:1.3;pointer-events:auto;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16,auto;background:rgba(255,255,255,0.9);border:1px solid var(--card-border);box-shadow:0 4px 12px rgba(0,0,0,.06);animation:fma linear infinite;transition:transform .2s;}
-.fm:hover{animation-play-state:paused!important;transform:scale(1.06);z-index:901;}
+.fm{position:absolute;max-width:180px;padding:7px 10px;border-radius:12px;font-size:.72rem;line-height:1.3;pointer-events:auto;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16,auto;background:rgba(255,255,255,0.9);border:1px solid var(--card-border);box-shadow:0 4px 12px rgba(0,0,0,.06);animation:fma linear infinite;transition:transform .2s,opacity .3s;}
+.fm:hover{animation-play-state:paused!important;opacity:.45!important;z-index:901;}
 .fm .fn{font-weight:600;font-size:.7rem;}
 .fm .ft{color:var(--text2);}
-@keyframes fma{0%{transform:translateY(0)}25%{transform:translateY(-10px)}50%{transform:translateY(-5px)}75%{transform:translateY(-14px)}100%{transform:translateY(0)}}
+.fm .fm-x{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.4);color:#fff;border:none;font-size:11px;line-height:18px;text-align:center;cursor:pointer;opacity:0;transition:opacity .25s;}
+.fm:hover .fm-x{opacity:1;}
+/* Bubble shapes */
+.fm-shape-bubble{border-radius:16px 16px 16px 4px;}
+.fm-shape-bubble::before{content:'';position:absolute;bottom:-8px;left:20px;width:12px;height:12px;background:inherit;border-right:1px solid var(--card-border);border-bottom:1px solid var(--card-border);transform:rotate(45deg);border-radius:0 0 3px 0;}
+.fm-shape-heart{border-radius:60% 40% 50% 30%/60% 30% 70% 40%;padding:14px 16px;background:linear-gradient(135deg,#FF9A9E,#FAD0C4)!important;border:none!important;}
+.fm-shape-heart .fn,.fm-shape-heart .ft{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,0.2);}
+.fm-shape-cloud{border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;padding:10px 14px;background:linear-gradient(135deg,#E0F7FA,#B2EBF2)!important;border:none!important;box-shadow:0 4px 20px rgba(0,188,212,0.15);}
+.fm-shape-cloud .fn,.fm-shape-cloud .ft{color:#006064!important;}
+@keyframes fma{0%{transform:translateY(0)}33%{transform:translateY(-6px)}66%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 
 /* Admin */
 .admin-o{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:2000;backdrop-filter:blur(8px);}
@@ -742,14 +751,25 @@ async function loadMs(){try{const d=await getF(MP);return d?d.content:[];}catch(
 function loadLocalMs(){try{return JSON.parse(localStorage.getItem('local_msgs')||'[]');}catch(e){return[];}}
 function saveLocalMs(ms){localStorage.setItem('local_msgs',JSON.stringify(ms));}
 const cols=['#FCE4EC','#E8F5E9','#FFF3E0','#F3E5F5','#E3F2FD','#FFF8E1'],anis=['🐱','🐶','🐰','🦊','🐼','🐨','🦁','🐸','🦄','🐧'];
+const shapes=['fm-shape-bubble','fm-shape-heart','fm-shape-cloud'];
+function getDismissed(){try{return JSON.parse(localStorage.getItem('dismissed_bubbles')||'[]');}catch(e){return[];}}
+function getBubbleId(n,t,ts){return n+'|'+t+'|'+ts;}
 function spFm(n,t,ts){
-  const c=document.getElementById('floatbox'),el=document.createElement('div');el.className='fm';
+  const bid=getBubbleId(n,t,ts);if(getDismissed().includes(bid))return;
+  const c=document.getElementById('floatbox'),el=document.createElement('div');
+  const shape=shapes[Math.floor(Math.random()*shapes.length)];el.className='fm '+shape;
   const co=cols[Math.floor(Math.random()*cols.length)],an=anis[Math.floor(Math.random()*anis.length)];
-  const sx=5+Math.random()*70,sy=10+Math.random()*60,du=6+Math.random()*8,sz=150+Math.random()*50;
+  const cx=document.getElementById('floatbox').children.length;
+  const colsN=3,row=Math.floor(cx/colsN),col=cx%colsN;
+  const sx=8+col*30,sy=5+row*22,du=5+Math.random()*4,sz=150+Math.random()*50;
   el.style.cssText=`left:${sx}%;top:${sy}%;width:${sz}px;background:${co};animation-duration:${du}s;`;
-  el.innerHTML=`<div class="fn">${an} ${esc(n)}</div><div class="ft">${esc(t)}</div>`;
+  el.innerHTML=`<div class="fn">${an} ${esc(n)}</div><div class="ft">${esc(t)}</div><button class="fm-x" onclick="dismissBubble('${esc(bid)}',this)">✕</button>`;
   c.appendChild(el);
   setTimeout(()=>{if(el.parentNode){el.style.opacity='0';el.style.transition='opacity .8s';setTimeout(()=>el.remove(),800);}},(du+4)*1000);
+}
+function dismissBubble(bid,btn){
+  const el=btn.parentNode;if(el){el.style.opacity='0';el.style.transition='opacity .5s';setTimeout(()=>el.remove(),500);}
+  const arr=getDismissed();if(!arr.includes(bid)){arr.push(bid);localStorage.setItem('dismissed_bubbles',JSON.stringify(arr));}
 }
 async function disFM(){
   document.getElementById('floatbox').innerHTML='';
@@ -762,6 +782,7 @@ async function disGB(){
   try{
     const gh=await loadMs(),local=loadLocalMs();
     const all=[...gh,...local.filter(lm=>!gh.some(gm=>gm.name===lm.name&&gm.text===lm.text&&gm.time===lm.time))];
+    all.sort((a,b)=>(b.time||'').localeCompare(a.time||''));
     if(!all||!all.length){c.innerHTML='<div style="color:var(--text3);font-size:.78rem;text-align:center;padding:16px;" data-i18n="gb.empty">'+(lang==='zh'?'还没有留言...':'No messages yet...')+'</div>';return;}
     c.innerHTML=all.map(m=>`<div class="gb-msg${m._local?' gb-local':''}"><span class="gb-n">${esc(m.name)}</span><span class="gb-t">${esc(m.time)}${m._local?' 💻':''}</span><div class="gb-m">${esc(m.text)}</div></div>`).join('');}
   catch(e){c.innerHTML='<div style="color:var(--text3);font-size:.78rem;text-align:center;padding:16px;">Loading...</div>';}
@@ -874,7 +895,7 @@ function switchATab(n,btn){
 function setSt(s,m){const e=document.getElementById('admStatus');e.className='ast '+(s?'ok':'er');e.textContent=m;e.style.display='block';setTimeout(()=>{e.style.display='none';},4000);}
 
 // Admin Albums
-let pAImg=[],pAFiles=[],editingAlbumIndex=null;
+let pAImg=[],pAFiles=[],editingAlbumIndex=null,deletedFileIndices=[];
 function prevAImgs(e){pAImg=[];const c=document.getElementById('aImgPrev');c.innerHTML='';for(const f of e.target.files){const r=new FileReader();r.onload=ev=>{pAImg.push({file:f,base64:ev.target.result,name:Date.now()+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'')});const d=document.createElement('div');d.className='ip';d.innerHTML=`<img src=\"${ev.target.result}\">`;c.appendChild(d);};r.readAsDataURL(f);}}
 function previewAFiles(e){pAFiles=[];const ns=[];for(const f of e.target.files){const ext=f.name.split('.').pop().toLowerCase();const icon=['png','jpg','jpeg','gif','webp','svg'].includes(ext)?'🖼️':'📄';ns.push(`<span style="display:block;padding:2px 0;">${icon} ${f.name} (${(f.size/1024).toFixed(1)}KB)</span>`);}pAFiles=Array.from(e.target.files);document.getElementById('aFileNames').innerHTML=ns.length?ns.join(''):'未选择文件';}
 async function pubAlbum(){
@@ -887,7 +908,8 @@ async function pubAlbum(){
     const ex=await getF(WP);const ws=ex?ex.content:[];
     if(editingAlbumIndex!==null){
       const old=ws[editingAlbumIndex];
-      ws[editingAlbumIndex]={title:t,tag,story,cover:urls.length?urls[0]:old.cover,images:urls.length?urls:old.images||[],downloads:[...(old.downloads||[]),...fUrls]};
+      const keptDownloads=(old.downloads||[]).filter((_,idx)=>!deletedFileIndices.includes(idx));
+      ws[editingAlbumIndex]={title:t,tag,story,cover:urls.length?urls[0]:old.cover,images:urls.length?urls:old.images||[],downloads:[...keptDownloads,...fUrls]};
     }else{
       ws.push({title:t,tag,story,cover:urls.length?urls[0]:null,images:urls,downloads:fUrls});
     }
@@ -900,7 +922,7 @@ async function pubAlbum(){
 function cancelEdit(){
   document.getElementById('aTitle').value='';document.getElementById('aTag').value='';document.getElementById('aStory').value='';
   document.getElementById('aImgs').value='';document.getElementById('aFiles').value='';document.getElementById('aImgPrev').innerHTML='';
-  document.getElementById('aFileNames').innerHTML='未选择文件';pAImg=[];pAFiles=[];editingAlbumIndex=null;
+  document.getElementById('aFileNames').innerHTML='未选择文件';pAImg=[];pAFiles=[];editingAlbumIndex=null;deletedFileIndices=[];
   const btn=document.querySelector('#at-music .ab.blue');if(btn)btn.textContent='📤 发布专辑';
 }
 async function loadAdminAlbums(){
@@ -924,12 +946,19 @@ async function editAlbum(i){
   if(w.images&&w.images.length)prev.innerHTML=w.images.map((u,j)=>`<div class="ip" onclick="window.open('${esc(u)}','_blank')"><img src="${esc(u)}"></div>`).join('');
   else prev.innerHTML='';
   const fnDiv=document.getElementById('aFileNames');
-  if(w.downloads&&w.downloads.length)fnDiv.innerHTML=w.downloads.map(d=>`<span style="display:block;padding:2px 0;">📎 ${esc(d.name)}</span>`).join('');
+  if(w.downloads&&w.downloads.length)fnDiv.innerHTML=w.downloads.map((d,idx)=>`<span style="display:block;padding:2px 0;">📎 ${esc(d.name)} <span onclick="delEditFile(${idx})" style="cursor:pointer;color:#C62828;font-weight:700;font-size:13px;display:inline-block;">✕</span></span>`).join('');
   else fnDiv.innerHTML='未选择文件';
+  deletedFileIndices=[];
   editingAlbumIndex=i;
   const btn=document.querySelector('#at-music .ab.blue');if(btn)btn.textContent='💾 保存修改';
   toast('✏️ Editing: '+w.title);}
   catch(e){toast('❌ Load edit failed');}
+}
+function delEditFile(idx){
+  if(!deletedFileIndices.includes(idx))deletedFileIndices.push(idx);
+  const fnDiv=document.getElementById('aFileNames');
+  const spans=fnDiv.querySelectorAll('span');if(spans[idx]){spans[idx].style.textDecoration='line-through';spans[idx].style.opacity='0.4';}
+  toast('🗑️ File marked for deletion (saved on save)');
 }
 
 // Admin Diary
