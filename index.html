@@ -13,7 +13,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Dancing+Script:wght@400;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 
 :root{
@@ -26,7 +26,7 @@
 html{scroll-behavior:smooth;}
 body{
   font-family:'Inter','Noto Sans SC',sans-serif;
-  background: linear-gradient(135deg, #FFF0F5 0%, #FDE8F3 20%, #F3E8FF 40%, #E8EFFF 60%, #FDE8F3 80%, #FFF0F5 100%);
+  background: linear-gradient(135deg, #FFF0F5 0%, #FCE4EC 15%, #F3E8FF 30%, #E8EFFF 50%, #EDE7F6 65%, #FCE4EC 80%, #FFF0F5 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
   color:var(--text);overflow-x:hidden;line-height:1.6;
@@ -101,7 +101,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .hero-tags span{padding:4px 14px;border-radius:20px;font-size:.78rem;background:var(--card);border:1px solid var(--card-border);color:var(--text2);backdrop-filter:blur(10px);}
 
 /* Sections */
-.section-wrap{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:var(--radius);border:1px solid var(--card-border);padding:28px;margin-bottom:16px;box-shadow:0 2px 20px rgba(0,0,0,0.03);}
+.section-wrap{background:rgba(255,255,255,0.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:var(--radius);border:1px solid var(--card-border);padding:28px;margin-bottom:16px;box-shadow:0 2px 20px rgba(0,0,0,0.03);}
 .section-title{font-size:1.15rem;font-weight:700;margin-bottom:4px;letter-spacing:-0.02em;}
 .section-sub{font-size:.82rem;color:var(--text2);margin-bottom:20px;}
 
@@ -139,7 +139,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .gb-msg .gb-m{color:var(--text2);margin-top:1px;}
 
 /* Album cards */
-.album-c{background:rgba(255,255,255,0.7);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--card-border);transition:transform .2s,box-shadow .2s;}
+.album-c{background:rgba(255,255,255,0.6);border-radius:14px;padding:18px;margin-bottom:12px;border:1px solid var(--card-border);transition:transform .2s,box-shadow .2s;}
 .album-c:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,0.06);}
 .album-h{display:flex;gap:14px;flex-wrap:wrap;}
 .album-cv{width:100px;height:100px;border-radius:12px;object-fit:cover;background:#f0f0f0;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;}
@@ -303,6 +303,19 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 /* Sidebar toggle animation for hamburger */
 .ham-open .hamburger{opacity:.6;}
 
+/* Scroll arrow */
+.scroll-hint{text-align:center;padding:8px 0 20px;opacity:.6;animation:fadeHint 2s ease-in-out infinite;}
+.scroll-hint span{display:inline-block;font-size:1.3rem;animation:bounceArrow 2s ease-in-out infinite;color:var(--grad3);}
+@keyframes bounceArrow{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(6px);opacity:1}}
+@keyframes fadeHint{0%,100%{opacity:.4}50%{opacity:.8}}
+
+/* Footer counter */
+.sf-counter{font-size:.6rem;color:var(--text3);margin-top:6px;letter-spacing:0.02em;}
+.sf-counter .num{font-weight:600;color:var(--pink2);}
+
+/* English quote shimmer */
+.sf-quote-en{font-family:'Dancing Script',cursive;font-size:1rem;color:var(--grad3);margin-top:4px;letter-spacing:0.03em;background:linear-gradient(135deg,var(--pink2),var(--grad2),var(--grad3),rgba(255,255,255,0.8),var(--grad3),var(--grad2),var(--pink2));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;}
+
 @keyframes float-heart{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-100px) scale(0.3)}}
 @keyframes sf{0%{opacity:1;transform:scale(0) rotate(0)}50%{opacity:1;transform:scale(1.2) rotate(180deg)}100%{opacity:0;transform:scale(0) rotate(360deg)}}
 
@@ -375,6 +388,8 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
     </div>
   </div>
 
+  <div class="scroll-hint"><span>⌄</span></div>
+
   <!-- Pet Cat -->
   <div class="section-wrap pet-wrap">
     <div class="section-title" data-i18n="pet.title" style="text-align:center;justify-content:center;">🐱 我的电子奶牛猫</div>
@@ -419,7 +434,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
     <div id="musicAlbums"></div>
   </div>
   <div class="section-wrap" style="text-align:center;">
-    <div style="font-size:2rem;margin-bottom:8px;">🎧</div>
+    <div style="font-size:2rem;margin-bottom:8px;"><svg viewBox="0 0 32 32" width="32" height="32"><circle cx="16" cy="16" r="16" fill="#C20C0C"/><text x="16" y="22" text-anchor="middle" fill="white" font-size="18" font-family="Arial,sans-serif" font-weight="bold">♪</text></svg></div>
     <h3 style="font-size:1rem;font-weight:600;margin-bottom:4px;" data-i18n="music.netease">在网易云听我的音乐</h3>
     <p style="font-size:.8rem;color:var(--text2);margin-bottom:10px;" data-i18n="music.neteaseSub">点击前往我的音乐人主页</p>
     <a href="https://music.163.com/#/artist?id=123805900" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 22px;background:linear-gradient(135deg,var(--pink2),var(--grad2));color:white;text-decoration:none;border-radius:30px;font-weight:600;font-size:.85rem;">🎵 NetEase Music</a>
@@ -484,7 +499,9 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 <div class="site-footer">
   <div class="sf-email">📬 <a href="mailto:liuamazing1999@gmail.com">liuamazing1999@gmail.com</a></div>
   <div class="sf-quote">人生只有一次，永远不要给自己设限。去探索，去做你所爱。</div>
-  <div style="font-size:.65rem;color:var(--text3);margin-top:10px;">&copy; 2026 Akito Lau</div>
+  <div class="sf-quote-en">You only live once — don't limit yourself. Explore, do what you love.</div>
+  <div class="sf-counter" id="siteCounter">👁️ 加载中...</div>
+  <div style="font-size:.65rem;color:var(--text3);margin-top:8px;">&copy; 2026 Akito Lau</div>
 </div>
 
 </div><!-- /main-content -->
@@ -1262,6 +1279,9 @@ const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLan
 document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();openAdmin();});
 document.getElementById('phDesc')?.addEventListener('input',function(){document.getElementById('phDescCount').textContent=this.value.length+'/100';});
 disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
+// Visitor counter
+(async function(){const el=document.getElementById('siteCounter');if(!el)return;
+try{const[t,r]=await Promise.all([fetch('https://api.countapi.xyz/hit/akitolau.github.io/visits').catch(()=>null),fetch('https://api.countapi.xyz/get/akitolau.github.io/visits').catch(()=>null)]);if(t&&t.ok){const td=await t.json();const gd=r&&r.ok?await r.json():null;const total=td.value||0;const today=gd?gd.value:0;el.innerHTML=`👁️ 总访问 <span class="num">${total}</span> · 今日 <span class="num">${today}</span>`;}else throw 0;}catch(e){const lv=parseInt(localStorage.getItem('akito_visits')||'0')+1;localStorage.setItem('akito_visits',lv+'');const lt=localStorage.getItem('akito_visit_date');const td=new Date().toISOString().slice(0,10);const ld=lt===td?parseInt(localStorage.getItem('akito_today')||'1'):1;localStorage.setItem('akito_visit_date',td);localStorage.setItem('akito_today',ld+'');el.innerHTML=`👁️ 总访问 <span class="num">${lv}</span> · 今日 <span class="num">${ld}</span>`;}})();
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='gbName'||a.id==='gbText'))postMsg();}if(e.key==='Escape')closeAdmin();});
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
