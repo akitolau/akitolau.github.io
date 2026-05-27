@@ -94,7 +94,8 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 }
 .hero-content{position:relative;z-index:2;text-align:center;max-width:680px;}
 .hero-content h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px;color:var(--text);}
-.hero-content h1 .hl{background:linear-gradient(135deg,var(--pink2),var(--grad2),var(--grad3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-content h1 .hl{background:linear-gradient(135deg,var(--pink2),var(--grad2),var(--grad3),rgba(255,255,255,0.9),var(--grad3),var(--grad2),var(--pink2));background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;}
+@keyframes shimmer{0%{background-position:0% 50%}25%{background-position:100% 50%}50%{background-position:100% 0%}75%{background-position:0% 0%}100%{background-position:0% 50%}}
 .hero-content p{font-size:1.15rem;color:var(--text2);font-weight:400;margin-bottom:24px;max-width:520px;margin-left:auto;margin-right:auto;}
 .hero-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
 .hero-tags span{padding:4px 14px;border-radius:20px;font-size:.78rem;background:var(--card);border:1px solid var(--card-border);color:var(--text2);backdrop-filter:blur(10px);}
@@ -167,7 +168,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .lb .lb-nx{right:12px;}
 
 /* Floating msgs */
-#floatbox{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:900;overflow:hidden;}
+#floatbox{position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);pointer-events:none;z-index:900;overflow:hidden;}
 .fm{position:absolute;max-width:180px;padding:7px 10px;border-radius:12px;font-size:.72rem;line-height:1.3;pointer-events:auto;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='28' font-size='28'%3E🐱%3C/text%3E%3C/svg%3E") 16 16,auto;background:rgba(255,255,255,0.9);border:1px solid var(--card-border);box-shadow:0 4px 12px rgba(0,0,0,.06);animation:fma linear infinite;transition:transform .2s,opacity .3s;}
 .fm:hover{animation-play-state:paused!important;opacity:.45!important;z-index:901;}
 .fm .fn{font-weight:600;font-size:.7rem;}
@@ -760,8 +761,10 @@ function spFm(n,t,ts){
   const shape=shapes[Math.floor(Math.random()*shapes.length)];el.className='fm '+shape;
   const co=cols[Math.floor(Math.random()*cols.length)],an=anis[Math.floor(Math.random()*anis.length)];
   const cx=document.getElementById('floatbox').children.length;
-  const colsN=3,row=Math.floor(cx/colsN),col=cx%colsN;
-  const sx=8+col*30,sy=5+row*22,du=5+Math.random()*4,sz=150+Math.random()*50;
+  const side=cx%2?'left':'right';
+  const sx=side==='left'?2+Math.random()*22:62+Math.random()*28;
+  const row=Math.floor(cx/2);
+  const sy=2+row*24,du=5+Math.random()*4,sz=150+Math.random()*50;
   el.style.cssText=`left:${sx}%;top:${sy}%;width:${sz}px;background:${co};animation-duration:${du}s;`;
   el.innerHTML=`<div class="fn">${an} ${esc(n)}</div><div class="ft">${esc(t)}</div><button class="fm-x" onclick="dismissBubble('${esc(bid)}',this)">✕</button>`;
   c.appendChild(el);
