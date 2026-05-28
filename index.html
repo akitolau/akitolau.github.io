@@ -326,6 +326,36 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
   .album-h{flex-direction:column;align-items:center;text-align:center;}
   .album-cv{width:80px;height:80px;}
 }
+
+/* PM Icon & Modal */
+.pm-icon{position:relative;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9rem;transition:all .2s;background:transparent;border:none;}
+.pm-icon:hover{background:rgba(255,255,255,0.6);transform:scale(1.1);}
+.pm-tip{position:absolute;top:calc(100% + 6px);right:0;background:rgba(0,0,0,.75);color:#fff;font-size:.65rem;padding:4px 10px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;}
+.pm-icon:hover .pm-tip{opacity:1;}
+.pm-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.35);z-index:3000;backdrop-filter:blur(8px);align-items:center;justify-content:center;}
+.pm-overlay.show{display:flex;}
+.pm-modal{background:white;border-radius:20px;padding:28px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.15);}
+.pm-modal h3{font-size:1rem;margin-bottom:16px;font-weight:700;letter-spacing:-0.02em;}
+.pm-close{float:right;font-size:1.2rem;cursor:pointer;color:var(--text3);background:none;border:none;padding:0;line-height:1;}
+.pm-close:hover{color:var(--text1);}
+.pm-form{display:flex;flex-direction:column;gap:10px;}
+.pm-form input,.pm-form textarea{padding:10px 14px;border:1px solid var(--card-border);border-radius:12px;font-family:inherit;font-size:.82rem;background:rgba(255,255,255,0.8);outline:none;transition:border-color .2s;}
+.pm-form input:focus,.pm-form textarea:focus{border-color:var(--blue);}
+.pm-form textarea{min-height:80px;resize:vertical;}
+.pm-form .pm-hint{font-size:.7rem;color:var(--text3);}
+.pm-btn{padding:10px 22px;background:linear-gradient(135deg,var(--pink2),var(--grad2));border:none;border-radius:12px;color:white;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .2s;}
+.pm-btn:hover{opacity:.85;}
+.pm-btn:disabled{opacity:.5;cursor:not-allowed;}
+.pm-status{font-size:.78rem;margin-top:8px;text-align:center;}
+
+/* Changelog */
+.cl-section{margin-top:32px;padding:0 16px;}
+.cl-section .section-title{font-size:.9rem;font-weight:700;margin-bottom:12px;letter-spacing:-0.02em;}
+.cl-list{display:flex;flex-direction:column;gap:8px;}
+.cl-item{display:flex;gap:10px;align-items:flex-start;font-size:.78rem;line-height:1.5;padding:8px 12px;background:rgba(255,255,255,0.5);border-radius:10px;}
+.cl-date{color:var(--text3);white-space:nowrap;flex-shrink:0;min-width:44px;font-size:.72rem;padding-top:2px;}
+.cl-text{color:var(--text1);}
+.cl-empty{color:var(--text3);font-size:.78rem;text-align:center;padding:16px;font-style:italic;}
 </style>
 </head>
 <body>
@@ -338,6 +368,9 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
       <a class="nav-logo" id="logoLink" data-i18n="site.name">Akito Lau</a>
     </div>
     <div class="nav-right">
+      <button class="pm-icon" onclick="togglePM()">
+        📩<span class="pm-tip">和我说悄悄话</span>
+      </button>
       <button class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
       <button class="lang-btn active" id="langZh" onclick="setLang('zh')">中</button>
     </div>
@@ -496,6 +529,12 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 </div>
 
 <!-- Site Footer -->
+
+<!-- Changelog -->
+<div class="cl-section">
+  <div class="section-title">📋 更新日志</div>
+  <div class="cl-list" id="clList"><div class="cl-empty" data-i18n="...">加载中...</div></div>
+</div>
 <div class="site-footer">
   <div class="sf-email">📬 <a href="mailto:liuamazing1999@gmail.com">liuamazing1999@gmail.com</a> · 🔗 <a href="https://www.linkedin.com/in/jinfeng-liu-372995325/" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:500;">LinkedIn</a> · 🐙 <a href="https://github.com/akitolau" target="_blank" style="color:var(--text2);text-decoration:none;font-weight:500;">GitHub</a></div>
   <div class="sf-quote">人生只有一次，永远不要给自己设限。去探索，去做你所爱。</div>
@@ -506,6 +545,22 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 
 </div><!-- /main-content -->
 
+
+<!-- Private Message Modal -->
+<div class="pm-overlay" id="pmOverlay" onclick="if(event.target===this)closePM()">
+  <div class="pm-modal">
+    <button class="pm-close" onclick="closePM()">✕</button>
+    <h3>📩 和我说悄悄话</h3>
+    <div class="pm-form">
+      <input id="pmName" placeholder="你是谁？（昵称即可）" maxlength="30" autocomplete="off">
+      <input id="pmContact" placeholder="联系方式（选填，邮箱/微信等）" maxlength="50" autocomplete="off">
+      <textarea id="pmText" placeholder="想对我说什么悄悄话..." maxlength="500"></textarea>
+      <div class="pm-hint">悄悄话只有我能看到，不会被公开 😊</div>
+      <button class="pm-btn" id="pmBtn" onclick="sendPM()">📨 发送悄悄话</button>
+      <div class="pm-status" id="pmStatus"></div>
+    </div>
+  </div>
+</div>
 <!-- Lightbox -->
 <div class="lb" id="lb" onclick="closeLB()">
   <button class="lb-c" onclick="closeLB()">✕</button>
@@ -1290,12 +1345,50 @@ function renderResumeMap(resume){
 const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLang);
 document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();openAdmin();});
 document.getElementById('phDesc')?.addEventListener('input',function(){document.getElementById('phDescCount').textContent=this.value.length+'/100';});
-disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
+disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disChangelog();disAbout();disChangelog();
 // Visitor counter
 (async function(){const el=document.getElementById('siteCounter');if(!el)return;
 try{const[t,r]=await Promise.all([fetch('https://api.countapi.xyz/hit/akitolau.github.io/visits').catch(()=>null),fetch('https://api.countapi.xyz/get/akitolau.github.io/visits').catch(()=>null)]);if(t&&t.ok){const td=await t.json();const gd=r&&r.ok?await r.json():null;const total=td.value||0;const today=gd?gd.value:0;el.innerHTML=`👁️ 总访问 <span class="num">${total}</span> · 今日 <span class="num">${today}</span>`;}else throw 0;}catch(e){const lv=parseInt(localStorage.getItem('akito_visits')||'0')+1;localStorage.setItem('akito_visits',lv+'');const lt=localStorage.getItem('akito_visit_date');const td=new Date().toISOString().slice(0,10);const ld=lt===td?parseInt(localStorage.getItem('akito_today')||'1'):1;localStorage.setItem('akito_visit_date',td);localStorage.setItem('akito_today',ld+'');el.innerHTML=`👁️ 总访问 <span class="num">${lv}</span> · 今日 <span class="num">${ld}</span>`;}})();
 document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){const a=document.activeElement;if(a&&(a.id==='gbName'||a.id==='gbText'))postMsg();}if(e.key==='Escape')closeAdmin();});
 </script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+// ===== PRIVATE MESSAGE =====
+function togglePM(){const o=document.getElementById('pmOverlay');o.classList.toggle('show');if(o.classList.contains('show')){document.getElementById('pmName').value='';document.getElementById('pmContact').value='';document.getElementById('pmText').value='';document.getElementById('pmStatus').textContent='';document.getElementById('pmBtn').disabled=false;document.getElementById('pmBtn').textContent='📨 发送悄悄话';}}
+function closePM(){document.getElementById('pmOverlay').classList.remove('show');}
+async function sendPM(){
+  const n=document.getElementById('pmName').value.trim();
+  const t=document.getElementById('pmText').value.trim();
+  const c=document.getElementById('pmContact').value.trim();
+  if(!n||!t){document.getElementById('pmStatus').textContent='请填写你是谁和你想说的话';document.getElementById('pmStatus').style.color='var(--pink2)';return;}
+  const btn=document.getElementById('pmBtn');btn.disabled=true;btn.textContent='⏳ 发送中...';
+  const pm={name:n,text:t,contact:c||'',time:new Date().toLocaleString('zh-CN'),_id:Date.now()};
+  try{
+    const ex=await getF('data/pm.json');
+    const ms=ex?ex.content:[];
+    ms.push(pm);
+    await putF('data/pm.json',ms,ex?ex.sha:null);
+    document.getElementById('pmStatus').textContent='✅ 悄悄话已送达！我会尽快回复你 💌';
+    document.getElementById('pmStatus').style.color='#4CAF50';
+    btn.textContent='✅ 已发送';
+  }catch(e){
+    console.error('PM send error:',e);
+    document.getElementById('pmStatus').textContent='❌ 发送失败，请稍后再试';
+    document.getElementById('pmStatus').style.color='var(--pink2)';
+    btn.disabled=false;btn.textContent='📨 发送悄悄话';
+  }
+}
+
+// ===== CHANGELOG =====
+async function disChangelog(){
+  try{
+    const ex=await getF('data/changelog.json');
+    const cl=ex?ex.content:[];
+    const c=document.getElementById('clList');
+    if(!cl||!cl.length){c.innerHTML='<div class="cl-empty">暂无更新记录</div>';return;}
+    c.innerHTML=cl.map(d=>'<div class="cl-item"><span class="cl-date">'+esc(d.date)+'</span><span class="cl-text">'+esc(d.text)+'</span></div>').join('');
+  }catch(e){}
+}
+
+</script>
 </body>
 </html>
