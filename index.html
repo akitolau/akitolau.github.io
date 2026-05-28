@@ -1026,17 +1026,39 @@ async function loadAdminMsgs(){
 // Designs, Photos, About
 let dsData=[],phData=[];
 async function pubDesign(){
-  const btn=document.querySelector('#at-designs .ab.blue');
-  const t=document.getElementById('dsTitle').value.trim();const f=document.getElementById('dsImgs');
-  if(!t||!f.files.length){toast('请输入标题并选择图片');return;}
-  btn.disabled=true;btn.textContent='⏳ 上传中...';
-  try{
-    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){toast('⚠️ 图片上传失败: '+e.message);}}
-    const ex=await getF(DP);const ds=ex?ex.content:[];ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
-    await putF(DP,ds,ex?ex.sha:null);setSt(true,'✅ Done!');
-    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();loadAdminDesigns();toast('🎨 上传成功！');
-  }catch(e){setSt(false,'❌ 上传失败: '+e.message);toast('❌ 上传失败: '+e.message);}
-  btn.disabled=false;btn.textContent='📤 上传';
+  console.log('=== pubDesign called ===');
+  try {
+    const btn=document.querySelector('#at-designs .ab.blue');
+    const titleEl=document.getElementById('dsTitle');
+    const fileEl=document.getElementById('dsImgs');
+    if(!btn||!titleEl||!fileEl){console.error('Missing DOM elements');toast('页面元素未加载');return;}
+    const t=titleEl.value.trim();const files=fileEl.files;
+    console.log('Title:', t, 'Files:', files?.length);
+    if(!t||!files||!files.length){toast('请输入标题并选择图片');console.log('Validation failed');return;}
+    btn.disabled=true;btn.textContent='⏳ 上传中...';
+    console.log('Uploading', files.length, 'file(s)...');
+    const urls=[];
+    for(const fl of files){
+      try{
+        const b=await readF(fl);
+        const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');
+        console.log('Uploading:', fn);
+        const u=await upFile(fn,b);
+        urls.push(u);
+        console.log('Uploaded:', u);
+      }catch(e){console.error('Image upload error:', e);toast('⚠️ 图片上传失败: '+e.message);}
+    }
+    console.log('Reading existing designs...');
+    const ex=await getF(DP);const ds=ex?ex.content:[];
+    ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
+    console.log('Writing designs.json...');
+    await putF(DP,ds,ex?ex.sha:null);
+    console.log('Write complete!');
+    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';
+    disDesigns();loadAdminDesigns();toast('🎨 上传成功！');
+  }catch(e){console.error('pubDesign error:', e);setSt(false,'❌ 上传失败: '+e.message);toast('❌ 上传失败: '+e.message);}
+  const btn2=document.querySelector('#at-designs .ab.blue');if(btn2){btn2.disabled=false;btn2.textContent='📤 上传';}
+  console.log('=== pubDesign done ===');
 }
 async function disDesigns(){
   try{const d=await getF(DP);dsData=d?d.content:[];const c=document.getElementById('designsGrid');
