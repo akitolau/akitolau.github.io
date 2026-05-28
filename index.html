@@ -663,7 +663,7 @@ function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem(
 async function ghF(url,opts={}){
   const t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
   const r=await fetch(url+_ts(),{...opts,headers:h});
-  if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
+  if(!r.ok){const e=await r.text();console.error('❌ ghF GET error:', r.status, e.substring(0,100));throw new Error(e.slice(0,100));}return r.json();
 }
 async function getF(path){
   try{const d=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
@@ -673,7 +673,7 @@ async function putF(path,c,sha,pt){
   const t=pt||getTok();if(!t)throw new Error('No token');
   const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
   const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok)throw new Error('Write failed');return r.json();
+  if(!r.ok){const e=await r.text();console.error('❌ putF PUT error:', r.status, e.substring(0,100));throw new Error('Write failed '+r.status+':'+e.substring(0,50));}return r.json();
 }
 async function upFile(name,data,tok){
   const t=tok||getTok();if(!t)throw new Error('No token');
@@ -681,7 +681,7 @@ async function upFile(name,data,tok){
   const folder=name.match(/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico|tiff?)$/i)?'images':'downloads';
   let sha=null;try{const ex=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}?ref=${B}`);sha=ex.sha;}catch(e1){}
   const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
-  if(!r.ok)throw new Error('Upload fail');return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
+  if(!r.ok){const e=await r.text();console.error('❌ upFile PUT error:', r.status, e.substring(0,100));throw new Error('Upload fail '+r.status+':'+e.substring(0,50));}return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
 }
 function readF(f){return new Promise((rs,rj)=>{const r=new FileReader();r.onload=()=>rs(r.result);r.onerror=rj;r.readAsDataURL(f);});}
 
@@ -1023,14 +1023,18 @@ async function loadAdminMsgs(){
 // Designs, Photos, About
 let dsData=[],phData=[];
 async function pubDesign(){
+  console.log('📤 pubDesign START');
+  console.log('Token from getTok:', getTok().substring(0,15)+'...');
   const t=document.getElementById('dsTitle').value.trim();const f=document.getElementById('dsImgs');
+  console.log('Title:', t, 'Files:', f.files.length);
   if(!t||!f.files.length){toast('Title and images required');return;}
   try{
-    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
+    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');console.log('📤 Uploading:', fn);
+          try{const u=await upFile(fn,b);urls.push(u);console.log('✅ Uploaded:', u);}catch(e){console.error('❌ Upload fail:', e);}}catch(e){}}
     const ex=await getF(DP);const ds=ex?ex.content:[];ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
     await putF(DP,ds,ex?ex.sha:null);setSt(true,'✅ Done!');
     document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();toast('🎨 Uploaded!');
-  }catch(e){setSt(false,'❌ Failed');}
+  }catch(e){console.error('❌ pubDesign ERROR:', e);setSt(false,'❌ Failed: '+e.message.substring(0,50));}
 }
 async function disDesigns(){
   try{const d=await getF(DP);dsData=d?d.content:[];const c=document.getElementById('designsGrid');
@@ -1041,12 +1045,13 @@ async function pubPhotos(){
   const f=document.getElementById('phImgs');if(!f.files.length){toast('Select photos');return;}
   const desc=document.getElementById('phDesc').value.trim();
   try{
-    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
+    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');console.log('📤 Uploading:', fn);
+          try{const u=await upFile(fn,b);urls.push(u);console.log('✅ Uploaded:', u);}catch(e){console.error('❌ Upload fail:', e);}}catch(e){}}
     const ex=await getF(PHP);const ph=ex?ex.content:[];const d=desc||'';
     urls.forEach(u=>ph.push({url:u,date:new Date().toISOString().slice(0,10),desc:d,likes:0,comments:[]}));
     await putF(PHP,ph,ex?ex.sha:null);setSt(true,'✅ Done!');
     document.getElementById('phImgs').value='';document.getElementById('phDesc').value='';document.getElementById('phDescCount').textContent='0/100';disPhotos();toast('📸 Uploaded!');
-  }catch(e){setSt(false,'❌ Failed');}
+  }catch(e){console.error('❌ pubDesign ERROR:', e);setSt(false,'❌ Failed: '+e.message.substring(0,50));}
 }
 async function disPhotos(){
   try{const d=await getF(PHP);phData=d?d.content:[];const c=document.getElementById('photosGrid');
