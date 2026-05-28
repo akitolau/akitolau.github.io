@@ -678,11 +678,13 @@ async function putF(path,c,sha,pt){
   if(!r.ok)throw new Error('Write failed');return r.json();
 }
 async function upFile(name,data,tok){
-  const t=tok||getTok();if(!t)throw new Error('No token');
+  let t=tok||getTok();if(!t)throw new Error('No token');
   const d=data.includes('base64,')?data.split('base64,')[1]:data;
   const folder=name.match(/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico|tiff?)$/i)?'images':'downloads';
   let sha=null;try{const ex=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}?ref=${B}`);sha=ex.sha;}catch(e1){}
-  const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
+  const u=`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}`;
+  let r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
+  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});}
   if(!r.ok)throw new Error('Upload fail');return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
 }
 function readF(f){return new Promise((rs,rj)=>{const r=new FileReader();r.onload=()=>rs(r.result);r.onerror=rj;r.readAsDataURL(f);});}
