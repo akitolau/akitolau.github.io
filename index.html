@@ -912,6 +912,7 @@ function switchATab(n,btn){
   document.querySelectorAll('.atc').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');document.getElementById('at-'+n).classList.add('active');
   if(n==='msgs')loadAdminMsgs();if(n==='diary')loadAdminPosts();if(n==='music')loadAdminAlbums();
+  if(n==='designs')loadAdminDesigns();
 }
 
 function setSt(s,m){const e=document.getElementById('admStatus');e.className='ast '+(s?'ok':'er');e.textContent=m;e.style.display='block';setTimeout(()=>{e.style.display='none';},4000);}
