@@ -661,9 +661,11 @@ function b64D(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=
 function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||gPT()||'';}
 
 async function ghF(url,opts={}){
-  const t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
-  const r=await fetch(url+_ts(),{...opts,headers:h});
-  if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
+  let t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
+  let r=await fetch(url+_ts(),{...opts,headers:h});
+  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();h['Authorization']='Bearer '+t;r=await fetch(url+_ts(),{...opts,headers:h});}
+  if(!r.ok){const e=await r.text();throw new Error(r.status+': '+e.substring(0,100));}
+  return r.json();
 }
 async function getF(path){
   try{const d=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
@@ -675,7 +677,7 @@ async function putF(path,c,sha,pt){
   const u=`https://api.github.com/repos/${O}/${R}/contents/${path}`;
   let r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});}
-  if(!r.ok)throw new Error('Write failed');return r.json();
+  if(!r.ok){const e=await r.text();throw new Error('Write failed ('+r.status+'): '+e.substring(0,100));}return r.json();
 }
 async function upFile(name,data,tok){
   let t=tok||getTok();if(!t)throw new Error('No token');
