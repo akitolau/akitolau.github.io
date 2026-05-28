@@ -662,8 +662,9 @@ function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem(
 
 async function ghF(url,opts={}){
   let t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
-  let r=await fetch(url+_ts(),{...opts,headers:h});
-  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();h['Authorization']='Bearer '+t;r=await fetch(url+_ts(),{...opts,headers:h});}
+  const doFetch=tk=>fetch(url+_ts(),{...opts,headers:{...h,'Authorization':'Bearer '+tk}});
+  let r;try{r=await doFetch(t);}catch(e){if(gPT()&&gPT()!==t){t=gPT();r=await doFetch(t);}else throw e;}
+  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await doFetch(t);}
   if(!r.ok){const e=await r.text();throw new Error(r.status+': '+e.substring(0,100));}
   return r.json();
 }
@@ -675,8 +676,9 @@ async function putF(path,c,sha,pt){
   let t=pt||getTok();if(!t)throw new Error('No token');
   const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
   const u=`https://api.github.com/repos/${O}/${R}/contents/${path}`;
-  let r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});}
+  const doFetch=tk=>fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+tk,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+  let r;try{r=await doFetch(t);}catch(e){if(gPT()&&gPT()!==t){t=gPT();r=await doFetch(t);}else throw e;}
+  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await doFetch(t);}
   if(!r.ok){const e=await r.text();throw new Error('Write failed ('+r.status+'): '+e.substring(0,100));}return r.json();
 }
 async function upFile(name,data,tok){
@@ -685,9 +687,11 @@ async function upFile(name,data,tok){
   const folder=name.match(/\.(png|jpg|jpeg|gif|webp|svg|bmp|ico|tiff?)$/i)?'images':'downloads';
   let sha=null;try{const ex=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}?ref=${B}`);sha=ex.sha;}catch(e1){}
   const u=`https://api.github.com/repos/${O}/${R}/contents/${folder}/${name}`;
-  let r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
-  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});}
-  if(!r.ok)throw new Error('Upload fail');return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
+  const doFetch=tk=>fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+tk,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Upload '+name,content:d,branch:B,...(sha?{sha}:{})})});
+  let r;try{r=await doFetch(t);}catch(e){if(gPT()&&gPT()!==t){t=gPT();r=await doFetch(t);}else throw e;}
+  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await doFetch(t);}
+  if(!r.ok){const e=await r.text();throw new Error('Upload fail ('+r.status+'): '+e.substring(0,100));}
+  return `https://raw.githubusercontent.com/${O}/${R}/${B}/${folder}/${name}`;
 }
 function readF(f){return new Promise((rs,rj)=>{const r=new FileReader();r.onload=()=>rs(r.result);r.onerror=rj;r.readAsDataURL(f);});}
 
