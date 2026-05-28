@@ -1028,13 +1028,18 @@ async function pubDesign(){
   const t=document.getElementById('dsTitle').value.trim();const f=document.getElementById('dsImgs');
   console.log('Title:', t, 'Files:', f.files.length);
   if(!t||!f.files.length){toast('Title and images required');return;}
+  // Loading state
+  const btn=document.querySelector('#page-designs .ab.blue');
+  if(btn){const orig=btn.textContent;btn.disabled=true;btn.textContent='⏳ 上传中...';btn.style.opacity='0.6';}
   try{
     const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');console.log('📤 Uploading:', fn);
           try{const u=await upFile(fn,b);urls.push(u);console.log('✅ Uploaded:', u);}catch(e){console.error('❌ Upload fail:', e);}}catch(e){}}
     const ex=await getF(DP);const ds=ex?ex.content:[];ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
     await putF(DP,ds,ex?ex.sha:null);setSt(true,'✅ Done!');
     document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();toast('🎨 Uploaded!');
-  }catch(e){console.error('❌ pubDesign ERROR:', e);setSt(false,'❌ Failed: '+e.message.substring(0,50));}
+    if(btn){btn.disabled=false;btn.textContent='📤 上传';btn.style.opacity='1';}
+  }catch(e){console.error('❌ pubDesign ERROR:', e);setSt(false,'❌ Failed: '+e.message.substring(0,50));
+    if(btn){btn.disabled=false;btn.textContent='📤 上传';btn.style.opacity='1';}}
 }
 async function disDesigns(){
   try{const d=await getF(DP);dsData=d?d.content:[];const c=document.getElementById('designsGrid');
@@ -1044,6 +1049,8 @@ async function disDesigns(){
 async function pubPhotos(){
   const f=document.getElementById('phImgs');if(!f.files.length){toast('Select photos');return;}
   const desc=document.getElementById('phDesc').value.trim();
+  const btn=document.querySelector('#page-photos .ab.blue');
+  if(btn){const orig=btn.textContent;btn.disabled=true;btn.textContent='⏳ 上传中...';btn.style.opacity='0.6';}
   try{
     const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');console.log('📤 Uploading:', fn);
           try{const u=await upFile(fn,b);urls.push(u);console.log('✅ Uploaded:', u);}catch(e){console.error('❌ Upload fail:', e);}}catch(e){}}
