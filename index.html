@@ -670,9 +670,11 @@ async function getF(path){
   catch(e){return null;}
 }
 async function putF(path,c,sha,pt){
-  const t=pt||getTok();if(!t)throw new Error('No token');
+  let t=pt||getTok();if(!t)throw new Error('No token');
   const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
-  const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+  const u=`https://api.github.com/repos/${O}/${R}/contents/${path}`;
+  let r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok&&gPT()&&gPT()!==t){t=gPT();r=await fetch(u,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});}
   if(!r.ok)throw new Error('Write failed');return r.json();
 }
 async function upFile(name,data,tok){
@@ -881,7 +883,7 @@ async function unlockAdmin(){
     document.getElementById('setupTip').style.display='none';
     document.getElementById('admToken').value=t;
     _adminUnlocked=true;
-    loadAdminAlbums();loadAdminPosts();loadAdminMsgs();
+    loadAdminAlbums();loadAdminPosts();loadAdminMsgs();loadAdminDesigns();
     toast('🔓 已解锁管理面板');
   }catch(e){
     st.textContent='❌ Token验证失败，请检查是否正确';st.className='lock-status er';
@@ -1029,14 +1031,28 @@ async function pubDesign(){
     const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
     const ex=await getF(DP);const ds=ex?ex.content:[];ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
     await putF(DP,ds,ex?ex.sha:null);setSt(true,'✅ Done!');
-    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();toast('🎨 Uploaded!');
+    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();loadAdminDesigns();toast('🎨 Uploaded!');
   }catch(e){setSt(false,'❌ Failed');}
 }
 async function disDesigns(){
   try{const d=await getF(DP);dsData=d?d.content:[];const c=document.getElementById('designsGrid');
   if(!dsData||!dsData.length){c.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);font-size:.85rem;">'+(lang==='zh'?'还没有设计稿':'No designs yet')+'</div>';return;}
   c.innerHTML=dsData.map(d=>`<div style=\"background:rgba(255,255,255,0.6);backdrop-filter:blur(8px);border-radius:12px;overflow:hidden;border:1px solid var(--card-border);\"><div style=\"aspect-ratio:4/3;overflow:hidden;background:#f5f5f5;\">${d.images&&d.images[0]?`<img src=\"${esc(d.images[0])}\" style=\"width:100%;height:100%;object-fit:cover;cursor:pointer;\" onclick=\"openLB(${JSON.stringify(d.images||[]).replace(/\"/g,'&quot;')},0)\">`:''}</div><div style=\"padding:8px 10px;font-size:.78rem;font-weight:500;\">${esc(d.title)}</div></div>`).join('');}
-  catch(e){}}
+    catch(e){}}
+
+// Admin: manage designs in panel
+async function loadAdminDesigns(){
+  try{const d=await getF(DP);const ds=d?d.content:[];const c=document.getElementById('dsList');
+  if(!ds||!ds.length){c.innerHTML='<div style="color:var(--text3);font-size:.75rem;padding:8px;">暂无设计稿</div>';return;}
+  c.innerHTML=ds.map((w,i)=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:#FAFAFA;border-radius:8px;margin-bottom:4px;font-size:.75rem;"><span>🎨 ${esc(w.title)} <span style="color:var(--text3);font-size:.65rem;">${w.date||''}</span></span><button class="ab red sm" onclick="delDesign(${i})">🗑️</button></div>`).join('');}
+  catch(e){document.getElementById('dsList').innerHTML='<div style="color:#C62828;font-size:.75rem;">加载失败</div>';}
+}
+async function delDesign(i){
+  if(!confirm('删除这条设计稿？'))return;
+  try{const ex=await getF(DP);const ds=ex?ex.content:[];if(i<0||i>=ds.length)return;ds.splice(i,1);await putF(DP,ds,ex?ex.sha:null);toast('🗑️ 已删除');disDesigns();loadAdminDesigns();}
+  catch(e){toast('❌ 删除失败');}
+}
+
 async function pubPhotos(){
   const f=document.getElementById('phImgs');if(!f.files.length){toast('Select photos');return;}
   const desc=document.getElementById('phDesc').value.trim();
