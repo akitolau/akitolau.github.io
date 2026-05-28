@@ -670,7 +670,7 @@ async function getF(path){
   catch(e){return null;}
 }
 async function putF(path,c,sha,pt){
-  const t=pt||localStorage.getItem('gh_token')||localStorage.getItem('gh_pub');if(!t)throw new Error('No token');
+  const t=pt||getTok();if(!t)throw new Error('No token');
   const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
   const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!r.ok)throw new Error('Write failed');return r.json();
