@@ -201,7 +201,7 @@ nav{position:fixed;top:0;width:100%;height:var(--nav-h);background:rgba(250,247,
 .admin-p .ab.green{background:linear-gradient(135deg,var(--green),#30D158);}
 .admin-p .ab.red{background:#FF3B30;}
 .admin-p .ab.sm{padding:4px 12px;font-size:.68rem;}
-.admin-p .ab:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
+.admin-p .ab:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
 .admin-p .ast{font-size:.75rem;padding:8px 14px;border-radius:10px;display:none;margin-top:10px;font-weight:500;}
 .admin-p .ast.ok{display:block;background:#E8F5E9;color:#2E7D32;}
 .admin-p .ast.er{display:block;background:#FFEBEE;color:#C62828;}
@@ -1026,14 +1026,17 @@ async function loadAdminMsgs(){
 // Designs, Photos, About
 let dsData=[],phData=[];
 async function pubDesign(){
+  const btn=document.querySelector('#at-designs .ab.blue');
   const t=document.getElementById('dsTitle').value.trim();const f=document.getElementById('dsImgs');
-  if(!t||!f.files.length){toast('Title and images required');return;}
+  if(!t||!f.files.length){toast('请输入标题并选择图片');return;}
+  btn.disabled=true;btn.textContent='⏳ 上传中...';
   try{
-    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){}}
+    const urls=[];for(const fl of f.files){try{const b=await readF(fl);const fn=Date.now()+'_'+fl.name.replace(/[^a-zA-Z0-9._-]/g,'');const u=await upFile(fn,b);urls.push(u);}catch(e){toast('⚠️ 图片上传失败: '+e.message);}}
     const ex=await getF(DP);const ds=ex?ex.content:[];ds.push({title:t,images:urls,date:new Date().toISOString().slice(0,10)});
     await putF(DP,ds,ex?ex.sha:null);setSt(true,'✅ Done!');
-    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();loadAdminDesigns();toast('🎨 Uploaded!');
-  }catch(e){setSt(false,'❌ Failed');}
+    document.getElementById('dsTitle').value='';document.getElementById('dsImgs').value='';disDesigns();loadAdminDesigns();toast('🎨 上传成功！');
+  }catch(e){setSt(false,'❌ 上传失败: '+e.message);toast('❌ 上传失败: '+e.message);}
+  btn.disabled=false;btn.textContent='📤 上传';
 }
 async function disDesigns(){
   try{const d=await getF(DP);dsData=d?d.content:[];const c=document.getElementById('designsGrid');
