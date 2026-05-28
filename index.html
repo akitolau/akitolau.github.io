@@ -1342,7 +1342,7 @@ function renderResumeMap(resume){
 const savedLang=localStorage.getItem('akito_lang');if(savedLang)setLang(savedLang);
 document.getElementById('logoLink').addEventListener('dblclick',e=>{e.preventDefault();openAdmin();});
 document.getElementById('phDesc')?.addEventListener('input',function(){document.getElementById('phDescCount').textContent=this.value.length+'/100';});
-disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();
+disAlbums('homeAlbums');disAlbums('musicAlbums');disPosts();disFM();disGB();disDesigns();disPhotos();disAbout();disChangelog();
 // Visitor counter
 (async function(){const el=document.getElementById('siteCounter');if(!el)return;
 try{const[t,r]=await Promise.all([fetch('https://api.countapi.xyz/hit/akitolau.github.io/visits').catch(()=>null),fetch('https://api.countapi.xyz/get/akitolau.github.io/visits').catch(()=>null)]);if(t&&t.ok){const td=await t.json();const gd=r&&r.ok?await r.json():null;const total=td.value||0;const today=gd?gd.value:0;el.innerHTML=`👁️ 总访问 <span class="num">${total}</span> · 今日 <span class="num">${today}</span>`;}else throw 0;}catch(e){const lv=parseInt(localStorage.getItem('akito_visits')||'0')+1;localStorage.setItem('akito_visits',lv+'');const lt=localStorage.getItem('akito_visit_date');const td=new Date().toISOString().slice(0,10);const ld=lt===td?parseInt(localStorage.getItem('akito_today')||'1'):1;localStorage.setItem('akito_visit_date',td);localStorage.setItem('akito_today',ld+'');el.innerHTML=`👁️ 总访问 <span class="num">${lv}</span> · 今日 <span class="num">${ld}</span>`;}})();
