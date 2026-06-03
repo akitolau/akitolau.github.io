@@ -9,24 +9,12 @@
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
-  --bg: #0a0a0a;
-  --bg2: #141414;
-  --bg3: #1c1c1e;
-  --border: #2a2a2e;
-  --text: #f5f5f0;
-  --text2: #8e8e93;
-  --text3: #636366;
+  --bg: #0a0a0a; --bg2: #141414; --bg3: #1c1c1e;
+  --border: #2a2a2e; --text: #f5f5f0; --text2: #8e8e93; --text3: #636366;
   --accent: #d4a373;
   --shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+body { font-family: 'Inter',-apple-system,sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -34,224 +22,99 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* header */
-header {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,10,0.85);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border-bottom: 1px solid var(--border);
-  padding: 0 24px;
-}
-.header-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 64px;
-}
-.logo {
-  display: flex; align-items: center; gap: 10px;
-}
+header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.85); backdrop-filter: blur(20px) saturate(1.5); -webkit-backdrop-filter: blur(20px) saturate(1.5); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.h-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; }
 .logo-icon { font-size: 22px; }
-.logo-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; font-weight: 700;
-  color: var(--text); letter-spacing: 2px;
-}
-.logo-sub {
-  font-size: 11px; color: var(--text2);
-  font-weight: 300; letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-left: 4px;
-}
+.logo-text { font-family: 'Playfair Display',serif; font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: 2px; }
+.logo-sub { font-size: 11px; color: var(--text2); font-weight: 300; letter-spacing: 3px; text-transform: uppercase; margin-left: 4px; }
 nav { display: flex; gap: 4px; align-items: center; }
-.nav-btn {
-  background: none; border: none; color: var(--text3);
-  font-family: 'Inter', sans-serif; font-size: 13px;
-  padding: 8px 16px; border-radius: 8px; cursor: pointer;
-  transition: all .2s; letter-spacing: 0.5px; font-weight: 500;
-}
+.nav-btn { background: none; border: none; color: var(--text3); font-family: 'Inter',sans-serif; font-size: 13px; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: all .2s; letter-spacing: .5px; font-weight: 500; }
 .nav-btn:hover { color: var(--text); background: var(--bg2); }
 .nav-btn.active { color: var(--accent); background: rgba(212,163,115,0.12); }
-.back-link {
-  font-size: 12px; color: var(--text3); padding: 4px 8px; border-radius: 6px; transition: color .2s;
-}
+.back-link { font-size: 12px; color: var(--text3); padding: 4px 8px; border-radius: 6px; }
 .back-link:hover { color: var(--text2); }
 
 /* main */
 main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
 
 /* search */
-.search-wrap { margin-bottom: 28px; }
-.search-bar {
-  display: flex; gap: 8px; align-items: center;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 14px; padding: 4px 4px 4px 18px;
-  transition: border-color .2s;
-}
-.search-bar:focus-within { border-color: var(--accent); }
-.search-bar input {
-  flex: 1; background: none; border: none;
-  color: var(--text); font-family: 'Inter', sans-serif;
-  font-size: 15px; padding: 12px 0; outline: none;
-}
-.search-bar input::placeholder { color: var(--text3); }
-.search-bar button {
-  background: var(--accent); border: none;
-  color: #0a0a0a; padding: 10px 20px;
-  border-radius: 10px; font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: opacity .2s;
-  font-family: 'Inter', sans-serif; letter-spacing: 0.5px;
-}
-.search-bar button:hover { opacity: 0.85; }
-.search-bar button:disabled { opacity: 0.3; cursor: not-allowed; }
-.search-hint { font-size: 12px; color: var(--text3); margin-top: 6px; }
+.s-wrap { margin-bottom: 28px; }
+.s-bar { display: flex; gap: 8px; align-items: center; background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 4px 4px 4px 18px; transition: border-color .2s; }
+.s-bar:focus-within { border-color: var(--accent); }
+.s-bar input { flex: 1; background: none; border: none; color: var(--text); font-family: 'Inter',sans-serif; font-size: 15px; padding: 12px 0; outline: none; }
+.s-bar input::placeholder { color: var(--text3); }
+.s-bar button { background: var(--accent); border: none; color: #0a0a0a; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .2s; font-family: 'Inter',sans-serif; letter-spacing: .5px; }
+.s-bar button:hover { opacity: .85; }
+.s-bar button:disabled { opacity: .3; cursor: not-allowed; }
+.s-hint { font-size: 12px; color: var(--text3); margin-top: 6px; }
 
-/* section label */
-.label {
-  font-family: 'Playfair Display', serif;
-  font-size: 12px; font-weight: 600;
-  color: var(--text3); letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 12px;
-}
+/* labels & titles */
+.label { font-family: 'Playfair Display',serif; font-size: 12px; font-weight: 600; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.v-title { font-family: 'Playfair Display',serif; font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.v-sub { color: var(--text2); font-size: 14px; margin-bottom: 24px; }
 
-/* view title */
-.view-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px; font-weight: 700;
-  margin-bottom: 4px;
-}
-.view-sub {
-  color: var(--text2); font-size: 14px;
-  margin-bottom: 24px;
-}
-
-/* grid */
+/* grids */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
-.grid-compact { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.grid-c { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
 
-/* album card */
-.card {
-  background: var(--bg2); border-radius: 12px;
-  overflow: hidden; border: 1px solid var(--border);
-  transition: transform .2s, box-shadow .2s;
-  position: relative;
-}
+/* card */
+.card { background: var(--bg2); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: transform .2s, box-shadow .2s; position: relative; }
 .card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.card .art {
-  width: 100%; aspect-ratio: 1; object-fit: cover;
-  display: block; background: var(--bg3);
-}
-.card .body { padding: 10px 12px 4px; }
-.card .title {
-  font-size: 14px; font-weight: 600; color: var(--text);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  margin-bottom: 1px;
-}
-.card .artist {
-  font-size: 12px; color: var(--text2);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.card .meta {
-  font-size: 11px; color: var(--text3); margin-top: 3px;
-}
-.card .stars {
-  display: flex; gap: 2px; padding: 5px 12px 2px;
-}
-.card .star {
-  font-size: 14px; cursor: pointer; color: var(--text3);
-  transition: color .12s;
-  user-select: none;
-}
-.card .star.on { color: var(--accent); }
-.card .star:hover { color: var(--accent); }
-.card .note-wrap { padding: 0 12px 6px; }
-.card .note-wrap input {
-  width: 100%; background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); padding: 4px 8px; border-radius: 5px;
-  font-size: 11px; outline: none; font-family: 'Inter', sans-serif;
-  transition: border-color .2s;
-}
-.card .note-wrap input:focus { border-color: var(--accent); }
-.card .note-wrap input::placeholder { color: var(--text3); }
-.card .note-text { padding: 0 12px 6px; font-size: 11px; color: var(--text2); }
-.card .ext {
-  display: flex; gap: 3px; padding: 0 12px 6px;
-}
-.card .ext a {
-  flex: 1; text-align: center; font-size: 10px;
-  padding: 4px 4px; border-radius: 4px;
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text3); text-decoration: none; transition: all .2s;
-  letter-spacing: 0.3px; font-weight: 500;
-}
-.card .ext a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-.card .btns {
-  display: flex; gap: 5px; padding: 0 12px 10px;
-}
-.card .btns button {
-  flex: 1; background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); padding: 6px 6px; border-radius: 6px;
-  font-size: 11px; cursor: pointer; transition: all .2s;
-  font-family: 'Inter', sans-serif; font-weight: 500;
-}
-.card .btns button:hover { background: var(--border); }
-.card .btns button.primary { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
-.card .btns button.primary:hover { opacity: 0.85; }
-.card .btns button.danger:hover { background: #c0392b; border-color: #c0392b; color: white; }
-.card .btns button:disabled { opacity: 0.35; cursor: not-allowed; }
-.card .badge {
-  position: absolute; top: 8px; right: 8px;
-  background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
-  padding: 2px 8px; border-radius: 6px;
-  font-size: 10px; color: var(--accent);
-}
-.card .time {
-  padding: 0 12px 10px; font-size: 10px; color: var(--text3);
-}
-.empty {
-  text-align: center; padding: 60px 20px; color: var(--text3);
-}
-.empty .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.card .art { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--bg3); }
+.card .b { padding: 10px 12px 4px; }
+.card .t { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1px; }
+.card .ar { font-size: 12px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .m { font-size: 11px; color: var(--text3); margin-top: 3px; }
+.card .st { display: flex; gap: 2px; padding: 5px 12px 2px; }
+.card .st .s { font-size: 14px; cursor: pointer; color: var(--text3); transition: color .12s; user-select: none; }
+.card .st .s.on { color: var(--accent); }
+.card .st .s:hover { color: var(--accent); }
+.card .nw { padding: 0 12px 6px; }
+.card .nw input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 5px; font-size: 11px; outline: none; font-family: 'Inter',sans-serif; transition: border-color .2s; }
+.card .nw input:focus { border-color: var(--accent); }
+.card .nw input::placeholder { color: var(--text3); }
+.card .nt { padding: 0 12px 6px; font-size: 11px; color: var(--text2); }
+.card .ex { display: flex; gap: 3px; padding: 0 12px 6px; }
+.card .ex a { flex: 1; text-align: center; font-size: 10px; padding: 4px 4px; border-radius: 4px; background: var(--bg3); border: 1px solid var(--border); color: var(--text3); text-decoration: none; transition: all .2s; letter-spacing: .3px; font-weight: 500; }
+.card .ex a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.card .bt { display: flex; gap: 5px; padding: 0 12px 10px; }
+.card .bt button { flex: 1; background: var(--bg3); border: 1px solid var(--border); color: var(--text2); padding: 6px 6px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all .2s; font-family: 'Inter',sans-serif; font-weight: 500; }
+.card .bt button:hover { background: var(--border); }
+.card .bt button.pri { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
+.card .bt button.pri:hover { opacity: .85; }
+.card .bt button.dan:hover { background: #c0392b; border-color: #c0392b; color: white; }
+.card .bt button:disabled { opacity: .35; cursor: not-allowed; }
+.card .bd { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); padding: 2px 8px; border-radius: 6px; font-size: 10px; color: var(--accent); }
+.card .tm { padding: 0 12px 10px; font-size: 10px; color: var(--text3); }
+
+/* empty & loading */
+.empty { text-align: center; padding: 60px 20px; color: var(--text3); }
+.empty .icon { font-size: 48px; margin-bottom: 16px; opacity: .4; }
 .empty p { font-size: 14px; line-height: 1.8; }
-.loading {
-  display: flex; justify-content: center; align-items: center;
-  padding: 60px 20px; gap: 10px; color: var(--text3); font-size: 13px;
-}
+.loading { display: flex; justify-content: center; align-items: center; padding: 60px 20px; gap: 10px; color: var(--text3); font-size: 13px; }
 .spin { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; }
 @keyframes s { to { transform: rotate(360deg); } }
-.divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+.hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
 /* sync indicator */
-.sync-status {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 11px; color: var(--text3); padding: 4px 8px;
-  border-radius: 6px; background: var(--bg2); margin-top: 8px;
-}
-.sync-status .dot { width: 6px; height: 6px; border-radius: 50%; }
-.sync-status .dot.synced { background: #4cd964; }
-.sync-status .dot.saving { background: var(--accent); animation: blink .6s ease-in-out infinite; }
-.sync-status .dot.error { background: #ff3b30; }
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.sync { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); padding: 4px 8px; border-radius: 6px; background: var(--bg2); margin-top: 8px; }
+.sync .d { width: 6px; height: 6px; border-radius: 50%; }
+.sync .d.ok { background: #4cd964; }
+.sync .d.sv { background: var(--accent); animation: bl .6s ease-in-out infinite; }
+.sync .d.er { background: #ff3b30; }
+.sync .d.lc { background: #5ac8fa; }
+@keyframes bl { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
 
 /* toast */
-.toast {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(12px);
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); padding: 10px 24px; border-radius: 10px;
-  font-size: 13px; z-index: 999;
-  opacity: 0; transition: opacity .25s, transform .25s;
-  pointer-events: none; box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-}
+.toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(12px); background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 10px 24px; border-radius: 10px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity .25s,transform .25s; pointer-events: none; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* mobile */
-@media (max-width: 640px) {
+@media (max-width:640px) {
   header { padding: 0 16px; }
   main { padding: 16px 16px 80px; }
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .grid-compact { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .header-inner { height: 56px; }
+  .grid,.grid-c { grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .h-inner { height: 56px; }
   .logo-sub { display: none; }
   .nav-btn { padding: 6px 10px; font-size: 12px; }
 }
@@ -260,7 +123,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
 <body>
 
 <header>
-  <div class="header-inner">
+  <div class="h-inner">
     <div class="logo">
       <span class="logo-icon">🎶</span>
       <span class="logo-text">共鸣</span>
@@ -268,82 +131,80 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
     </div>
     <nav>
       <a class="back-link" href="https://akitolau.github.io" target="_blank">← Akito Lau</a>
-      <button class="nav-btn active" data-view="library">📚 我的乐库</button>
-      <button class="nav-btn" data-view="plaza">🌊 探索广场</button>
+      <button class="nav-btn active" data-v="library">📚 我的乐库</button>
+      <button class="nav-btn" data-v="plaza">🌊 探索广场</button>
     </nav>
   </div>
 </header>
 
 <main>
-  <!-- SEARCH -->
-  <div class="search-wrap">
-    <div class="search-bar">
+  <div class="s-wrap">
+    <div class="s-bar">
       <input type="text" id="q" placeholder="搜专辑或艺人… e.g.「Kendrick Lamar」「宇多田ヒカル」" autocomplete="off">
       <button id="go">搜索</button>
     </div>
-    <div class="search-hint">按 <kbd>/</kbd> 快速聚焦 · 收藏后点击 📚 我的乐库查看</div>
+    <div class="s-hint">按 <kbd>/</kbd> 快速聚焦 · 收藏后自动显示在「我的乐库」</div>
   </div>
 
-  <!-- SEARCH RESULTS -->
-  <div id="srWrap" style="display:none">
+  <div id="srW" style="display:none">
     <div class="label">搜索结果</div>
-    <div id="srArea"></div>
-    <hr class="divider">
+    <div id="srA"></div>
+    <hr class="hr">
   </div>
 
-  <!-- LIBRARY -->
-  <div id="libView">
-    <div class="view-title">我的乐库</div>
-    <div class="view-sub" id="libSub">我珍藏的音乐</div>
-    <div id="libContent"></div>
-    <div class="sync-status" id="syncStatus"><span class="dot synced" id="syncDot"></span><span id="syncLabel">已同步</span></div>
+  <div id="libV">
+    <div class="v-title">我的乐库</div>
+    <div class="v-sub" id="libSub">加载中…</div>
+    <div id="libC"></div>
+    <div class="sync" id="sync"><span class="d ok" id="sD"></span><span id="sL">加载中…</span></div>
   </div>
 
-  <!-- PLAZA -->
-  <div id="plzView" style="display:none">
-    <div class="view-title">探索广场</div>
-    <div class="view-sub" id="plzSub">听听大家都在听什么</div>
-    <div id="plzContent"></div>
+  <div id="plzV" style="display:none">
+    <div class="v-title">探索广场</div>
+    <div class="v-sub" id="plzSub">看看大家都在听什么</div>
+    <div id="plzC"></div>
   </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== GITHUB CONSTANTS =====
+// ===== GITHUB =====
 const O='akitolau',R='akitolau.github.io',B='main';
 const LP='data/music-library.json',PP='data/music-plaza.json';
+const LSK='resonance_lib', LSP='resonance_plz';
 
 function gPT(){return localStorage.getItem('gh_pub')||function(){var a=[103,105,116,104,117,98,95,112,97,116,95,49,49,67,69,85,85,86,52,89,48,83,83,53,109,69,67,76,50,76,78,66,115,95,88,103,66,103,90,107,79,48,108,106,89,98],b=[80,66,89,69,120,98,51,90,77,70,112,88,83,65,86,50,48,85,90,80,97,78,103,107,53,65,89,105,86,77,111,70,52,74,79,83,84,76,50,84,101,73,105,98,74,76,70];return a.concat(b).map(function(c){return String.fromCharCode(c)}).join('')}()||'';}
 function gt(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||gPT()||'';}
 function ts(){return'?_='+Date.now();}
-function b64E(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
-function b64D(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
-async function ghG(url,o={}){
+function bE(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
+function bD(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
+async function gG(url,o={}){
   const t=gt();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...o.headers};
   const r=await fetch(url+ts(),{...o,headers:h});
   if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
 }
 async function gf(path){
-  try{const d=await ghG(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
+  try{const d=await gG(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(bD(d.content)),sha:d.sha};}
   catch(e){return null;}
 }
 async function pf(path,c,s,p){
   const t=p||gt();if(!t)throw new Error('No token');
-  const body={message:'Update '+path,content:b64E(JSON.stringify(c)),branch:B,...(s?{sha:s}:{})};
+  const body={message:'Update '+path,content:bE(JSON.stringify(c)),branch:B,...(s?{sha:s}:{})};
   const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
 }
 
 // ===== STATE =====
 let lib=[], plz=[], results=[];
+let storage='local'; // 'local' or 'cloud'
 
 // ===== DOM =====
 const $=id=>document.getElementById(id);
-const q=$('q'), go=$('go'), srW=$('srWrap'), srA=$('srArea');
-const lV=$('libView'), pV=$('plzView'), lC=$('libContent'), pC=$('plzContent');
-const lSub=$('libSub'), pSub=$('plzSub');
-const sD=$('syncDot'), sL=$('syncLabel');
+const q=$('q'),go=$('go'),srW=$('srW'),srA=$('srA');
+const lV=$('libV'),pV=$('plzV'),lC=$('libC'),pC=$('plzC');
+const lS=$('libSub'),pS=$('plzSub');
+const sD=$('sD'),sL=$('sL');
 
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function eA(s){return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
@@ -355,9 +216,52 @@ function toast(m){
 }
 
 // ===== SYNC STATUS =====
-function syncIdle(){sD.className='dot synced';sL.textContent='已同步';}
-function syncSaving(){sD.className='dot saving';sL.textContent='保存中…';}
-function syncErr(){sD.className='dot error';sL.textContent='同步失败';}
+function syncCloud(){sD.className='d ok';sL.textContent='☁️ 已同步到云端';storage='cloud';}
+function syncLocal(){sD.className='d lc';sL.textContent='💾 已保存到本地';storage='local';}
+function syncSaving(){sD.className='d sv';sL.textContent='保存中…';}
+function syncErr(){sD.className='d er';sL.textContent='⚠️ 同步失败';}
+
+// ===== LOCALSTORAGE PERSISTENCE =====
+function saveLS(){
+  try{localStorage.setItem(LSK,JSON.stringify(lib));}catch(e){}
+  try{localStorage.setItem(LSP,JSON.stringify(plz));}catch(e){}
+}
+function loadLS(){
+  try{const d=localStorage.getItem(LSK);if(d)lib=JSON.parse(d);}catch(e){}
+  try{const d=localStorage.getItem(LSP);if(d)plz=JSON.parse(d);}catch(e){}
+}
+
+// ===== CLOUD SAVE WITH LOCAL FALLBACK =====
+async function saveLib(){
+  saveLS();
+  syncSaving();
+  try{
+    const ex=await gf(LP);
+    await pf(LP,lib,ex?ex.sha:null);
+    syncCloud();
+  }catch(e){
+    console.warn('Cloud save failed, using localStorage:',e);
+    syncLocal();
+  }
+}
+async function savePlz(){
+  saveLS();
+  syncSaving();
+  try{
+    const ex=await gf(PP);
+    await pf(PP,plz,ex?ex.sha:null);
+    syncCloud();
+  }catch(e){
+    console.warn('Cloud save failed, using localStorage:',e);
+    syncLocal();
+  }
+}
+
+let _sd;
+function dLib(){
+  clearTimeout(_sd);
+  _sd=setTimeout(saveLib,1000);
+}
 
 // ===== SEARCH =====
 async function doSearch(qry){
@@ -370,21 +274,15 @@ async function doSearch(qry){
     const r=await fetch(`https://itunes.apple.com/search?term=${qs}&entity=album&limit=30&country=US`);
     const d=await r.json();
     results=(d.results||[]).map(i=>({
-      id:String(i.collectionId),
-      album:i.collectionName,
-      artist:i.artistName,
+      id:String(i.collectionId),album:i.collectionName,artist:i.artistName,
       art:(i.artworkUrl100||'').replace('100x100','600x600'),
       year:i.releaseDate?new Date(i.releaseDate).getFullYear():'',
-      genre:i.primaryGenreName||'',
-      url:i.collectionViewUrl||''
+      genre:i.primaryGenreName||'',url:i.collectionViewUrl||''
     }));
     if(results.length===0){
       srA.innerHTML='<div class="empty"><div class="icon">🔍</div><p>未找到「'+esc(qry.trim())+'」<br>试试别的关键词？</p></div>';
       toast('未找到结果');
-    } else {
-      renderSR();
-      toast('找到 '+results.length+' 张专辑');
-    }
+    } else { renderSR(); toast('找到 '+results.length+' 张专辑'); }
   } catch(e){
     console.error(e);
     srA.innerHTML='<div class="empty"><div class="icon">⚠️</div><p>搜索出错了<br>检查网络后重试</p></div>';
@@ -395,115 +293,58 @@ async function doSearch(qry){
 function renderSR(){
   if(results.length===0){srW.style.display='none';return;}
   srW.style.display='block';
-  srA.innerHTML='<div class="grid-compact">'+results.map(i=>{
+  srA.innerHTML='<div class="grid-c">'+results.map(i=>{
     const inLib=lib.some(l=>l.id===i.id);
-    const aoty=`https://www.albumoftheyear.org/album/${encodeURIComponent(i.artist.replace(/[^a-zA-Z0-9]/g,'-'))}-${encodeURIComponent(i.album.replace(/[^a-zA-Z0-9]/g,'-'))}/`;  // best AOTY URL format
-    const aotyS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;  // fallback: search by album name only (cleaner)
-    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;  // best RYM format
+    const aS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;
     return '<div class="card">' +
       '<img class="art" src="'+i.art+'" alt="'+eA(i.album)+'" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E\'">' +
-      '<div class="body"><div class="title" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="artist">'+esc(i.artist)+'</div><div class="meta">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
-      '<div class="ext"><a href="'+aotyS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
-      '<div class="btns"><button onclick="aL(\''+i.id+'\')" '+(inLib?'disabled':'')+'>'+(inLib?'✓ 已收藏':'♡ 收藏')+'</button></div></div>';
+      '<div class="b"><div class="t" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="ar">'+esc(i.artist)+'</div><div class="m">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
+      '<div class="ex"><a href="'+aS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
+      '<div class="bt"><button onclick="aL(\''+i.id+'\')"'+(inLib?' disabled':'')+'>'+(inLib?'✓ 已收藏':'♡ 收藏')+'</button></div></div>';
   }).join('')+'</div>';
 }
 
-// ===== LIBRARY OPERATIONS =====
+// ===== LIBRARY =====
 async function aL(id){
   const i=results.find(s=>s.id===id);
   if(!i||lib.some(l=>l.id===id)){toast('已在乐库中');return;}
-  const e={
-    id:i.id,album:i.album,artist:i.artist,art:i.art,
-    year:i.year,genre:i.genre||'',url:i.url||'',
-    addedAt:new Date().toISOString(),rating:0,note:''
-  };
-  lib.push(e);
+  lib.push({id:i.id,album:i.album,artist:i.artist,art:i.art,year:i.year,genre:i.genre||'',url:i.url||'',addedAt:new Date().toISOString(),rating:0,note:''});
   renderLib(); renderSR();
-  syncSaving();
-  try{
-    const ex=await gf(LP);
-    await pf(LP,lib,ex?ex.sha:null);
-    syncIdle();
-    toast('✓ 已添加到乐库');
-  }catch(err){
-    console.error('saveLib:',err);
-    syncErr();
-    toast('✗ 保存到云端失败，数据存在本地');
-  }
+  await saveLib();
+  toast('✓ 已添加到乐库');
 }
 async function rmL(id){
   lib=lib.filter(l=>l.id!==id);
   renderLib(); renderSR();
-  syncSaving();
-  try{
-    const ex=await gf(LP);
-    await pf(LP,lib,ex?ex.sha:null);
-    syncIdle();
-  }catch(err){
-    console.error('rmLib:',err);
-    syncErr();
-  }
+  await saveLib();
 }
 function setR(id,rating){
-  const i=lib.find(l=>l.id===id);
-  if(!i)return;
+  const i=lib.find(l=>l.id===id); if(!i)return;
   i.rating=(i.rating===rating)?0:Number(rating);
-  debounceSaveLib();
-  renderLib();
+  dLib(); renderLib();
 }
 function setN(id,note){
-  const i=lib.find(l=>l.id===id);
-  if(!i)return;
-  i.note=note;
-  debounceSaveLib();
+  const i=lib.find(l=>l.id===id); if(!i)return;
+  i.note=note; dLib();
 }
 async function share(id){
-  const i=lib.find(l=>l.id===id);
-  if(!i)return;
+  const i=lib.find(l=>l.id===id); if(!i)return;
   if(plz.some(p=>p.id===id&&p.sharedBy==='Akito')){toast('已在广场中');return;}
   plz.unshift({...i,sharedBy:'Akito',sharedAt:new Date().toISOString()});
   renderPlz();renderLib();
-  syncSaving();
-  try{
-    const ex=await gf(PP);
-    await pf(PP,plz,ex?ex.sha:null);
-    syncIdle();
-    toast('✓ 已分享到广场');
-  }catch(err){
-    console.error('share:',err);
-    syncErr();
-  }
+  await savePlz();
+  toast('✓ 已分享到广场');
 }
 async function unshare(id){
   plz=plz.filter(p=>!(p.id===id&&p.sharedBy==='Akito'));
   renderPlz();
-  syncSaving();
-  try{
-    const ex=await gf(PP);
-    await pf(PP,plz,ex?ex.sha:null);
-    syncIdle();
-  }catch(err){
-    console.error('unshare:',err);
-    syncErr();
-  }
-}
-// debounce saves for rating/note changes (1s idle)
-let _sd;
-function debounceSaveLib(){
-  clearTimeout(_sd);
-  _sd=setTimeout(async()=>{
-    syncSaving();
-    try{
-      const ex=await gf(LP);
-      await pf(LP,lib,ex?ex.sha:null);
-      syncIdle();
-    }catch(err){syncErr();}
-  },1000);
+  await savePlz();
 }
 
-// ===== RENDER LIBRARY =====
+// ===== RENDER =====
 function renderLib(){
-  lSub.textContent='共 '+lib.length+' 张专辑';
+  lS.textContent='共 '+lib.length+' 张专辑';
   if(lib.length===0){
     lC.innerHTML='<div class="empty"><div class="icon">📚</div><p>还没有收藏任何音乐<br>搜索你喜欢的专辑，点击 ♡ 收藏</p></div>';
     return;
@@ -511,22 +352,20 @@ function renderLib(){
   lC.innerHTML='<div class="grid">'+lib.map(i=>{
     const inPlz=plz.some(p=>p.id===i.id&&p.sharedBy==='Akito');
     const r=i.rating||0;
-    const stars=[1,2,3,4,5].map(n=>'<span class="star'+(n<=r?' on':'')+'" onclick="setR(\''+i.id+'\','+n+')">★</span>').join('');
-    const aotyS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
+    const st='<div class="st">'+[1,2,3,4,5].map(n=>'<span class="s'+(n<=r?' on':'')+'" onclick="setR(\''+i.id+'\','+n+')">★</span>').join('')+'</div>';
+    const aS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
     const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;
     return '<div class="card">' +
       '<img class="art" src="'+i.art+'" alt="'+eA(i.album)+'" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E\'">' +
-      '<div class="body"><div class="title" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="artist">'+esc(i.artist)+'</div><div class="meta">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
-      '<div class="stars">'+stars+'</div>' +
-      '<div class="note-wrap"><input type="text" placeholder="备注…" value="'+eA(i.note)+'" onchange="setN(\''+i.id+'\',this.value)"></div>' +
-      '<div class="ext"><a href="'+aotyS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
-      '<div class="btns"><button onclick="share(\''+i.id+'\')" class="'+(inPlz?'primary':'')+'">'+(inPlz?'✓ 已分享':'⇧ 分享')+'</button><button class="danger" onclick="rmL(\''+i.id+'\')">✕ 移除</button></div></div>';
+      '<div class="b"><div class="t" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="ar">'+esc(i.artist)+'</div><div class="m">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
+      st +
+      '<div class="nw"><input type="text" placeholder="备注…" value="'+eA(i.note)+'" onchange="setN(\''+i.id+'\',this.value)"></div>' +
+      '<div class="ex"><a href="'+aS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
+      '<div class="bt"><button onclick="share(\''+i.id+'\')" class="'+(inPlz?'pri':'')+'">'+(inPlz?'✓ 已分享':'⇧ 分享')+'</button><button class="dan" onclick="rmL(\''+i.id+'\')">✕ 移除</button></div></div>';
   }).join('')+'</div>';
 }
-
-// ===== RENDER PLAZA =====
 function renderPlz(){
-  pSub.textContent='共 '+plz.length+' 条分享';
+  pS.textContent='共 '+plz.length+' 条分享';
   if(plz.length===0){
     pC.innerHTML='<div class="empty"><div class="icon">🌊</div><p>广场上还没有分享<br>把你的珍藏分享出来吧</p></div>';
     return;
@@ -534,25 +373,38 @@ function renderPlz(){
   pC.innerHTML='<div class="grid">'+plz.map(i=>{
     const mine=i.sharedBy==='Akito';
     const r=i.rating||0;
-    const stars=[1,2,3,4,5].map(n=>'<span class="star'+(n<=r?' on':'')+'">★</span>').join('');
-    const aotyS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
+    const st='<div class="st">'+[1,2,3,4,5].map(n=>'<span class="s'+(n<=r?' on':'')+'">★</span>').join('')+'</div>';
+    const aS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
     const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;
     return '<div class="card">' +
-      (mine?'<div class="badge">👤 我</div>':'') +
+      (mine?'<div class="bd">👤 我</div>':'') +
       '<img class="art" src="'+i.art+'" alt="'+eA(i.album)+'" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E\'">' +
-      '<div class="body"><div class="title" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="artist">'+esc(i.artist)+'</div><div class="meta">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
-      '<div class="stars">'+stars+'</div>' +
-      (i.note?'<div class="note-text">💬 '+esc(i.note)+'</div>':'') +
-      '<div class="ext"><a href="'+aotyS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
-      (mine?'<div class="btns"><button class="danger" onclick="unshare(\''+i.id+'\')">取消分享</button></div>':'') +
-      '<div class="time">'+(i.sharedAt?'分享于 '+new Date(i.sharedAt).toLocaleDateString('zh-CN'):'')+'</div></div>';
+      '<div class="b"><div class="t" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="ar">'+esc(i.artist)+'</div><div class="m">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
+      st +
+      (i.note?'<div class="nt">💬 '+esc(i.note)+'</div>':'') +
+      '<div class="ex"><a href="'+aS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
+      (mine?'<div class="bt"><button class="dan" onclick="unshare(\''+i.id+'\')">取消分享</button></div>':'') +
+      '<div class="tm">'+(i.sharedAt?'分享于 '+new Date(i.sharedAt).toLocaleDateString('zh-CN'):'')+'</div></div>';
   }).join('')+'</div>';
 }
 
-// ===== DATA LOAD =====
+// ===== LOAD =====
 async function load(){
-  try{const d=await gf(LP);if(d)lib=d.content||[];}catch(e){lib=[];}
-  try{const d=await gf(PP);if(d)plz=d.content||[];}catch(e){plz=[];}
+  // Try cloud first
+  let cloudLib=null, cloudPlz=null;
+  try{const d=await gf(LP);if(d)cloudLib=d.content;}catch(e){}
+  try{const d=await gf(PP);if(d)cloudPlz=d.content;}catch(e){}
+
+  if(cloudLib){lib=cloudLib;syncCloud();}
+  else{
+    loadLS(); // fallback to localStorage
+    if(lib.length>0)syncLocal();
+    else{sD.className='d ok';sL.textContent='☁️ 加载完成';}
+  }
+
+  if(cloudPlz){plz=cloudPlz;}
+  else{loadLS();}
+
   renderLib();renderPlz();
 }
 
@@ -561,7 +413,7 @@ document.querySelectorAll('.nav-btn').forEach(b=>{
   b.addEventListener('click',function(){
     document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
     this.classList.add('active');
-    if(this.dataset.view==='library'){lV.style.display='';pV.style.display='none';}
+    if(this.dataset.v==='library'){lV.style.display='';pV.style.display='none';}
     else{lV.style.display='none';pV.style.display='';}
   });
 });
