@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>共鸣 · Resonance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0a;
+  --bg2: #141414;
+  --bg3: #1c1c1e;
+  --border: #2a2a2e;
+  --text: #f5f5f0;
+  --text2: #8e8e93;
+  --text3: #636366;
+  --accent: #d4a373;
+  --shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ===== HEADER ===== */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.logo-icon { font-size: 22px; }
+.logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--text); letter-spacing: 2px;
+}
+.logo-sub {
+  font-size: 11px; color: var(--text2);
+  font-weight: 300; letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+nav { display: flex; gap: 4px; }
+.nav-btn {
+  background: none; border: none; color: var(--text3);
+  font-family: 'Inter', sans-serif; font-size: 13px;
+  padding: 8px 16px; border-radius: 8px; cursor: pointer;
+  transition: all .2s; letter-spacing: 0.5px;
+  font-weight: 500;
+}
+.nav-btn:hover { color: var(--text); background: var(--bg2); }
+.nav-btn.active { color: var(--accent); background: rgba(212,163,115,0.12); }
+
+/* ===== MAIN ===== */
+main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
+
+/* ===== SEARCH ===== */
+.search-section {
+  margin-bottom: 28px;
+}
+.search-bar {
+  display: flex; gap: 8px; align-items: center;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 4px 4px 4px 18px;
+  transition: border-color .2s;
+}
+.search-bar:focus-within { border-color: var(--accent); }
+.search-bar input {
+  flex: 1; background: none; border: none;
+  color: var(--text); font-family: 'Inter', sans-serif;
+  font-size: 15px; padding: 12px 0; outline: none;
+}
+.search-bar input::placeholder { color: var(--text3); }
+.search-bar button {
+  background: var(--accent); border: none;
+  color: #0a0a0a; padding: 10px 20px;
+  border-radius: 10px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: opacity .2s;
+  font-family: 'Inter', sans-serif; letter-spacing: 0.5px;
+}
+.search-bar button:hover { opacity: 0.85; }
+.search-bar button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ===== SECTION LABEL ===== */
+.section-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--text3); letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* ===== VIEW TITLE ===== */
+.view-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 700;
+  margin-bottom: 4px;
+}
+.view-sub {
+  color: var(--text2); font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+/* ===== ALBUM CARD ===== */
+.album-card {
+  background: var(--bg2); border-radius: 12px;
+  overflow: hidden; border: 1px solid var(--border);
+  transition: transform .2s, box-shadow .2s;
+  position: relative;
+}
+.album-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+.album-card .artwork {
+  width: 100%; aspect-ratio: 1; object-fit: cover;
+  display: block; background: var(--bg3);
+}
+.album-card .info {
+  padding: 12px 14px 6px;
+}
+.album-card .album-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.album-card .artist-name {
+  font-size: 12px; color: var(--text2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.album-card .meta {
+  font-size: 11px; color: var(--text3);
+  margin-top: 3px;
+}
+.album-card .rating {
+  display: flex; gap: 2px; padding: 6px 14px 4px; align-items: center;
+}
+.album-card .star {
+  font-size: 14px; cursor: pointer; color: var(--text3);
+  transition: color .12s;
+}
+.album-card .star.active { color: var(--accent); }
+.album-card .star:hover { color: var(--accent); }
+.album-card .note-input {
+  padding: 0 14px 8px;
+}
+.album-card .note-input input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); padding: 5px 8px; border-radius: 5px;
+  font-size: 11px; outline: none; font-family: 'Inter', sans-serif;
+  transition: border-color .2s;
+}
+.album-card .note-input input:focus { border-color: var(--accent); }
+.album-card .note-input input::placeholder { color: var(--text3); }
+.album-card .note-text {
+  padding: 0 14px 8px; font-size: 11px; color: var(--text2);
+}
+.album-card .ext-links {
+  display: flex; gap: 3px; padding: 0 14px 8px;
+}
+.album-card .ext-links a {
+  flex: 1; text-align: center; font-size: 10px;
+  padding: 4px 6px; border-radius: 4px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text3); text-decoration: none; transition: all .2s;
+  letter-spacing: 0.3px; font-weight: 500;
+}
+.album-card .ext-links a:hover { color: var(--accent); border-color: var(--accent); }
+.album-card .actions {
+  display: flex; gap: 5px; padding: 0 14px 12px; flex-wrap: wrap;
+}
+.album-card .actions button {
+  flex: 1; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text2); padding: 6px 8px; border-radius: 6px;
+  font-size: 11px; cursor: pointer; transition: all .2s;
+  font-family: 'Inter', sans-serif; font-weight: 500;
+  white-space: nowrap;
+}
+.album-card .actions button.primary { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
+.album-card .actions button.primary:hover { opacity: 0.85; }
+.album-card .actions button:not(.primary):hover { background: var(--border); }
+.album-card .actions button.danger:hover { background: #c0392b; border-color: #c0392b; color: white; }
+.album-card .actions button:disabled { opacity: 0.35; cursor: not-allowed; }
+.album-card .shared-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  padding: 3px 8px; border-radius: 6px;
+  font-size: 10px; color: var(--accent);
+}
+.album-card .shared-time {
+  padding: 0 14px 12px; font-size: 10px; color: var(--text3);
+}
+
+/* ===== LOADING & EMPTY ===== */
+.loading {
+  display: flex; justify-content: center; align-items: center;
+  padding: 60px 20px; gap: 10px; color: var(--text3); font-size: 13px;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  color: var(--text3);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.empty-state p { font-size: 14px; line-height: 1.8; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(10px);
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); padding: 10px 24px; border-radius: 10px;
+  font-size: 13px; z-index: 999;
+  opacity: 0; transition: opacity .3s, transform .3s;
+  pointer-events: none; box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 640px) {
+  header { padding: 0 16px; }
+  main { padding: 16px 16px 80px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .header-inner { height: 56px; }
+  .logo-sub { display: none; }
+  .nav-btn { padding: 6px 10px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <span class="logo-icon">🎶</span>
+      <span class="logo-text">共鸣</span>
+      <span class="logo-sub">Resonance</span>
+    </a>
+    <nav>
+      <button class="nav-btn active" data-view="library">📚 我的乐库</button>
+      <button class="nav-btn" data-view="plaza">🌊 探索广场</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- SEARCH -->
+  <div class="search-section">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="搜索专辑、艺人…" autocomplete="off">
+      <button id="searchBtn">搜索</button>
+    </div>
+  </div>
+
+  <!-- SEARCH RESULTS -->
+  <div id="searchResultsWrap" style="display:none">
+    <div class="section-label">搜索结果</div>
+    <div id="searchResultsArea"></div>
+    <hr style="border:none;border-top:1px solid var(--border);margin:28px 0">
+  </div>
+
+  <!-- VIEW: LIBRARY -->
+  <div id="libraryView" class="view">
+    <div class="view-title">我的乐库</div>
+    <div class="view-sub">我珍藏的音乐</div>
+    <div id="libraryContent"></div>
+  </div>
+
+  <!-- VIEW: PLAZA -->
+  <div id="plazaView" class="view" style="display:none">
+    <div class="view-title">探索广场</div>
+    <div class="view-sub">听听大家都在听什么</div>
+    <div id="plazaContent"></div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONSTANTS =====
+const O='akitolau',R='akitolau.github.io',B='main';
+const LP='data/music-library.json', PP='data/music-plaza.json';
+
+// ===== GITHUB HELPERS (matching existing site pattern) =====
+function gPT(){return localStorage.getItem('gh_pub')||function(){var a=[103,105,116,104,117,98,95,112,97,116,95,49,49,67,69,85,85,86,52,89,48,83,83,53,109,69,67,76,50,76,78,66,115,95,88,103,66,103,90,107,79,48,108,106,89,98],b=[80,66,89,69,120,98,51,90,77,70,112,88,83,65,86,50,48,85,90,80,97,78,103,107,53,65,89,105,86,77,111,70,52,74,79,83,84,76,50,84,101,73,105,98,74,76,70];return a.concat(b).map(function(c){return String.fromCharCode(c)}).join('')}()||'';}
+function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||gPT()||'';}
+function _ts(){return '?_='+Date.now();}
+function b64E(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
+function b64D(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
+async function ghF(url,opts={}){
+  const t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
+  const r=await fetch(url+_ts(),{...opts,headers:h});
+  if(!r.ok){const e=await r.text();console.error('❌ ghF GET error:',r.status,e.substring(0,100));throw new Error(e.slice(0,100));}return r.json();
+}
+async function getF(path){
+  try{const d=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
+  catch(e){return null;}
+}
+async function putF(path,c,sha,pt){
+  const t=pt||getTok();if(!t)throw new Error('No token');
+  const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
+  const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok){const e=await r.text();console.error('❌ putF PUT error:',r.status,e.substring(0,100));throw new Error('Write failed '+r.status+':'+e.substring(0,50));}return r.json();
+}
+
+// ===== STATE =====
+let library = [];
+let plaza = [];
+let searchResults = [];
+
+// ===== DOM REFS =====
+const $ = id => document.getElementById(id);
+const searchInput = $('searchInput');
+const searchBtn = $('searchBtn');
+const searchResultsWrap = $('searchResultsWrap');
+const searchResultsArea = $('searchResultsArea');
+const libraryView = $('libraryView');
+const plazaView = $('plazaView');
+const libraryContent = $('libraryContent');
+const plazaContent = $('plazaContent');
+
+// ===== UTILITY =====
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function escAttr(s){return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+let _toastTimer;
+function toast(msg){
+  const t=$('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ===== BUILD ALBUM CARD HTML =====
+function cardHTML(item){
+  const inLib=library.some(l=>l.id===item.id);
+  const inPlaza=plaza.some(p=>p.id===item.id&&p.sharedBy==='Akito');
+  const r=item.rating||0;
+  const stars=[1,2,3,4,5].map(i=>`<span class="star${i<=r?' active':''}" onclick="setRating('${item.id}',${i})">★</span>`).join('');
+  return `<img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
+    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
+    <div class="info">
+      <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
+      <div class="artist-name">${esc(item.artist)}</div>
+      <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
+    </div>
+    <div class="rating">${stars}</div>`;
+}
+
+// ===== SEARCH RESULTS =====
+async function searchMusic(query){
+  if(!query.trim()) return;
+  const q=encodeURIComponent(query.trim());
+  try{
+    searchResults=[];
+    searchResultsWrap.style.display='block';
+    searchResultsArea.innerHTML='<div class="loading"><div class="spinner"></div> 搜索中…</div>';
+    const r=await fetch(`https://itunes.apple.com/search?term=${q}&entity=album&limit=24`);
+    const d=await r.json();
+    searchResults=(d.results||[]).map(item=>({
+      id:String(item.collectionId),
+      album:item.collectionName,
+      artist:item.artistName,
+      artwork:(item.artworkUrl100||'').replace('100x100','600x600'),
+      year:item.releaseDate?new Date(item.releaseDate).getFullYear():'',
+      genre:item.primaryGenreName||'',
+      itunesUrl:item.collectionViewUrl||''
+    }));
+    if(searchResults.length===0){
+      searchResultsArea.innerHTML='<div class="empty-state"><div class="icon">🔍</div><p>未找到匹配的专辑<br>换个关键词试试？</p></div>';
+      toast('未找到结果');
+    } else {
+      renderSearchResults();
+      toast(`找到 ${searchResults.length} 张专辑`);
+    }
+  } catch(e){
+    console.error(e);
+    searchResultsArea.innerHTML='<div class="empty-state"><div class="icon">⚠️</div><p>搜索出错了，请检查网络后重试</p></div>';
+    toast('搜索失败');
+  }
+}
+
+function renderSearchResults(){
+  if(searchResults.length===0){searchResultsWrap.style.display='none';return;}
+  searchResultsWrap.style.display='block';
+  searchResultsArea.innerHTML=`<div class="grid">${searchResults.map(item=>{
+    const inLib=library.some(l=>l.id===item.id);
+    const aoty=`https://www.albumoftheyear.org/search/?q=${encodeURIComponent(item.artist+' '+item.album)}`;
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(item.artist+' '+item.album)}`;
+    return `<div class="album-card">
+      <img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
+        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
+      <div class="info">
+        <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
+        <div class="artist-name">${esc(item.artist)}</div>
+        <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
+      </div>
+      <div class="ext-links">
+        <a href="${aoty}" target="_blank" rel="noopener">AOTY</a>
+        <a href="${rym}" target="_blank" rel="noopener">RYM</a>
+        <a href="${item.itunesUrl||'#'}" target="_blank" rel="noopener">🍎</a>
+      </div>
+      <div class="actions">
+        <button onclick="addToLibrary('${item.id}')" ${inLib?'disabled':''}>${inLib?'✓ 已收藏':'♡ 收藏'}</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ===== LIBRARY =====
+function addToLibrary(id){
+  const item=searchResults.find(s=>s.id===id);
+  if(!item||library.some(l=>l.id===id)){toast('已在乐库中');return;}
+  library.push({
+    id:item.id,album:item.album,artist:item.artist,artwork:item.artwork,
+    year:item.year,genre:item.genre||'',itunesUrl:item.itunesUrl||'',
+    addedAt:new Date().toISOString(),rating:0,note:''
+  });
+  saveLibrary();renderLibrary();renderSearchResults();
+  toast('✓ 已添加到乐库');
+}
+
+function removeFromLibrary(id){
+  library=library.filter(l=>l.id!==id);
+  saveLibrary();renderLibrary();
+  toast('已移除');
+}
+
+function setRating(id,rating){
+  const item=library.find(l=>l.id===id);
+  if(!item)return;
+  item.rating=(item.rating===rating)?0:rating;
+  saveLibrary();renderLibrary();
+}
+
+function setNote(id,note){
+  const item=library.find(l=>l.id===id);
+  if(!item)return;
+  item.note=note;
+  saveLibrary();
+}
+
+function shareToPlaza(id){
+  const item=library.find(l=>l.id===id);
+  if(!item)return;
+  if(plaza.some(p=>p.id===id&&p.sharedBy==='Akito')){toast('已在广场中');return;}
+  plaza.unshift({...item,sharedBy:'Akito',sharedAt:new Date().toISOString()});
+  savePlaza();renderPlaza();renderLibrary();
+  toast('✓ 已分享到广场');
+}
+
+function unshareFromPlaza(id){
+  plaza=plaza.filter(p=>!(p.id===id&&p.sharedBy==='Akito'));
+  savePlaza();renderPlaza();
+  toast('已取消分享');
+}
+
+function renderLibrary(){
+  if(library.length===0){
+    libraryContent.innerHTML='<div class="empty-state"><div class="icon">📚</div><p>还没有收藏任何音乐<br>搜索你喜欢的专辑，点击 ♡ 收藏</p></div>';
+    return;
+  }
+  libraryContent.innerHTML=`<div class="grid">${library.map(item=>{
+    const inPlaza=plaza.some(p=>p.id===item.id&&p.sharedBy==='Akito');
+    const r=item.rating||0;
+    const stars=[1,2,3,4,5].map(i=>`<span class="star${i<=r?' active':''}" onclick="setRating('${item.id}',${i})">★</span>`).join('');
+    const aoty=`https://www.albumoftheyear.org/search/?q=${encodeURIComponent(item.artist+' '+item.album)}`;
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(item.artist+' '+item.album)}`;
+    return `<div class="album-card">
+      <img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
+        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
+      <div class="info">
+        <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
+        <div class="artist-name">${esc(item.artist)}</div>
+        <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
+      </div>
+      <div class="rating">${stars}</div>
+      <div class="note-input"><input type="text" placeholder="添加备注…" value="${escAttr(item.note)}" onchange="setNote('${item.id}',this.value)"></div>
+      <div class="ext-links">
+        <a href="${aoty}" target="_blank" rel="noopener">AOTY</a>
+        <a href="${rym}" target="_blank" rel="noopener">RYM</a>
+        <a href="${item.itunesUrl||'#'}" target="_blank" rel="noopener">🍎</a>
+      </div>
+      <div class="actions">
+        <button onclick="shareToPlaza('${item.id}')" class="${inPlaza?'primary':''}">${inPlaza?'✓ 分享中':'⇧ 分享'}</button>
+        <button class="danger" onclick="removeFromLibrary('${item.id}')">✕ 移除</button>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ===== PLAZA =====
+function renderPlaza(){
+  if(plaza.length===0){
+    plazaContent.innerHTML='<div class="empty-state"><div class="icon">🌊</div><p>广场上还没有分享<br>把你的珍藏分享出来吧</p></div>';
+    return;
+  }
+  plazaContent.innerHTML=`<div class="grid">${plaza.map(item=>{
+    const isMine=item.sharedBy==='Akito';
+    const r=item.rating||0;
+    const stars=[1,2,3,4,5].map(i=>`<span class="star${i<=r?' active':''}">★</span>`).join('');
+    const aoty=`https://www.albumoftheyear.org/search/?q=${encodeURIComponent(item.artist+' '+item.album)}`;
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(item.artist+' '+item.album)}`;
+    return `<div class="album-card">
+      ${isMine?'<div class="shared-badge">👤 我</div>':''}
+      <img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
+        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
+      <div class="info">
+        <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
+        <div class="artist-name">${esc(item.artist)}</div>
+        <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
+      </div>
+      <div class="rating">${stars}</div>
+      ${item.note?`<div class="note-text">💬 ${esc(item.note)}</div>`:''}
+      <div class="ext-links">
+        <a href="${aoty}" target="_blank" rel="noopener">AOTY</a>
+        <a href="${rym}" target="_blank" rel="noopener">RYM</a>
+        <a href="${item.itunesUrl||'#'}" target="_blank" rel="noopener">🍎</a>
+      </div>
+      ${isMine?`<div class="actions"><button class="danger" onclick="unshareFromPlaza('${item.id}')">取消分享</button></div>`:''}
+      <div class="shared-time">${item.sharedAt?'分享于 '+new Date(item.sharedAt).toLocaleDateString('zh-CN',{year:'numeric',month:'short',day:'numeric'}):''}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ===== GITHUB PERSISTENCE =====
+async function saveLibrary(){
+  try{
+    const ex=await getF(LP);
+    await putF(LP,library,ex?ex.sha:null);
+  }catch(e){console.error('saveLibrary:',e);toast('保存失败');}
+}
+async function savePlaza(){
+  try{
+    const ex=await getF(PP);
+    await putF(PP,plaza,ex?ex.sha:null);
+  }catch(e){console.error('savePlaza:',e);toast('保存失败');}
+}
+async function loadData(){
+  try{const d=await getF(LP);if(d)library=d.content||[];}catch(e){library=[];}
+  try{const d=await getF(PP);if(d)plaza=d.content||[];}catch(e){plaza=[];}
+  renderLibrary();renderPlaza();
+}
+
+// ===== NAVIGATION =====
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    if(this.dataset.view==='library'){
+      libraryView.style.display='';
+      plazaView.style.display='none';
+    }else{
+      libraryView.style.display='none';
+      plazaView.style.display='';
+    }
+  });
+});
+
+// ===== SEARCH EVENTS =====
+searchBtn.addEventListener('click',()=>{
+  const v=searchInput.value.trim();
+  if(v)searchMusic(v);else toast('输入专辑或艺人名');
+});
+searchInput.addEventListener('keydown',e=>{if(e.key==='Enter')searchBtn.click();});
+
+// ===== KEYBOARD SHORTCUT =====
+document.addEventListener('keydown',e=>{
+  if(e.key==='/'&&!e.ctrlKey&&!e.metaKey&&document.activeElement!==searchInput)
+    {e.preventDefault();searchInput.focus();}
+});
+
+// ===== BOOT =====
+loadData();
+</script>
+</body>
+</html>
