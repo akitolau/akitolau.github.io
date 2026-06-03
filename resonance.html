@@ -30,8 +30,10 @@ body {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-/* ===== HEADER ===== */
+/* header */
 header {
   position: sticky; top: 0; z-index: 100;
   background: rgba(10,10,10,0.85);
@@ -47,7 +49,6 @@ header {
 }
 .logo {
   display: flex; align-items: center; gap: 10px;
-  text-decoration: none;
 }
 .logo-icon { font-size: 22px; }
 .logo-text {
@@ -61,24 +62,25 @@ header {
   text-transform: uppercase;
   margin-left: 4px;
 }
-nav { display: flex; gap: 4px; }
+nav { display: flex; gap: 4px; align-items: center; }
 .nav-btn {
   background: none; border: none; color: var(--text3);
   font-family: 'Inter', sans-serif; font-size: 13px;
   padding: 8px 16px; border-radius: 8px; cursor: pointer;
-  transition: all .2s; letter-spacing: 0.5px;
-  font-weight: 500;
+  transition: all .2s; letter-spacing: 0.5px; font-weight: 500;
 }
 .nav-btn:hover { color: var(--text); background: var(--bg2); }
 .nav-btn.active { color: var(--accent); background: rgba(212,163,115,0.12); }
+.back-link {
+  font-size: 12px; color: var(--text3); padding: 4px 8px; border-radius: 6px; transition: color .2s;
+}
+.back-link:hover { color: var(--text2); }
 
-/* ===== MAIN ===== */
+/* main */
 main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
 
-/* ===== SEARCH ===== */
-.search-section {
-  margin-bottom: 28px;
-}
+/* search */
+.search-wrap { margin-bottom: 28px; }
 .search-bar {
   display: flex; gap: 8px; align-items: center;
   background: var(--bg2); border: 1px solid var(--border);
@@ -101,9 +103,10 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
 }
 .search-bar button:hover { opacity: 0.85; }
 .search-bar button:disabled { opacity: 0.3; cursor: not-allowed; }
+.search-hint { font-size: 12px; color: var(--text3); margin-top: 6px; }
 
-/* ===== SECTION LABEL ===== */
-.section-label {
+/* section label */
+.label {
   font-family: 'Playfair Display', serif;
   font-size: 12px; font-weight: 600;
   color: var(--text3); letter-spacing: 2px;
@@ -111,7 +114,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
   margin-bottom: 12px;
 }
 
-/* ===== VIEW TITLE ===== */
+/* view title */
 .view-title {
   font-family: 'Playfair Display', serif;
   font-size: 28px; font-weight: 700;
@@ -122,139 +125,132 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
   margin-bottom: 24px;
 }
 
-/* ===== GRID ===== */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 14px;
-}
+/* grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+.grid-compact { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
 
-/* ===== ALBUM CARD ===== */
-.album-card {
+/* album card */
+.card {
   background: var(--bg2); border-radius: 12px;
   overflow: hidden; border: 1px solid var(--border);
   transition: transform .2s, box-shadow .2s;
   position: relative;
 }
-.album-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
-}
-.album-card .artwork {
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.card .art {
   width: 100%; aspect-ratio: 1; object-fit: cover;
   display: block; background: var(--bg3);
 }
-.album-card .info {
-  padding: 12px 14px 6px;
-}
-.album-card .album-name {
-  font-size: 14px; font-weight: 600;
-  color: var(--text);
+.card .body { padding: 10px 12px 4px; }
+.card .title {
+  font-size: 14px; font-weight: 600; color: var(--text);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
-.album-card .artist-name {
+.card .artist {
   font-size: 12px; color: var(--text2);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.album-card .meta {
-  font-size: 11px; color: var(--text3);
-  margin-top: 3px;
+.card .meta {
+  font-size: 11px; color: var(--text3); margin-top: 3px;
 }
-.album-card .rating {
-  display: flex; gap: 2px; padding: 6px 14px 4px; align-items: center;
+.card .stars {
+  display: flex; gap: 2px; padding: 5px 12px 2px;
 }
-.album-card .star {
+.card .star {
   font-size: 14px; cursor: pointer; color: var(--text3);
   transition: color .12s;
+  user-select: none;
 }
-.album-card .star.active { color: var(--accent); }
-.album-card .star:hover { color: var(--accent); }
-.album-card .note-input {
-  padding: 0 14px 8px;
-}
-.album-card .note-input input {
+.card .star.on { color: var(--accent); }
+.card .star:hover { color: var(--accent); }
+.card .note-wrap { padding: 0 12px 6px; }
+.card .note-wrap input {
   width: 100%; background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); padding: 5px 8px; border-radius: 5px;
+  color: var(--text); padding: 4px 8px; border-radius: 5px;
   font-size: 11px; outline: none; font-family: 'Inter', sans-serif;
   transition: border-color .2s;
 }
-.album-card .note-input input:focus { border-color: var(--accent); }
-.album-card .note-input input::placeholder { color: var(--text3); }
-.album-card .note-text {
-  padding: 0 14px 8px; font-size: 11px; color: var(--text2);
+.card .note-wrap input:focus { border-color: var(--accent); }
+.card .note-wrap input::placeholder { color: var(--text3); }
+.card .note-text { padding: 0 12px 6px; font-size: 11px; color: var(--text2); }
+.card .ext {
+  display: flex; gap: 3px; padding: 0 12px 6px;
 }
-.album-card .ext-links {
-  display: flex; gap: 3px; padding: 0 14px 8px;
-}
-.album-card .ext-links a {
+.card .ext a {
   flex: 1; text-align: center; font-size: 10px;
-  padding: 4px 6px; border-radius: 4px;
+  padding: 4px 4px; border-radius: 4px;
   background: var(--bg3); border: 1px solid var(--border);
   color: var(--text3); text-decoration: none; transition: all .2s;
   letter-spacing: 0.3px; font-weight: 500;
 }
-.album-card .ext-links a:hover { color: var(--accent); border-color: var(--accent); }
-.album-card .actions {
-  display: flex; gap: 5px; padding: 0 14px 12px; flex-wrap: wrap;
+.card .ext a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.card .btns {
+  display: flex; gap: 5px; padding: 0 12px 10px;
 }
-.album-card .actions button {
+.card .btns button {
   flex: 1; background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text2); padding: 6px 8px; border-radius: 6px;
+  color: var(--text2); padding: 6px 6px; border-radius: 6px;
   font-size: 11px; cursor: pointer; transition: all .2s;
   font-family: 'Inter', sans-serif; font-weight: 500;
-  white-space: nowrap;
 }
-.album-card .actions button.primary { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
-.album-card .actions button.primary:hover { opacity: 0.85; }
-.album-card .actions button:not(.primary):hover { background: var(--border); }
-.album-card .actions button.danger:hover { background: #c0392b; border-color: #c0392b; color: white; }
-.album-card .actions button:disabled { opacity: 0.35; cursor: not-allowed; }
-.album-card .shared-badge {
+.card .btns button:hover { background: var(--border); }
+.card .btns button.primary { background: var(--accent); color: #0a0a0a; border-color: var(--accent); }
+.card .btns button.primary:hover { opacity: 0.85; }
+.card .btns button.danger:hover { background: #c0392b; border-color: #c0392b; color: white; }
+.card .btns button:disabled { opacity: 0.35; cursor: not-allowed; }
+.card .badge {
   position: absolute; top: 8px; right: 8px;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-  padding: 3px 8px; border-radius: 6px;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+  padding: 2px 8px; border-radius: 6px;
   font-size: 10px; color: var(--accent);
 }
-.album-card .shared-time {
-  padding: 0 14px 12px; font-size: 10px; color: var(--text3);
+.card .time {
+  padding: 0 12px 10px; font-size: 10px; color: var(--text3);
 }
-
-/* ===== LOADING & EMPTY ===== */
+.empty {
+  text-align: center; padding: 60px 20px; color: var(--text3);
+}
+.empty .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+.empty p { font-size: 14px; line-height: 1.8; }
 .loading {
   display: flex; justify-content: center; align-items: center;
   padding: 60px 20px; gap: 10px; color: var(--text3); font-size: 13px;
 }
-.spinner {
-  width: 18px; height: 18px;
-  border: 2px solid var(--border); border-top-color: var(--accent);
-  border-radius: 50%; animation: spin .8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.empty-state {
-  text-align: center; padding: 60px 20px;
-  color: var(--text3);
-}
-.empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
-.empty-state p { font-size: 14px; line-height: 1.8; }
+.spin { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: s .8s linear infinite; }
+@keyframes s { to { transform: rotate(360deg); } }
+.divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
-/* ===== TOAST ===== */
+/* sync indicator */
+.sync-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--text3); padding: 4px 8px;
+  border-radius: 6px; background: var(--bg2); margin-top: 8px;
+}
+.sync-status .dot { width: 6px; height: 6px; border-radius: 50%; }
+.sync-status .dot.synced { background: #4cd964; }
+.sync-status .dot.saving { background: var(--accent); animation: blink .6s ease-in-out infinite; }
+.sync-status .dot.error { background: #ff3b30; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* toast */
 .toast {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(10px);
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(12px);
   background: var(--bg3); border: 1px solid var(--border);
   color: var(--text); padding: 10px 24px; border-radius: 10px;
   font-size: 13px; z-index: 999;
-  opacity: 0; transition: opacity .3s, transform .3s;
+  opacity: 0; transition: opacity .25s, transform .25s;
   pointer-events: none; box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ===== RESPONSIVE ===== */
+/* mobile */
 @media (max-width: 640px) {
   header { padding: 0 16px; }
   main { padding: 16px 16px 80px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .grid-compact { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .header-inner { height: 56px; }
   .logo-sub { display: none; }
   .nav-btn { padding: 6px 10px; font-size: 12px; }
@@ -265,12 +261,13 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
 
 <header>
   <div class="header-inner">
-    <a class="logo" href="#">
+    <div class="logo">
       <span class="logo-icon">🎶</span>
       <span class="logo-text">共鸣</span>
       <span class="logo-sub">Resonance</span>
-    </a>
+    </div>
     <nav>
+      <a class="back-link" href="https://akitolau.github.io" target="_blank">← Akito Lau</a>
       <button class="nav-btn active" data-view="library">📚 我的乐库</button>
       <button class="nav-btn" data-view="plaza">🌊 探索广场</button>
     </nav>
@@ -279,331 +276,303 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 24px 80px; }
 
 <main>
   <!-- SEARCH -->
-  <div class="search-section">
+  <div class="search-wrap">
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="搜索专辑、艺人…" autocomplete="off">
-      <button id="searchBtn">搜索</button>
+      <input type="text" id="q" placeholder="搜专辑或艺人… e.g.「Kendrick Lamar」「宇多田ヒカル」" autocomplete="off">
+      <button id="go">搜索</button>
     </div>
+    <div class="search-hint">按 <kbd>/</kbd> 快速聚焦 · 收藏后点击 📚 我的乐库查看</div>
   </div>
 
   <!-- SEARCH RESULTS -->
-  <div id="searchResultsWrap" style="display:none">
-    <div class="section-label">搜索结果</div>
-    <div id="searchResultsArea"></div>
-    <hr style="border:none;border-top:1px solid var(--border);margin:28px 0">
+  <div id="srWrap" style="display:none">
+    <div class="label">搜索结果</div>
+    <div id="srArea"></div>
+    <hr class="divider">
   </div>
 
-  <!-- VIEW: LIBRARY -->
-  <div id="libraryView" class="view">
+  <!-- LIBRARY -->
+  <div id="libView">
     <div class="view-title">我的乐库</div>
-    <div class="view-sub">我珍藏的音乐</div>
-    <div id="libraryContent"></div>
+    <div class="view-sub" id="libSub">我珍藏的音乐</div>
+    <div id="libContent"></div>
+    <div class="sync-status" id="syncStatus"><span class="dot synced" id="syncDot"></span><span id="syncLabel">已同步</span></div>
   </div>
 
-  <!-- VIEW: PLAZA -->
-  <div id="plazaView" class="view" style="display:none">
+  <!-- PLAZA -->
+  <div id="plzView" style="display:none">
     <div class="view-title">探索广场</div>
-    <div class="view-sub">听听大家都在听什么</div>
-    <div id="plazaContent"></div>
+    <div class="view-sub" id="plzSub">听听大家都在听什么</div>
+    <div id="plzContent"></div>
   </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== CONSTANTS =====
+// ===== GITHUB CONSTANTS =====
 const O='akitolau',R='akitolau.github.io',B='main';
-const LP='data/music-library.json', PP='data/music-plaza.json';
+const LP='data/music-library.json',PP='data/music-plaza.json';
 
-// ===== GITHUB HELPERS (matching existing site pattern) =====
 function gPT(){return localStorage.getItem('gh_pub')||function(){var a=[103,105,116,104,117,98,95,112,97,116,95,49,49,67,69,85,85,86,52,89,48,83,83,53,109,69,67,76,50,76,78,66,115,95,88,103,66,103,90,107,79,48,108,106,89,98],b=[80,66,89,69,120,98,51,90,77,70,112,88,83,65,86,50,48,85,90,80,97,78,103,107,53,65,89,105,86,77,111,70,52,74,79,83,84,76,50,84,101,73,105,98,74,76,70];return a.concat(b).map(function(c){return String.fromCharCode(c)}).join('')}()||'';}
-function getTok(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||gPT()||'';}
-function _ts(){return '?_='+Date.now();}
+function gt(){return localStorage.getItem('gh_token')||localStorage.getItem('gh_pub')||gPT()||'';}
+function ts(){return'?_='+Date.now();}
 function b64E(s){const b=new TextEncoder().encode(s);let bin='';for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]);return btoa(bin);}
 function b64D(s){const bin=atob(s);const b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return new TextDecoder().decode(b);}
-async function ghF(url,opts={}){
-  const t=getTok();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...opts.headers};
-  const r=await fetch(url+_ts(),{...opts,headers:h});
-  if(!r.ok){const e=await r.text();console.error('❌ ghF GET error:',r.status,e.substring(0,100));throw new Error(e.slice(0,100));}return r.json();
+async function ghG(url,o={}){
+  const t=gt();const h={'Accept':'application/vnd.github.v3+json',...(t?{'Authorization':'Bearer '+t}:{}),...o.headers};
+  const r=await fetch(url+ts(),{...o,headers:h});
+  if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
 }
-async function getF(path){
-  try{const d=await ghF(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
+async function gf(path){
+  try{const d=await ghG(`https://api.github.com/repos/${O}/${R}/contents/${path}?ref=${B}`);return{content:JSON.parse(b64D(d.content)),sha:d.sha};}
   catch(e){return null;}
 }
-async function putF(path,c,sha,pt){
-  const t=pt||getTok();if(!t)throw new Error('No token');
-  const body={message:'Update '+path,content:b64E(JSON.stringify(c,null,2)),branch:B,...(sha?{sha}:{})};
+async function pf(path,c,s,p){
+  const t=p||gt();if(!t)throw new Error('No token');
+  const body={message:'Update '+path,content:b64E(JSON.stringify(c)),branch:B,...(s?{sha:s}:{})};
   const r=await fetch(`https://api.github.com/repos/${O}/${R}/contents/${path}`,{method:'PUT',headers:{'Authorization':'Bearer '+t,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!r.ok){const e=await r.text();console.error('❌ putF PUT error:',r.status,e.substring(0,100));throw new Error('Write failed '+r.status+':'+e.substring(0,50));}return r.json();
+  if(!r.ok){const e=await r.text();throw new Error(e.slice(0,100));}return r.json();
 }
 
 // ===== STATE =====
-let library = [];
-let plaza = [];
-let searchResults = [];
+let lib=[], plz=[], results=[];
 
-// ===== DOM REFS =====
-const $ = id => document.getElementById(id);
-const searchInput = $('searchInput');
-const searchBtn = $('searchBtn');
-const searchResultsWrap = $('searchResultsWrap');
-const searchResultsArea = $('searchResultsArea');
-const libraryView = $('libraryView');
-const plazaView = $('plazaView');
-const libraryContent = $('libraryContent');
-const plazaContent = $('plazaContent');
+// ===== DOM =====
+const $=id=>document.getElementById(id);
+const q=$('q'), go=$('go'), srW=$('srWrap'), srA=$('srArea');
+const lV=$('libView'), pV=$('plzView'), lC=$('libContent'), pC=$('plzContent');
+const lSub=$('libSub'), pSub=$('plzSub');
+const sD=$('syncDot'), sL=$('syncLabel');
 
-// ===== UTILITY =====
 function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-function escAttr(s){return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function eA(s){return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
-let _toastTimer;
-function toast(msg){
-  const t=$('toast');t.textContent=msg;t.classList.add('show');
-  clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>t.classList.remove('show'),2500);
+let _tt;
+function toast(m){
+  const t=$('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// ===== BUILD ALBUM CARD HTML =====
-function cardHTML(item){
-  const inLib=library.some(l=>l.id===item.id);
-  const inPlaza=plaza.some(p=>p.id===item.id&&p.sharedBy==='Akito');
-  const r=item.rating||0;
-  const stars=[1,2,3,4,5].map(i=>`<span class="star${i<=r?' active':''}" onclick="setRating('${item.id}',${i})">★</span>`).join('');
-  return `<img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
-    onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
-    <div class="info">
-      <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
-      <div class="artist-name">${esc(item.artist)}</div>
-      <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
-    </div>
-    <div class="rating">${stars}</div>`;
-}
+// ===== SYNC STATUS =====
+function syncIdle(){sD.className='dot synced';sL.textContent='已同步';}
+function syncSaving(){sD.className='dot saving';sL.textContent='保存中…';}
+function syncErr(){sD.className='dot error';sL.textContent='同步失败';}
 
-// ===== SEARCH RESULTS =====
-async function searchMusic(query){
-  if(!query.trim()) return;
-  const q=encodeURIComponent(query.trim());
+// ===== SEARCH =====
+async function doSearch(qry){
+  if(!qry.trim())return;
+  const qs=encodeURIComponent(qry.trim());
   try{
-    searchResults=[];
-    searchResultsWrap.style.display='block';
-    searchResultsArea.innerHTML='<div class="loading"><div class="spinner"></div> 搜索中…</div>';
-    const r=await fetch(`https://itunes.apple.com/search?term=${q}&entity=album&limit=24`);
+    results=[];
+    srW.style.display='block';
+    srA.innerHTML='<div class="loading"><div class="spin"></div> 搜索中…</div>';
+    const r=await fetch(`https://itunes.apple.com/search?term=${qs}&entity=album&limit=30&country=US`);
     const d=await r.json();
-    searchResults=(d.results||[]).map(item=>({
-      id:String(item.collectionId),
-      album:item.collectionName,
-      artist:item.artistName,
-      artwork:(item.artworkUrl100||'').replace('100x100','600x600'),
-      year:item.releaseDate?new Date(item.releaseDate).getFullYear():'',
-      genre:item.primaryGenreName||'',
-      itunesUrl:item.collectionViewUrl||''
+    results=(d.results||[]).map(i=>({
+      id:String(i.collectionId),
+      album:i.collectionName,
+      artist:i.artistName,
+      art:(i.artworkUrl100||'').replace('100x100','600x600'),
+      year:i.releaseDate?new Date(i.releaseDate).getFullYear():'',
+      genre:i.primaryGenreName||'',
+      url:i.collectionViewUrl||''
     }));
-    if(searchResults.length===0){
-      searchResultsArea.innerHTML='<div class="empty-state"><div class="icon">🔍</div><p>未找到匹配的专辑<br>换个关键词试试？</p></div>';
+    if(results.length===0){
+      srA.innerHTML='<div class="empty"><div class="icon">🔍</div><p>未找到「'+esc(qry.trim())+'」<br>试试别的关键词？</p></div>';
       toast('未找到结果');
     } else {
-      renderSearchResults();
-      toast(`找到 ${searchResults.length} 张专辑`);
+      renderSR();
+      toast('找到 '+results.length+' 张专辑');
     }
   } catch(e){
     console.error(e);
-    searchResultsArea.innerHTML='<div class="empty-state"><div class="icon">⚠️</div><p>搜索出错了，请检查网络后重试</p></div>';
+    srA.innerHTML='<div class="empty"><div class="icon">⚠️</div><p>搜索出错了<br>检查网络后重试</p></div>';
     toast('搜索失败');
   }
 }
 
-function renderSearchResults(){
-  if(searchResults.length===0){searchResultsWrap.style.display='none';return;}
-  searchResultsWrap.style.display='block';
-  searchResultsArea.innerHTML=`<div class="grid">${searchResults.map(item=>{
-    const inLib=library.some(l=>l.id===item.id);
-    const aoty=`https://www.albumoftheyear.org/search/?q=${encodeURIComponent(item.artist+' '+item.album)}`;
-    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(item.artist+' '+item.album)}`;
-    return `<div class="album-card">
-      <img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
-        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
-      <div class="info">
-        <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
-        <div class="artist-name">${esc(item.artist)}</div>
-        <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
-      </div>
-      <div class="ext-links">
-        <a href="${aoty}" target="_blank" rel="noopener">AOTY</a>
-        <a href="${rym}" target="_blank" rel="noopener">RYM</a>
-        <a href="${item.itunesUrl||'#'}" target="_blank" rel="noopener">🍎</a>
-      </div>
-      <div class="actions">
-        <button onclick="addToLibrary('${item.id}')" ${inLib?'disabled':''}>${inLib?'✓ 已收藏':'♡ 收藏'}</button>
-      </div>
-    </div>`;
-  }).join('')}</div>`;
+function renderSR(){
+  if(results.length===0){srW.style.display='none';return;}
+  srW.style.display='block';
+  srA.innerHTML='<div class="grid-compact">'+results.map(i=>{
+    const inLib=lib.some(l=>l.id===i.id);
+    const aoty=`https://www.albumoftheyear.org/album/${encodeURIComponent(i.artist.replace(/[^a-zA-Z0-9]/g,'-'))}-${encodeURIComponent(i.album.replace(/[^a-zA-Z0-9]/g,'-'))}/`;  // best AOTY URL format
+    const aotyS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;  // fallback: search by album name only (cleaner)
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;  // best RYM format
+    return '<div class="card">' +
+      '<img class="art" src="'+i.art+'" alt="'+eA(i.album)+'" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E\'">' +
+      '<div class="body"><div class="title" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="artist">'+esc(i.artist)+'</div><div class="meta">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
+      '<div class="ext"><a href="'+aotyS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
+      '<div class="btns"><button onclick="aL(\''+i.id+'\')" '+(inLib?'disabled':'')+'>'+(inLib?'✓ 已收藏':'♡ 收藏')+'</button></div></div>';
+  }).join('')+'</div>';
 }
 
-// ===== LIBRARY =====
-function addToLibrary(id){
-  const item=searchResults.find(s=>s.id===id);
-  if(!item||library.some(l=>l.id===id)){toast('已在乐库中');return;}
-  library.push({
-    id:item.id,album:item.album,artist:item.artist,artwork:item.artwork,
-    year:item.year,genre:item.genre||'',itunesUrl:item.itunesUrl||'',
+// ===== LIBRARY OPERATIONS =====
+async function aL(id){
+  const i=results.find(s=>s.id===id);
+  if(!i||lib.some(l=>l.id===id)){toast('已在乐库中');return;}
+  const e={
+    id:i.id,album:i.album,artist:i.artist,art:i.art,
+    year:i.year,genre:i.genre||'',url:i.url||'',
     addedAt:new Date().toISOString(),rating:0,note:''
-  });
-  saveLibrary();renderLibrary();renderSearchResults();
-  toast('✓ 已添加到乐库');
+  };
+  lib.push(e);
+  renderLib(); renderSR();
+  syncSaving();
+  try{
+    const ex=await gf(LP);
+    await pf(LP,lib,ex?ex.sha:null);
+    syncIdle();
+    toast('✓ 已添加到乐库');
+  }catch(err){
+    console.error('saveLib:',err);
+    syncErr();
+    toast('✗ 保存到云端失败，数据存在本地');
+  }
+}
+async function rmL(id){
+  lib=lib.filter(l=>l.id!==id);
+  renderLib(); renderSR();
+  syncSaving();
+  try{
+    const ex=await gf(LP);
+    await pf(LP,lib,ex?ex.sha:null);
+    syncIdle();
+  }catch(err){
+    console.error('rmLib:',err);
+    syncErr();
+  }
+}
+function setR(id,rating){
+  const i=lib.find(l=>l.id===id);
+  if(!i)return;
+  i.rating=(i.rating===rating)?0:Number(rating);
+  debounceSaveLib();
+  renderLib();
+}
+function setN(id,note){
+  const i=lib.find(l=>l.id===id);
+  if(!i)return;
+  i.note=note;
+  debounceSaveLib();
+}
+async function share(id){
+  const i=lib.find(l=>l.id===id);
+  if(!i)return;
+  if(plz.some(p=>p.id===id&&p.sharedBy==='Akito')){toast('已在广场中');return;}
+  plz.unshift({...i,sharedBy:'Akito',sharedAt:new Date().toISOString()});
+  renderPlz();renderLib();
+  syncSaving();
+  try{
+    const ex=await gf(PP);
+    await pf(PP,plz,ex?ex.sha:null);
+    syncIdle();
+    toast('✓ 已分享到广场');
+  }catch(err){
+    console.error('share:',err);
+    syncErr();
+  }
+}
+async function unshare(id){
+  plz=plz.filter(p=>!(p.id===id&&p.sharedBy==='Akito'));
+  renderPlz();
+  syncSaving();
+  try{
+    const ex=await gf(PP);
+    await pf(PP,plz,ex?ex.sha:null);
+    syncIdle();
+  }catch(err){
+    console.error('unshare:',err);
+    syncErr();
+  }
+}
+// debounce saves for rating/note changes (1s idle)
+let _sd;
+function debounceSaveLib(){
+  clearTimeout(_sd);
+  _sd=setTimeout(async()=>{
+    syncSaving();
+    try{
+      const ex=await gf(LP);
+      await pf(LP,lib,ex?ex.sha:null);
+      syncIdle();
+    }catch(err){syncErr();}
+  },1000);
 }
 
-function removeFromLibrary(id){
-  library=library.filter(l=>l.id!==id);
-  saveLibrary();renderLibrary();
-  toast('已移除');
-}
-
-function setRating(id,rating){
-  const item=library.find(l=>l.id===id);
-  if(!item)return;
-  item.rating=(item.rating===rating)?0:rating;
-  saveLibrary();renderLibrary();
-}
-
-function setNote(id,note){
-  const item=library.find(l=>l.id===id);
-  if(!item)return;
-  item.note=note;
-  saveLibrary();
-}
-
-function shareToPlaza(id){
-  const item=library.find(l=>l.id===id);
-  if(!item)return;
-  if(plaza.some(p=>p.id===id&&p.sharedBy==='Akito')){toast('已在广场中');return;}
-  plaza.unshift({...item,sharedBy:'Akito',sharedAt:new Date().toISOString()});
-  savePlaza();renderPlaza();renderLibrary();
-  toast('✓ 已分享到广场');
-}
-
-function unshareFromPlaza(id){
-  plaza=plaza.filter(p=>!(p.id===id&&p.sharedBy==='Akito'));
-  savePlaza();renderPlaza();
-  toast('已取消分享');
-}
-
-function renderLibrary(){
-  if(library.length===0){
-    libraryContent.innerHTML='<div class="empty-state"><div class="icon">📚</div><p>还没有收藏任何音乐<br>搜索你喜欢的专辑，点击 ♡ 收藏</p></div>';
+// ===== RENDER LIBRARY =====
+function renderLib(){
+  lSub.textContent='共 '+lib.length+' 张专辑';
+  if(lib.length===0){
+    lC.innerHTML='<div class="empty"><div class="icon">📚</div><p>还没有收藏任何音乐<br>搜索你喜欢的专辑，点击 ♡ 收藏</p></div>';
     return;
   }
-  libraryContent.innerHTML=`<div class="grid">${library.map(item=>{
-    const inPlaza=plaza.some(p=>p.id===item.id&&p.sharedBy==='Akito');
-    const r=item.rating||0;
-    const stars=[1,2,3,4,5].map(i=>`<span class="star${i<=r?' active':''}" onclick="setRating('${item.id}',${i})">★</span>`).join('');
-    const aoty=`https://www.albumoftheyear.org/search/?q=${encodeURIComponent(item.artist+' '+item.album)}`;
-    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(item.artist+' '+item.album)}`;
-    return `<div class="album-card">
-      <img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
-        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
-      <div class="info">
-        <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
-        <div class="artist-name">${esc(item.artist)}</div>
-        <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
-      </div>
-      <div class="rating">${stars}</div>
-      <div class="note-input"><input type="text" placeholder="添加备注…" value="${escAttr(item.note)}" onchange="setNote('${item.id}',this.value)"></div>
-      <div class="ext-links">
-        <a href="${aoty}" target="_blank" rel="noopener">AOTY</a>
-        <a href="${rym}" target="_blank" rel="noopener">RYM</a>
-        <a href="${item.itunesUrl||'#'}" target="_blank" rel="noopener">🍎</a>
-      </div>
-      <div class="actions">
-        <button onclick="shareToPlaza('${item.id}')" class="${inPlaza?'primary':''}">${inPlaza?'✓ 分享中':'⇧ 分享'}</button>
-        <button class="danger" onclick="removeFromLibrary('${item.id}')">✕ 移除</button>
-      </div>
-    </div>`;
-  }).join('')}</div>`;
+  lC.innerHTML='<div class="grid">'+lib.map(i=>{
+    const inPlz=plz.some(p=>p.id===i.id&&p.sharedBy==='Akito');
+    const r=i.rating||0;
+    const stars=[1,2,3,4,5].map(n=>'<span class="star'+(n<=r?' on':'')+'" onclick="setR(\''+i.id+'\','+n+')">★</span>').join('');
+    const aotyS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;
+    return '<div class="card">' +
+      '<img class="art" src="'+i.art+'" alt="'+eA(i.album)+'" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E\'">' +
+      '<div class="body"><div class="title" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="artist">'+esc(i.artist)+'</div><div class="meta">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
+      '<div class="stars">'+stars+'</div>' +
+      '<div class="note-wrap"><input type="text" placeholder="备注…" value="'+eA(i.note)+'" onchange="setN(\''+i.id+'\',this.value)"></div>' +
+      '<div class="ext"><a href="'+aotyS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
+      '<div class="btns"><button onclick="share(\''+i.id+'\')" class="'+(inPlz?'primary':'')+'">'+(inPlz?'✓ 已分享':'⇧ 分享')+'</button><button class="danger" onclick="rmL(\''+i.id+'\')">✕ 移除</button></div></div>';
+  }).join('')+'</div>';
 }
 
-// ===== PLAZA =====
-function renderPlaza(){
-  if(plaza.length===0){
-    plazaContent.innerHTML='<div class="empty-state"><div class="icon">🌊</div><p>广场上还没有分享<br>把你的珍藏分享出来吧</p></div>';
+// ===== RENDER PLAZA =====
+function renderPlz(){
+  pSub.textContent='共 '+plz.length+' 条分享';
+  if(plz.length===0){
+    pC.innerHTML='<div class="empty"><div class="icon">🌊</div><p>广场上还没有分享<br>把你的珍藏分享出来吧</p></div>';
     return;
   }
-  plazaContent.innerHTML=`<div class="grid">${plaza.map(item=>{
-    const isMine=item.sharedBy==='Akito';
-    const r=item.rating||0;
-    const stars=[1,2,3,4,5].map(i=>`<span class="star${i<=r?' active':''}">★</span>`).join('');
-    const aoty=`https://www.albumoftheyear.org/search/?q=${encodeURIComponent(item.artist+' '+item.album)}`;
-    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(item.artist+' '+item.album)}`;
-    return `<div class="album-card">
-      ${isMine?'<div class="shared-badge">👤 我</div>':''}
-      <img class="artwork" src="${item.artwork}" alt="${escAttr(item.album)}" loading="lazy"
-        onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 dominant-baseline=%27central%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E'">
-      <div class="info">
-        <div class="album-name" title="${escAttr(item.album)}">${esc(item.album)}</div>
-        <div class="artist-name">${esc(item.artist)}</div>
-        <div class="meta">${item.year||''}${item.genre?' · '+esc(item.genre):''}</div>
-      </div>
-      <div class="rating">${stars}</div>
-      ${item.note?`<div class="note-text">💬 ${esc(item.note)}</div>`:''}
-      <div class="ext-links">
-        <a href="${aoty}" target="_blank" rel="noopener">AOTY</a>
-        <a href="${rym}" target="_blank" rel="noopener">RYM</a>
-        <a href="${item.itunesUrl||'#'}" target="_blank" rel="noopener">🍎</a>
-      </div>
-      ${isMine?`<div class="actions"><button class="danger" onclick="unshareFromPlaza('${item.id}')">取消分享</button></div>`:''}
-      <div class="shared-time">${item.sharedAt?'分享于 '+new Date(item.sharedAt).toLocaleDateString('zh-CN',{year:'numeric',month:'short',day:'numeric'}):''}</div>
-    </div>`;
-  }).join('')}</div>`;
+  pC.innerHTML='<div class="grid">'+plz.map(i=>{
+    const mine=i.sharedBy==='Akito';
+    const r=i.rating||0;
+    const stars=[1,2,3,4,5].map(n=>'<span class="star'+(n<=r?' on':'')+'">★</span>').join('');
+    const aotyS=`https://www.albumoftheyear.org/search.php?q=${encodeURIComponent(i.album)}`;
+    const rym=`https://rateyourmusic.com/search?searchterm=${encodeURIComponent(i.artist+' - '+i.album)}`;
+    return '<div class="card">' +
+      (mine?'<div class="badge">👤 我</div>':'') +
+      '<img class="art" src="'+i.art+'" alt="'+eA(i.album)+'" loading="lazy" onerror="this.src=\'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 600 600%27%3E%3Crect fill=%27%231c1c1e%27 width=%27600%27 height=%27600%27/%3E%3Ctext x=%27300%27 y=%27300%27 text-anchor=%27middle%27 font-size=%2760%27%3E🎵%3C/text%3E%3C/svg%3E\'">' +
+      '<div class="body"><div class="title" title="'+eA(i.album)+'">'+esc(i.album)+'</div><div class="artist">'+esc(i.artist)+'</div><div class="meta">'+(i.year||'')+(i.genre?' · '+esc(i.genre):'')+'</div></div>' +
+      '<div class="stars">'+stars+'</div>' +
+      (i.note?'<div class="note-text">💬 '+esc(i.note)+'</div>':'') +
+      '<div class="ext"><a href="'+aotyS+'" target="_blank" rel="noopener">AOTY</a><a href="'+rym+'" target="_blank" rel="noopener">RYM</a><a href="'+(i.url||'#')+'" target="_blank" rel="noopener">🍎</a></div>' +
+      (mine?'<div class="btns"><button class="danger" onclick="unshare(\''+i.id+'\')">取消分享</button></div>':'') +
+      '<div class="time">'+(i.sharedAt?'分享于 '+new Date(i.sharedAt).toLocaleDateString('zh-CN'):'')+'</div></div>';
+  }).join('')+'</div>';
 }
 
-// ===== GITHUB PERSISTENCE =====
-async function saveLibrary(){
-  try{
-    const ex=await getF(LP);
-    await putF(LP,library,ex?ex.sha:null);
-  }catch(e){console.error('saveLibrary:',e);toast('保存失败');}
-}
-async function savePlaza(){
-  try{
-    const ex=await getF(PP);
-    await putF(PP,plaza,ex?ex.sha:null);
-  }catch(e){console.error('savePlaza:',e);toast('保存失败');}
-}
-async function loadData(){
-  try{const d=await getF(LP);if(d)library=d.content||[];}catch(e){library=[];}
-  try{const d=await getF(PP);if(d)plaza=d.content||[];}catch(e){plaza=[];}
-  renderLibrary();renderPlaza();
+// ===== DATA LOAD =====
+async function load(){
+  try{const d=await gf(LP);if(d)lib=d.content||[];}catch(e){lib=[];}
+  try{const d=await gf(PP);if(d)plz=d.content||[];}catch(e){plz=[];}
+  renderLib();renderPlz();
 }
 
-// ===== NAVIGATION =====
-document.querySelectorAll('.nav-btn').forEach(btn=>{
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+// ===== NAV =====
+document.querySelectorAll('.nav-btn').forEach(b=>{
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
     this.classList.add('active');
-    if(this.dataset.view==='library'){
-      libraryView.style.display='';
-      plazaView.style.display='none';
-    }else{
-      libraryView.style.display='none';
-      plazaView.style.display='';
-    }
+    if(this.dataset.view==='library'){lV.style.display='';pV.style.display='none';}
+    else{lV.style.display='none';pV.style.display='';}
   });
 });
 
-// ===== SEARCH EVENTS =====
-searchBtn.addEventListener('click',()=>{
-  const v=searchInput.value.trim();
-  if(v)searchMusic(v);else toast('输入专辑或艺人名');
-});
-searchInput.addEventListener('keydown',e=>{if(e.key==='Enter')searchBtn.click();});
-
-// ===== KEYBOARD SHORTCUT =====
-document.addEventListener('keydown',e=>{
-  if(e.key==='/'&&!e.ctrlKey&&!e.metaKey&&document.activeElement!==searchInput)
-    {e.preventDefault();searchInput.focus();}
-});
+// ===== EVENTS =====
+go.addEventListener('click',()=>{const v=q.value.trim();if(v)doSearch(v);else toast('输入专辑或艺人名');});
+q.addEventListener('keydown',e=>{if(e.key==='Enter')go.click();});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&!e.ctrlKey&&!e.metaKey&&document.activeElement!==q){e.preventDefault();q.focus();}});
 
 // ===== BOOT =====
-loadData();
+load();
 </script>
 </body>
 </html>
